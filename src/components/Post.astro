@@ -1,0 +1,41 @@
+---
+const { titulo, url, img, descripcion } = Astro.props;
+
+interface Props {
+    titulo: string;
+    url: string;
+    img: string;
+    descripcion: string;
+}
+---
+
+<a href={url} target="_blank">
+    <div>
+        <img src={img} />
+        <h3>{titulo}</h3>
+        <p>{descripcion}</p>
+    </div>
+</a>
+
+<style>
+    a {
+        text-decoration: none;
+    }
+    img {
+        width: 100%;
+    }
+    div {
+        border: 0.8px solid var(--gris2);
+        transition: transform 0.1s ease-in-out;
+    }
+    div:hover {
+        transform: scale(1.05);
+        transition: transform 0.1s ease-in-out;
+    }
+    p {
+        margin: 10px;
+    }
+    h3 {
+        margin: 10px;
+    }
+</style>

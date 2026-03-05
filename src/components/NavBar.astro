@@ -1,0 +1,149 @@
+---
+import "../styles/main.css";
+---
+
+<header>
+    <img id="aedm" src="/src/images/aedm.svg" />
+    <span id="moBotn" class="material-symbols-outlined">menu</span>
+    <div class="botones">
+        <a href="/">Inicio</a>
+        <a href="/reclama">Expone-Solicita</a>
+        <a href="/actividades">Actividades</a>
+        <a href="/proyectos">Proyectos</a>
+        <a href="/app">APP</a>
+        <a href="/contacto">Contacto</a>
+    </div>
+</header>
+
+<style>
+    #moBotn {
+        display: none;
+    }
+    #aedm {
+        height: 40px;
+        cursor: pointer;
+    }
+    header {
+        gap: 24px;
+        height: 80px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        background-color: transparent;
+        background: linear-gradient(
+            rgba(255, 255, 255, 2),
+            rgba(255, 255, 255, 0.8),
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0.6),
+            rgba(255, 255, 255, 0)
+        );
+
+        z-index: 10000;
+    }
+    .botones {
+        gap: 24px;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .botones a {
+        color: var(--black);
+        text-decoration: none;
+    }
+
+    @media screen and (max-width: 700px) {
+        .botones {
+            display: none;
+            position: fixed;
+            top: -420px;
+            left: 0;
+            margin: 0;
+            padding: 0;
+            padding-top: 10px;
+            flex-direction: column;
+            color: var(--blanco);
+            padding: 0px;
+            transition: top 0.3s ease-in-out;
+            width: 100%;
+            text-align: left;
+            gap: 10px;
+            * {
+                margin: 20px;
+            }
+        }
+        #moBotn {
+            display: block;
+        }
+        header {
+            justify-content: space-between;
+            * {
+                margin: 25px;
+            }
+        }
+    }
+</style>
+<script>
+    // Client-only DOM wiring: avoid creating global functions and guard for SSR
+    if (typeof document !== "undefined") {
+        document.addEventListener("DOMContentLoaded", () => {
+            const body = document.body;
+            const boton = document.getElementById("moBotn");
+            const aedm = document.getElementById("aedm");
+            const nav = document.getElementsByClassName("botones");
+
+            if (aedm) {
+                aedm.addEventListener("click", () => {
+                    location.assign("/");
+                });
+            }
+
+            if (boton) {
+                const isMobile = () =>
+                    window.matchMedia("(max-width: 700px)").matches;
+
+                boton.addEventListener("click", () => {
+                    if (!isMobile() || !nav[0]) return;
+
+                    // Toggle the same transform behavior previously intended by menuMobile()
+                    if (body.style.transform === "translateY(500px)") {
+                        body.style.transform = "";
+                    } else {
+                        body.style.transform = "translateY(500px)";
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                        nav[0].style.display = "flex";
+                    }
+                });
+
+                document.addEventListener("click", (event) => {
+                    if (!isMobile() || !nav[0]) return;
+
+                    if (
+                        !boton.contains(event.target) &&
+                        !nav[0].contains(event.target)
+                    ) {
+                        body.style.transform = "";
+                        nav[0].style.display = "none";
+                    }
+                });
+
+                window.addEventListener("resize", () => {
+                    if (!isMobile()) {
+                        body.style.transform = "";
+                        if (nav[0]) {
+                            nav[0].style.display = "";
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>

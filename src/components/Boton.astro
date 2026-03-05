@@ -1,0 +1,45 @@
+---
+const { texto, url, tipo } = Astro.props;
+import "../styles/main.css";
+
+type tiposDeTipo = "verde" | "negro" | "outline";
+
+interface Props {
+    texto: string;
+    url: string;
+    tipo?: tiposDeTipo;
+}
+
+if (url?.startsWith("http")) {
+    var target = "_blank";
+} else {
+    var target = "_self";
+}
+---
+
+<a href={url} target={target}
+    ><button class={tipo || "verde"}> {texto} </button></a
+>
+
+<style>
+    button {
+        border: 0;
+        width: 100%;
+        cursor: pointer;
+        font-size: 16px;
+        padding: 10px;
+        font-weight: 400;
+    }
+    .verde {
+        background-color: var(--verde);
+    }
+    .negro {
+        background-color: var(--negro);
+        color: var(--blanco);
+    }
+    .outline {
+        background-color: transparent;
+        border: 1px solid var(--verde);
+        color: var(--verde);
+    }
+</style>

@@ -1,0 +1,40 @@
+---
+import Post from "./Post.astro";
+const apiURL =
+    "https://api.rss2json.com/v1/api.json?rss_url=https://asoesdm.substack.com/feed";
+const blogURL = "https://asoesdm.substack.com/";
+
+const feedResponse = await fetch(apiURL);
+const feedData = await feedResponse.json();
+const posts: any[] = feedData.items || [];
+---
+
+<div class="masonry-grid">
+    {
+        posts.map((post: any) => (
+            <div class="grid-item">
+                <Post
+                    titulo={post.title}
+                    url={post.link}
+                    img={post.thumbnail || "/src/assets/background.svg"}
+                    descripcion={post.description}
+                />
+            </div>
+        ))
+    }
+</div>
+
+<style>
+    .masonry-grid {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -16px; /* Adjust gutter */
+    }
+
+    .grid-item {
+        width: calc(33.333% - 16px); /* Adjust based on desired column count */
+        margin-left: 16px; /* Gutter between items */
+        margin-bottom: 16px;
+        break-inside: avoid;
+    }
+</style>
