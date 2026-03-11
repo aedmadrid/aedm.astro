@@ -3,7 +3,7 @@ import "../styles/main.css";
 ---
 
 <header>
-    <img id="aedm" src="/src/images/aedm.svg" />
+    <a href="/" style="padding: 0;margin: 0;"><img id="aedm" src="/src/images/aedm.svg" /></a>
     <span id="moBotn" class="material-symbols-outlined">menu</span>
     <div class="botones">
         <a href="/">Inicio</a>
@@ -42,7 +42,6 @@ import "../styles/main.css";
             rgba(255, 255, 255, 2),
             rgba(255, 255, 255, 0.8),
             rgba(255, 255, 255, 0.6),
-            rgba(255, 255, 255, 0.6),
             rgba(255, 255, 255, 0)
         );
 
@@ -61,26 +60,38 @@ import "../styles/main.css";
 
     @media screen and (max-width: 700px) {
         .botones {
-            display: none;
+            display: flex;
             position: fixed;
-            top: -420px;
             left: 0;
-            margin: 0;
-            padding: 0;
-            padding-top: 10px;
+            right: 0;
+            bottom: 0;
+            top: 0;
             flex-direction: column;
-            color: var(--blanco);
-            padding: 0px;
-            transition: top 0.3s ease-in-out;
-            width: 100%;
-            text-align: left;
-            gap: 10px;
-            * {
-                margin: 20px;
+            background-color: var(--verde);
+            padding: 10px;
+            padding-top: 80px;
+            margin: 0;
+            gap: 15px;
+            text-align: end;
+            justify-content: center;
+            font-size: 30px;
+            z-index: -1;
+            color: var(--negro);
+            transition: all 0.8s;
+            transform: translateY(-100%);
+            a {
+                margin: 0;
+                padding: 0
+                width: auto;
+                border-bottom: 2px dotted var(--negro);
             }
         }
         #moBotn {
             display: block;
+            transition: transform 0.1s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        .rotated {
+            transform: rotate(90deg);
         }
         header {
             justify-content: space-between;
@@ -90,60 +101,22 @@ import "../styles/main.css";
         }
     }
 </style>
+
 <script>
-    // Client-only DOM wiring: avoid creating global functions and guard for SSR
-    if (typeof document !== "undefined") {
-        document.addEventListener("DOMContentLoaded", () => {
-            const body = document.body;
-            const boton = document.getElementById("moBotn");
-            const aedm = document.getElementById("aedm");
-            const nav = document.getElementsByClassName("botones");
+const moBotn = document.getElementById("moBotn");
 
-            if (aedm) {
-                aedm.addEventListener("click", () => {
-                    location.assign("/");
-                });
-            }
+    function despMenu() {
+        const botones = document.querySelector(".botones") as HTMLElement;
+        if (botones) {
+            const currentTransform = botones.style.transform;
+            botones.style.transform =
+                currentTransform === "translateY(0px)" ? "translateY(-100%)" : "translateY(0px)";
+            moBotn!.innerHTML = moBotn?.innerHTML === "close" ? "menu" : "close";
+            moBotn!.classList.toggle("rotated", moBotn!.innerHTML === "close");
+        }
+    }
 
-            if (boton) {
-                const isMobile = () =>
-                    window.matchMedia("(max-width: 700px)").matches;
-
-                boton.addEventListener("click", () => {
-                    if (!isMobile() || !nav[0]) return;
-
-                    // Toggle the same transform behavior previously intended by menuMobile()
-                    if (body.style.transform === "translateY(500px)") {
-                        body.style.transform = "";
-                    } else {
-                        body.style.transform = "translateY(500px)";
-                        document.body.scrollTop = 0;
-                        document.documentElement.scrollTop = 0;
-                        nav[0].style.display = "flex";
-                    }
-                });
-
-                document.addEventListener("click", (event) => {
-                    if (!isMobile() || !nav[0]) return;
-
-                    if (
-                        !boton.contains(event.target) &&
-                        !nav[0].contains(event.target)
-                    ) {
-                        body.style.transform = "";
-                        nav[0].style.display = "none";
-                    }
-                });
-
-                window.addEventListener("resize", () => {
-                    if (!isMobile()) {
-                        body.style.transform = "";
-                        if (nav[0]) {
-                            nav[0].style.display = "";
-                        }
-                    }
-                });
-            }
-        });
+    if (moBotn) {
+        moBotn.addEventListener("click", despMenu);
     }
 </script>

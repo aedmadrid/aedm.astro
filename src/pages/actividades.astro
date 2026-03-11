@@ -1,5 +1,102 @@
 ---
 import Default from "../layouts/Default.astro";
+import Caratula from "../components/Caratula.astro";
+
+interface Actividad {
+    name: string;
+    pageId?: string;
+    destino?: string;
+    icono: string;
+    imagen: string;
+    descripcion: string;
+    fecha?: string;
+}
+
+let actividades: Actividad[] = [];
+let error: string | null = null;
+
+try {
+    const response = await fetch("https://api.aedm.org.es/ACTIVIDADES_DB.json");
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+    actividades = await response.json();
+} catch (err) {
+    console.error("Error fetching actividades:", err);
+    error = "No se pudieron cargar las actividades.";
+}
+
+const meses = [
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
+];
+
+function formatFecha(fechaISO?: string): string {
+    if (!fechaISO) return "";
+    // Parse date parts directly from ISO string to avoid timezone offset shifting the day
+    const match = fechaISO.match(/^(\d{4})-(\d{2})-(\d{2})/);
+    if (!match) return "";
+    const y = parseInt(match[1], 10);
+    const m = parseInt(match[2], 10) - 1; // 0-indexed
+    const d = parseInt(match[3], 10);
+    return `${d} de ${meses[m]} de ${y}`;
+}
+
+const actividadesOrdenadas = actividades.slice().sort((a, b) => {
+    const da = a.fecha ? Date.parse(a.fecha) : 0;
+    const db = b.fecha ? Date.parse(b.fecha) : 0;
+    return db - da;
+});
 ---
 
-<Default title="Actividades" />
+<Default title="Actividades">
+    {error && <p>{error}</p>}
+
+    <div class="containerCaratulas" style="width: 100%;">
+        {
+            actividadesOrdenadas.map((actividad) => (
+                <Caratula
+                    titulo={actividad.name}
+                    descripcion={actividad.descripcion}
+                    fecha={formatFecha(actividad.fecha)}
+                    imagen={actividad.imagen}
+                    destino={actividad.destino || `/id/${actividad.pageId}`}
+                />
+            ))
+        }
+    </div>
+</Default>
+
+<style>
+    .containerCaratulas {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+</style>
+
+<script>
+    // Handle hash-based scroll on page load
+    document.addEventListener("DOMContentLoaded", () => {
+        const hash = window.location.hash.replace("#", "");
+        if (!hash) return;
+        const el = document.getElementById(hash);
+        if (!el) return;
+
+        const offset = 120;
+        const rect = el.getBoundingClientRect();
+        const top = rect.top + window.scrollY - offset;
+
+        window.scrollTo({ top, behavior: "smooth" });
+    });
+</script>

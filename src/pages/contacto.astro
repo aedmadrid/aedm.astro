@@ -1,7 +1,18 @@
 ---
+import GranBoton from "../components/GranBoton.astro";
 import Default from "../layouts/Default.astro";
 ---
 
 <Default title="Contacto">
-    <p>Hola</p>
+    <p>¿Dudas? ¿Sugerencias? No dudes en contactarnos ;-)</p>
+    <GranBoton
+        texto="Correo Electrónico"
+        url="mailto:aedm.org.es"
+        tipo="verde"
+    />
+    <GranBoton
+        texto="Instagram"
+        url="https://www.instagram.com/aso.esd/"
+        tipo="verde"
+    />
 </Default>

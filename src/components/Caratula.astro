@@ -1,0 +1,182 @@
+---
+import Boton from "./Boton.astro";
+
+interface Props {
+    titulo: string;
+    descripcion: string;
+    fecha?: string;
+    imagen: string;
+    destino?: string;
+}
+
+const { titulo, descripcion, fecha = "", imagen, destino } = Astro.props;
+
+const mesesMap: Record<string, string> = {
+    enero: "01",
+    febrero: "02",
+    marzo: "03",
+    abril: "04",
+    mayo: "05",
+    junio: "06",
+    julio: "07",
+    agosto: "08",
+    septiembre: "09",
+    octubre: "10",
+    noviembre: "11",
+    diciembre: "12",
+};
+
+// Build fechaId for anchor (e.g. "03012025")
+const fechaMatch = fecha.match(/^(\d{1,2}) de (\w+) de (\d{4})$/);
+const fechaId = (() => {
+    if (!fechaMatch) return "";
+    const d = fechaMatch[1].padStart(2, "0");
+    const m = mesesMap[fechaMatch[2]] || "00";
+    const y = fechaMatch[3];
+    return `${d}${m}${y}`;
+})();
+
+// Determine if event is still active (today <= event date)
+const eventoDate = (() => {
+    if (!fechaMatch) return null;
+    const d = parseInt(fechaMatch[1], 10);
+    const m = mesesMap[fechaMatch[2]];
+    const y = parseInt(fechaMatch[3], 10);
+    if (!m) return null;
+    return new Date(`${y}-${m}-${String(d).padStart(2, "0")}T00:00:00.000Z`);
+})();
+
+const hoy = new Date();
+const esActivo = eventoDate ? hoy <= eventoDate : false;
+const botonTexto = esActivo ? "Ver más" : "Actividad Finalizada";
+const botonTipo = esActivo ? "verde" : "outline";
+---
+
+<div class="caratula">
+    {
+        fecha && (
+            <h3
+                id={fechaId || undefined}
+                class="caratula__fecha"
+                data-fecha-id={fechaId || undefined}
+                title="Copiar enlace"
+            >
+                {fecha}
+            </h3>
+        )
+    }
+    <div class="caratula__body">
+        <div class="caratula__content">
+            <h2 class="caratula__titulo">{titulo}</h2>
+            <p class="caratula__descripcion">{descripcion}</p>
+            {
+                destino && (
+                    <Boton texto={botonTexto} url={destino} tipo={botonTipo} />
+                )
+            }
+        </div>
+        <img
+            src={imagen}
+            alt={titulo}
+            class="caratula__imagen"
+            loading="lazy"
+        />
+    </div>
+</div>
+
+<script>
+    document
+        .querySelectorAll<HTMLHeadingElement>(".caratula__fecha[data-fecha-id]")
+        .forEach((el) => {
+            el.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const id = el.dataset.fechaId;
+                if (!id) return;
+                const base = window.location.href.split("#")[0];
+                const url = `${base}#${id}`;
+                if (navigator.clipboard?.writeText) {
+                    navigator.clipboard
+                        .writeText(url)
+                        .catch(() => fallbackCopy(url));
+                } else {
+                    fallbackCopy(url);
+                }
+            });
+        });
+
+    function fallbackCopy(text: string) {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+    }
+</script>
+
+<style>
+    .caratula {
+        margin-bottom: 2rem;
+    }
+
+    .caratula__fecha {
+        margin-top: 50px;
+        margin-bottom: 0;
+        scroll-margin-top: 130px;
+        border-bottom: 2px solid var(--verde, #36e452);
+        font-size: 1.6em;
+        font-weight: 400;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .caratula__fecha:hover {
+        opacity: 0.7;
+    }
+
+    /* Desktop: text left, image right — matches md:flex-row in TSX */
+    .caratula__body {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 20px;
+        justify-content: space-between;
+        padding-top: 20px;
+    }
+
+    .caratula__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .caratula__titulo {
+        margin: 0;
+    }
+
+    .caratula__descripcion {
+        margin: 0;
+    }
+
+    /* Desktop: fixed width image on the right */
+    .caratula__imagen {
+        width: 300px;
+        height: auto;
+        margin: 0 20px;
+        flex-shrink: 0;
+        object-fit: cover;
+    }
+
+    /* Mobile: flex-col-reverse — image below text, same as TSX */
+    @media (max-width: 700px) {
+        .caratula__body {
+            flex-direction: column-reverse;
+        }
+
+        .caratula__imagen {
+            width: 100%;
+            margin: 0;
+        }
+    }
+</style>

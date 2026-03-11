@@ -1,0 +1,70 @@
+---
+const { texto, url, tipo, icono, orden } = Astro.props;
+import "../styles/main.css";
+
+type tiposDeTipo = "verde" | "negro" | "outline";
+
+interface Props {
+    texto: string;
+    url: string;
+    tipo?: tiposDeTipo;
+    icono?: string;
+    orden?: number;
+}
+
+let botonDir = "row-reverse";
+let jusDir = "space-between";
+
+if (orden === 1) {
+    botonDir = "row";
+    jusDir = "start";
+}
+
+let displayIcono = icono || "arrow_outward";
+
+let target = "_self";
+
+if (url?.startsWith("http")) {
+    target = "_blank";
+}
+---
+
+<a href={url} target={target}
+    ><div
+        class={tipo || "verde"}
+        style={`flex-direction: ${botonDir}; justify-content: ${jusDir};`}
+    >
+        <span class="material-symbols-outlined">{displayIcono}</span>
+        <p>{texto}</p>
+    </div></a
+>
+
+<style>
+    div {
+        padding: 18px;
+        width: 100%;
+        background-color: rgb(54, 228, 82);
+        display: flex;
+        align-items: center;
+        p {
+            font-family: TitleFont, Serif;
+            font-size: 23px;
+            margin: 0px;
+        }
+        .material-symbols-outlined {
+            margin-right: 15px;
+        }
+    }
+    .verde {
+        background-color: var(--verde);
+    }
+    .negro {
+        background-color: var(--negro);
+        color: var(--blanco);
+    }
+    .outline {
+        background-color: transparent;
+        border: 1px solid var(--verde);
+        color: var(--verde);
+    }
+</style>

@@ -1,6 +1,7 @@
 ---
 import "../styles/main.css";
 import NavBar from "../components/NavBar.astro";
+import Footer from "../components/Footer.astro";
 
 interface Props {
     title: string;
@@ -24,10 +25,115 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         <title>{documentTitle}</title>
     </head>
     <body>
-        <NavBar />
+        <div id="aso-chrome">
+            <NavBar />
+        </div>
+
         <main>
             {header && <h1>{title}</h1>}
             <slot />
         </main>
+
+        <div id="aso-chrome-footer" style="width:100%;align-self:stretch;">
+            <Footer />
+        </div>
+
+        <!-- Cookie consent banner -->
+        <div id="cookie-banner" role="dialog" aria-live="polite">
+            <p>
+                Este sitio web utiliza cookies y Google Analytics para mejorar
+                su experiencia. Al continuar navegando, acepta el uso de estas
+                tecnologías.
+            </p>
+            <button id="cookie-accept">Aceptar</button>
+        </div>
+
+        <script>
+            const isAsoApp = navigator.userAgent.includes("ASO.app 2");
+
+            // Hide navbar, footer and cookies inside the ASO.app 2 webview
+            if (isAsoApp) {
+                const chrome = document.getElementById("aso-chrome");
+                const footer = document.getElementById("aso-chrome-footer");
+                const banner = document.getElementById("cookie-banner");
+                if (chrome) chrome.style.display = "none";
+                if (footer) footer.style.display = "none";
+                if (banner) banner.style.display = "none";
+            } else {
+                // Cookie consent logic
+                const banner = document.getElementById("cookie-banner");
+                const acceptBtn = document.getElementById("cookie-accept");
+
+                const COOKIE_NAME = "cookieConsent";
+
+                function getCookie(name: string): string | null {
+                    const match = document.cookie
+                        .split("; ")
+                        .find((row) => row.startsWith(name + "="));
+                    return match ? match.split("=")[1] : null;
+                }
+
+                function setCookie(name: string, value: string, days: number) {
+                    const expires = new Date(
+                        Date.now() + days * 864e5,
+                    ).toUTCString();
+                    document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+                }
+
+                // Only show banner if consent not yet given
+                if (banner) {
+                    if (getCookie(COOKIE_NAME) === "true") {
+                        banner.style.display = "none";
+                    } else {
+                        banner.style.display = "flex";
+                    }
+                }
+
+                acceptBtn?.addEventListener("click", () => {
+                    setCookie(COOKIE_NAME, "true", 365);
+                    if (banner) banner.style.display = "none";
+                });
+            }
+        </script>
     </body>
 </html>
+
+<style>
+    #cookie-banner {
+        display: none; /* shown via JS only if needed */
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 99999;
+        background: #2b373b;
+        color: #fff;
+        padding: 14px 20px;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    #cookie-banner p {
+        margin: 0;
+        font-size: 14px;
+        color: #fff;
+        flex: 1;
+    }
+
+    #cookie-accept {
+        background: rgb(54, 228, 82);
+        color: #000;
+        border: none;
+        padding: 8px 18px;
+        font-size: 14px;
+        cursor: pointer;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    #cookie-accept:hover {
+        opacity: 0.85;
+    }
+</style>

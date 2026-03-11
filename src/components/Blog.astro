@@ -2,39 +2,105 @@
 import Post from "./Post.astro";
 const apiURL =
     "https://api.rss2json.com/v1/api.json?rss_url=https://asoesdm.substack.com/feed";
-const blogURL = "https://asoesdm.substack.com/";
 
-const feedResponse = await fetch(apiURL);
-const feedData = await feedResponse.json();
-const posts: any[] = feedData.items || [];
+let posts: any[] = [];
+
+try {
+    const feedResponse = await fetch(apiURL);
+    const feedData = await feedResponse.json();
+    const rawPosts: any[] = (feedData.items || []).slice(0, 9);
+
+    posts = rawPosts.map((post: any) => {
+        let img = post.thumbnail || post.enclosure?.link || "";
+
+        if (!img && post.content) {
+            const match = post.content.match(/<img[^>]+src=["']([^"']+)["']/i);
+            if (match) img = match[1];
+        }
+
+        if (!img && post.description) {
+            const match = post.description.match(
+                /<img[^>]+src=["']([^"']+)["']/i,
+            );
+            if (match) img = match[1];
+        }
+
+        return { ...post, img };
+    });
+} catch (e) {
+    // Feed unavailable — render nothing silently
+}
 ---
 
-<div class="masonry-grid">
-    {
-        posts.map((post: any) => (
-            <div class="grid-item">
-                <Post
-                    titulo={post.title}
-                    url={post.link}
-                    img={post.thumbnail || "/src/assets/background.svg"}
-                    descripcion={post.description}
-                />
-            </div>
-        ))
+{
+    posts.length > 0 && (
+        <div class="masonry-grid" id="masonry-grid">
+            {posts.map((post: any) => (
+                <div class="masonry-item">
+                    <Post
+                        titulo={post.title}
+                        url={post.link}
+                        img={post.img || ""}
+                        descripcion={post.description || ""}
+                    />
+                </div>
+            ))}
+        </div>
+    )
+}
+
+<script>
+    import Masonry from "masonry-layout";
+    import imagesLoaded from "imagesloaded";
+
+    const grid = document.getElementById("masonry-grid");
+    if (grid) {
+        const initMasonry = () => {
+            // Destroy previous instance if any
+            const existing = (grid as any)._masonry;
+            if (existing) existing.destroy();
+
+            imagesLoaded(grid, () => {
+                (grid as any)._masonry = new Masonry(grid, {
+                    itemSelector: ".masonry-item",
+                    columnWidth: ".masonry-item",
+                    percentPosition: true,
+                    gutter: 16,
+                });
+            });
+        };
+
+        initMasonry();
+
+        // Reinitialise on resize so items never overlap
+        let resizeTimer: ReturnType<typeof setTimeout>;
+        window.addEventListener("resize", () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(initMasonry, 150);
+        });
     }
-</div>
+</script>
 
 <style>
     .masonry-grid {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: -16px; /* Adjust gutter */
+        width: 100%;
     }
 
-    .grid-item {
-        width: calc(33.333% - 16px); /* Adjust based on desired column count */
-        margin-left: 16px; /* Gutter between items */
+    .masonry-item {
+        width: calc(33.333% - 11px);
         margin-bottom: 16px;
-        break-inside: avoid;
+        box-sizing: border-box;
+    }
+
+    @media (max-width: 600px) {
+        .masonry-item {
+            width: 100%;
+        }
+    }
+
+    @media (min-width: 601px) and (max-width: 900px) {
+        .masonry-item {
+            width: calc(50% - 8px);
+        }
     }
 </style>

@@ -1,5 +1,37 @@
 ---
 import Default from "../layouts/Default.astro";
+import HClick from "../components/HClick.astro";
+
+type Project = {
+    pageId: string;
+    name: string;
+};
+
+let projects: Project[] = [];
+let error: string | null = null;
+
+try {
+    const response = await fetch("https://api.aedm.org.es/PROYECTOS_DB.json");
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+    }
+    projects = await response.json();
+} catch (err) {
+    console.error("Error fetching projects:", err);
+    error = "No se pudieron cargar los proyectos.";
+}
 ---
 
-<Default title="Proyectos" />
+<Default title="Proyectos">
+    {error && <p>{error}</p>}
+
+    {
+        projects.map((project) => (
+            <HClick
+                texto={project.name}
+                enlace={`/id/${project.pageId}`}
+                icono="arrow_forward"
+            />
+        ))
+    }
+</Default>

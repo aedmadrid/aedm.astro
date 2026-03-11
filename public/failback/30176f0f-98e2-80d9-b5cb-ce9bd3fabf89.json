@@ -1,0 +1,421 @@
+{
+  "current_page_title": "DiscotecASO",
+  "blocks": [
+    {
+      "id": "30176f0f-98e2-803f-b48e-e8169bd2b1d4",
+      "type": "image",
+      "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b32370ec-0e25-434d-b80c-61933a2c2fbc/e74a8c8f-2112-41b9-8675-717857797425/weverqv.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4667RLSQTNJ%2F20260213%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260213T152136Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECcaCXVzLXdlc3QtMiJGMEQCIGzxM5NKjmYZwbqf76GeTkVAgMNtJtogcpwnumdm%2F96wAiAfUpYA9EI5%2Bdu4yxB126pToyA90ofNuhcUE4%2B0v6d9fyqIBAjw%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDYzNzQyMzE4MzgwNSIMTDhA8HlLp7fmwWSdKtwDAUVYGdPPzHLdruY4cElfhPnwolBOHzLDDVv91vd9O3Z1kakLikdt6hSQlXjdCupAlNs82GzYroF03yuPOmAqcaTdGPohaT1LdatnRxHr9jYL0bBTpTIVSHKfg62vXbMRKcxpeFXKs8P35qLnrW2sYNUKhVDtoNGBgelvh0vwzfLw8no6iz3FHiFbxDfzkyD7al8by%2FgH9VS8ZpZOwAeHWLCS1CSTPMrlTnBrp7IYp%2F7GeB44PW0P%2BI1iBiv2jrnmyC2XiT3v3wpLCsB36F8ynnztNeCOPOW%2BY81vEZ26QjhxcxVSlczHtqltfcjyOhGd9LsFeLa8cQ5mjhA79rWNxVNtzsHyhdMJXHoi3Wdh8l4Ov%2BnZisHvj7Po2EKXdfAlHbBTUJ7qMFORZMQTpVvsjsxGQi9wK4XcQBO1z9qa1xMV7oRhhyResFy0AJXJGt2OHlGpJSRzipKRXK8UlMb2mICKI%2BFCPypCPCoLDV1he1nEQ0QDjI7ktqVWdER97BMZ7SCjWOdb2pWqC97fhzxjOk1VIUuRtc9Qz%2FrtCWtBqjLwFb6A2FAOgeZ3mEnWR6zO5XCIeDhgmExaYn%2FZHdjbogziZTj34IcoF6ANZ1t8Y8FUPEaUpVP7XOMJ6oQw6%2Bi8zAY6pgGqZ41ngyRDwbd98jYFu5XKcWeaYCekVYJNOb58c7ac3KjE5Qef%2BeVFN5dsE%2FjnHHoa5udaEvEhv07jo1Q%2ByyiQjug1nYQNVjv3%2FuoOWbT9apyAxXoCW5axHprbirMKxrxl%2F3r8lMDZLtx50ieorP3J1zWZHwpEP5nDS6%2BPI%2FzzG7f6P%2FxSiMgzQGszvSZNz%2BmeHXHIZcf00zuEdvstcM6vRUG1mJvE&X-Amz-Signature=1e76dbab5f0ad6cf049a0918bb4eb6ff947c0ef2661937ea65a03401ffb02f22&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+      "caption": []
+    },
+    {
+      "id": "30176f0f-98e2-8098-a95c-e239e07f15d5",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": " ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80d1-aa6a-c310afd67d79",
+      "type": "heading_2",
+      "rich_text": [
+        {
+          "plain_text": "Comprar Entradas",
+          "href": "https://feverup.com/m/475635?utm_source=fever_app_share&utm_medium=plan_detail&utm_campaign=475635_mad&ref=388PEWWS81D57H4",
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-803f-9c81-e7e3612fe5a1",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "Ven a bailar, cantar y disfrutar con nosotros el fin de las jornadas de los E ESE Days. 💃🎵. ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80c0-93ce-e8089c5532fd",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "Vas a poder disfrutar de",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80b6-9c4f-e7b47aa7c031",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "🎤 Música variada para todo tipo de personas.",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-8014-81d3-d191e9395ba7",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "🎶 Un repertorio que combina canciones inolvidables y canciones propias llenas de alma.",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80d1-af23-dcff2829ff17",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "💫 Tragos durante toda la noche (Happyhour - 23:00 a 0:00- : 2 copas 4 euros).",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80a6-8ecc-de2af3247df3",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "🥂 Un ambiente cercano, alegre y lleno de sorpresas",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80ec-99c1-eed7aca361f5",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "Información básica:",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80c1-a025-c79b00a81871",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "📅 ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": "Fecha",
+          "href": null,
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": ": Viernes 13 de febrero 2026",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-8013-8e51-cce6511a7b83",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "🕒 ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": "Hora",
+          "href": null,
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": ": Apertura de puertas a las 21:00",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80ca-b93f-d9b1bade919d",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "📍 ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": "Lugar",
+          "href": null,
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": ": Sala Badulaque (Madrid)",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80ab-aa93-ecdd60353e9d",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "👤 ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": "Edad",
+          "href": null,
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": ": Se deberá presentar DNI o Pasaporte original en vigor, no copias.",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80ff-ac5e-fe67b873091a",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "♿️ ",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": "Accesibilidad",
+          "href": null,
+          "annotations": {
+            "bold": true,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        },
+        {
+          "plain_text": ": recinto accesible para personas con movilidad reducida",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80f6-93cc-d77b37574e2b",
+      "type": "heading_3",
+      "rich_text": [
+        {
+          "plain_text": "Descripción:",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-80b4-bc97-d405f6b87be8",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "Se acercá el fin de la jornada de los ESDays y el comienzo del semestre, y qué mejor que una fiesta llena de amigos, música, buenas vibras y energía para celebrarlo. Organizado por la AEDM (ASO), ven a pasarlo bien este viernes 13 en la Post-FiestASO y déjate llevar por la música y una noche inolvidable.",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-8030-bee0-e8ddbc81fd37",
+      "type": "paragraph",
+      "rich_text": [
+        {
+          "plain_text": "Si te gusta disfrutar de la buena música, cantar a pleno pulmón, esta es tu cita del año. ¡Te animamos a que vengas con todos tus amigos!.",
+          "href": null,
+          "annotations": {
+            "bold": false,
+            "italic": false,
+            "underline": false,
+            "strikethrough": false,
+            "color": "default"
+          }
+        }
+      ]
+    },
+    {
+      "id": "30176f0f-98e2-805d-87b3-c55e76a08107",
+      "type": "paragraph",
+      "rich_text": []
+    },
+    {
+      "id": "30176f0f-98e2-80e2-b38c-faa24d7fe4aa",
+      "type": "image",
+      "url": "https://prod-files-secure.s3.us-west-2.amazonaws.com/b32370ec-0e25-434d-b80c-61933a2c2fbc/727f4633-d554-446a-ace3-9444f6433fa9/wewefv.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAZI2LB4667RLSQTNJ%2F20260213%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20260213T152136Z&X-Amz-Expires=3600&X-Amz-Security-Token=IQoJb3JpZ2luX2VjECcaCXVzLXdlc3QtMiJGMEQCIGzxM5NKjmYZwbqf76GeTkVAgMNtJtogcpwnumdm%2F96wAiAfUpYA9EI5%2Bdu4yxB126pToyA90ofNuhcUE4%2B0v6d9fyqIBAjw%2F%2F%2F%2F%2F%2F%2F%2F%2F%2F8BEAAaDDYzNzQyMzE4MzgwNSIMTDhA8HlLp7fmwWSdKtwDAUVYGdPPzHLdruY4cElfhPnwolBOHzLDDVv91vd9O3Z1kakLikdt6hSQlXjdCupAlNs82GzYroF03yuPOmAqcaTdGPohaT1LdatnRxHr9jYL0bBTpTIVSHKfg62vXbMRKcxpeFXKs8P35qLnrW2sYNUKhVDtoNGBgelvh0vwzfLw8no6iz3FHiFbxDfzkyD7al8by%2FgH9VS8ZpZOwAeHWLCS1CSTPMrlTnBrp7IYp%2F7GeB44PW0P%2BI1iBiv2jrnmyC2XiT3v3wpLCsB36F8ynnztNeCOPOW%2BY81vEZ26QjhxcxVSlczHtqltfcjyOhGd9LsFeLa8cQ5mjhA79rWNxVNtzsHyhdMJXHoi3Wdh8l4Ov%2BnZisHvj7Po2EKXdfAlHbBTUJ7qMFORZMQTpVvsjsxGQi9wK4XcQBO1z9qa1xMV7oRhhyResFy0AJXJGt2OHlGpJSRzipKRXK8UlMb2mICKI%2BFCPypCPCoLDV1he1nEQ0QDjI7ktqVWdER97BMZ7SCjWOdb2pWqC97fhzxjOk1VIUuRtc9Qz%2FrtCWtBqjLwFb6A2FAOgeZ3mEnWR6zO5XCIeDhgmExaYn%2FZHdjbogziZTj34IcoF6ANZ1t8Y8FUPEaUpVP7XOMJ6oQw6%2Bi8zAY6pgGqZ41ngyRDwbd98jYFu5XKcWeaYCekVYJNOb58c7ac3KjE5Qef%2BeVFN5dsE%2FjnHHoa5udaEvEhv07jo1Q%2ByyiQjug1nYQNVjv3%2FuoOWbT9apyAxXoCW5axHprbirMKxrxl%2F3r8lMDZLtx50ieorP3J1zWZHwpEP5nDS6%2BPI%2FzzG7f6P%2FxSiMgzQGszvSZNz%2BmeHXHIZcf00zuEdvstcM6vRUG1mJvE&X-Amz-Signature=b8637697864e67fb4e93e46c3d4bd065e93b12ffd6271541dc0682526dddb706&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+      "caption": []
+    }
+  ]
+}

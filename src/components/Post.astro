@@ -1,41 +1,77 @@
 ---
-const { titulo, url, img, descripcion } = Astro.props;
-
 interface Props {
     titulo: string;
     url: string;
     img: string;
     descripcion: string;
 }
+
+const { titulo, url, img, descripcion } = Astro.props;
+
+// Strip HTML tags from description for plain text preview
+const plainDesc = descripcion
+    ? descripcion.replace(/<[^>]*>/g, "").slice(0, 160)
+    : "";
 ---
 
-<a href={url} target="_blank">
-    <div>
-        <img src={img} />
+<a href={url} target="_blank" rel="noopener noreferrer" class="post-card">
+    <div class="post-inner">
+        <div class="post-img-wrap">
+            <img
+                src={img}
+                alt={titulo}
+                loading="lazy"
+                onerror="this.style.display='none';this.parentElement.style.display='none';"
+            />
+        </div>
         <h3>{titulo}</h3>
-        <p>{descripcion}</p>
+        {plainDesc && <p>{plainDesc}</p>}
     </div>
 </a>
 
 <style>
-    a {
+    .post-card {
         text-decoration: none;
+        display: block;
     }
-    img {
-        width: 100%;
-    }
-    div {
+
+    .post-inner {
         border: 0.8px solid var(--gris2);
-        transition: transform 0.1s ease-in-out;
+        overflow: hidden;
+        background: var(--blanco);
     }
-    div:hover {
-        transform: scale(1.05);
-        transition: transform 0.1s ease-in-out;
+
+    .post-inner:hover {
+        border-color: var(--gris3);
     }
-    p {
-        margin: 10px;
+
+    .post-img-wrap {
+        width: 100%;
+        overflow: hidden;
+        background: var(--gris1);
+        line-height: 0;
     }
+
+    .post-img-wrap img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+    }
+
     h3 {
         margin: 10px;
+        font-family: MainFont, Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        font-weight: 600;
+        border-bottom: none;
+        color: var(--negro);
+    }
+
+    p {
+        margin: 0 10px 10px;
+        font-size: 0.85rem;
+        color: var(--gris4);
+        line-height: 1.4;
     }
 </style>

@@ -2,4 +2,675 @@
 import Default from "../layouts/Default.astro";
 ---
 
-<Default title="Expone/Solicita" />
+<Default title="Expone / Solicita">
+    <div class="info-box">
+        <p>
+            El formulario de Expone-Solicita de la escuela hecho fácil.<br />
+            En la (aso) queremos ayudarte con los trámites burocráticos, puedes rellenar
+            aquí tu Expone-Solicita.<br />
+            Si lo prefieres, puedes
+            <a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://admin-dev.esdmadrid.es/wp-content/uploads/2020/04/FORMULARIO-EXPONE_SOLICITA_EDITABLE.pdf"
+            >
+                descargar el formulario en PDF
+            </a>
+            y entregarlo en la secretaría del centro, o por mail.
+        </p>
+    </div>
+
+    <div class="chips-row">
+        <p class="chips-label">Plantillas:</p>
+        <a
+            class="chip"
+            href="?expone=La+conexi%C3%B3n+WiFi+de+la+escuela+no+llega+a+todas+las+aulas%2C+lo+que+hace+imposible+acceder+a+Internet.+Esto+retrasa+y+dificulta+la+entrega+de+proyectos%2C+ya+que+es+una+herramienta+fundamental+a+la+hora+de+trabajar+con+el+ordenador.&solicita=Este+problema+deber%C3%ADa+solucionarse+cuanto+antes%2C+ya+sea+instalando+repetidores+u+otra+medida+similar.+No+puede+seguir+as%C3%AD%2C+somos+una+escuela+de+dise%C3%B1o+y+trabajamos+con+ordenadores+todos+los+d%C3%ADas."
+        >
+            Wifi
+        </a>
+    </div>
+
+    <form id="reclamacionesForm">
+        <div class="field">
+            <label for="Nombre">Nombre*</label>
+            <input type="text" name="Nombre" id="Nombre" />
+        </div>
+
+        <div class="field">
+            <label for="Apellidos">Apellidos*</label>
+            <input type="text" name="Apellidos" id="Apellidos" />
+        </div>
+
+        <div class="field">
+            <label for="NIF">NIF*</label>
+            <input type="text" name="NIF" id="NIF" />
+        </div>
+
+        <div class="field">
+            <label for="ESP">Especialidad/curso/grupo*</label>
+            <input type="text" name="ESP" id="ESP" />
+        </div>
+
+        <div class="field">
+            <label for="mail">Correo electrónico*</label>
+            <input type="email" name="mail" id="mail" />
+        </div>
+
+        <div class="field">
+            <label for="tel">Teléfono*</label>
+            <input type="tel" name="tel" id="tel" />
+        </div>
+
+        <div class="field">
+            <label for="expone">Expone*</label>
+            <textarea name="expone" id="expone" rows="10" maxlength="900"
+            ></textarea>
+        </div>
+
+        <div class="field">
+            <label for="solicita">Solicita*</label>
+            <textarea name="solicita" id="solicita" rows="10" maxlength="900"
+            ></textarea>
+        </div>
+
+        <div class="field">
+            <label for="documentos">Documentación Adjunta</label>
+            <textarea
+                name="documentos"
+                id="documentos"
+                rows="5"
+                maxlength="350"
+                placeholder="Enlaces, recursos..."></textarea>
+        </div>
+
+        <div class="field">
+            <label for="fecha">Fecha*</label>
+            <input type="date" name="fecha" id="fecha" />
+        </div>
+
+        <div class="field">
+            <label for="firmaPad">Firma (dibujar abajo)*</label>
+            <canvas id="firmaPad"></canvas>
+        </div>
+
+        <button type="button" id="clearSignBtn" class="btn-outline">
+            Repetir firma
+        </button>
+
+        <h3>Enviar a la escuela</h3>
+        <p>
+            Descarga el pdf generado y envíalo a
+            <a href="mailto:administracion@esdmadrid.es">
+                administracion@esdmadrid.es
+            </a>
+            o entrégalo en la secretaría del centro.
+        </p>
+
+        <button type="button" id="submitBtn" class="btn-submit">
+            <span class="material-symbols-outlined">arrow_forward</span>
+            <span id="submitBtnText">Generar PDF</span>
+        </button>
+    </form>
+
+    <div id="notification-container"></div>
+</Default>
+
+<style>
+    .info-box {
+        background-color: rgb(54, 228, 82);
+        display: flex;
+        padding: 10px;
+        margin: 0;
+    }
+    .info-box p {
+        flex: 1;
+        margin: 0;
+        padding: 0;
+    }
+    .info-box a {
+        text-decoration: underline;
+    }
+
+    .chips-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 12px 0;
+        flex-wrap: wrap;
+    }
+    .chips-label {
+        margin: 0;
+        font-weight: 600;
+    }
+    .chip {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 999px;
+        background: var(--verde, rgb(54, 228, 82));
+        color: inherit;
+        text-decoration: none;
+        font-size: 14px;
+        transition: opacity 0.2s;
+    }
+    .chip:hover {
+        opacity: 0.8;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    label {
+        font-weight: 500;
+    }
+
+    input,
+    textarea {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        font-family: inherit;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    canvas#firmaPad {
+        width: 100%;
+        height: 150px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: crosshair;
+        touch-action: none;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 1px solid var(--verde, rgb(54, 228, 82));
+        color: var(--verde, rgb(54, 228, 82));
+        padding: 10px 18px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 4px;
+        width: 100%;
+    }
+    .btn-outline:hover {
+        opacity: 0.8;
+    }
+
+    .btn-submit {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background-color: var(--verde, rgb(54, 228, 82));
+        border: none;
+        padding: 18px;
+        font-size: 20px;
+        font-family: TitleFont, Serif;
+        cursor: pointer;
+        width: 100%;
+        transition: opacity 0.2s;
+    }
+    .btn-submit:hover {
+        opacity: 0.85;
+    }
+    .btn-submit:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    #notification-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    :global(.notification-chip) {
+        background-color: #36e452;
+        color: #000;
+        padding: 12px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<script>
+    import SignaturePad from "signature_pad";
+    import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+    import type { PDFFont, RGB, PDFPage } from "pdf-lib";
+
+    // ── Notification helper ──────────────────────────────────
+    let notificationId = 0;
+    function showNotification(message: string, duration = 5000) {
+        const container = document.getElementById("notification-container");
+        if (!container) return;
+        const chip = document.createElement("div");
+        chip.className = "notification-chip";
+        chip.textContent = message;
+        container.appendChild(chip);
+        const id = ++notificationId;
+        chip.dataset.id = String(id);
+        setTimeout(() => {
+            chip.remove();
+        }, duration);
+    }
+
+    // ── Canvas / SignaturePad setup ──────────────────────────
+    const canvas = document.getElementById("firmaPad") as HTMLCanvasElement;
+    let signaturePad: SignaturePad | null = null;
+
+    function resizeCanvas() {
+        if (!canvas) return;
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        const ctx = canvas.getContext("2d");
+        if (ctx) ctx.scale(ratio, ratio);
+        signaturePad?.clear();
+    }
+
+    if (canvas) {
+        resizeCanvas();
+        signaturePad = new SignaturePad(canvas, {
+            backgroundColor: "rgb(255, 255, 255)",
+            penColor: "rgb(0, 0, 0)",
+            minWidth: 0.5,
+            maxWidth: 2.5,
+        });
+        window.addEventListener("resize", resizeCanvas);
+    }
+
+    // ── Pre-fill date ────────────────────────────────────────
+    const fechaInput = document.getElementById("fecha") as HTMLInputElement;
+    if (fechaInput && !fechaInput.value) {
+        fechaInput.value = new Date().toISOString().split("T")[0];
+    }
+
+    // ── URL search-params pre-fill (plantillas) ──────────────
+    const params = new URLSearchParams(window.location.search);
+    let plantillaAplicada = false;
+
+    function prefill(name: string) {
+        const val = params.get(name);
+        if (!val) return;
+        const el = document.getElementById(name) as
+            | HTMLInputElement
+            | HTMLTextAreaElement
+            | null;
+        if (el) {
+            el.value = val;
+            plantillaAplicada = true;
+        }
+    }
+    prefill("expone");
+    prefill("solicita");
+    prefill("documentos");
+    if (plantillaAplicada)
+        showNotification("Plantilla aplicada correctamente.");
+
+    // ── Clear signature ──────────────────────────────────────
+    document
+        .getElementById("clearSignBtn")
+        ?.addEventListener("click", () => signaturePad?.clear());
+
+    // ── Form helpers ─────────────────────────────────────────
+    function getVal(id: string): string {
+        return (
+            (
+                document.getElementById(id) as
+                    | HTMLInputElement
+                    | HTMLTextAreaElement
+            )?.value?.trim() ?? ""
+        );
+    }
+
+    function validateForm(): boolean {
+        const required: { id: string; label: string }[] = [
+            { id: "Nombre", label: "Nombre" },
+            { id: "Apellidos", label: "Apellidos" },
+            { id: "NIF", label: "NIF" },
+            { id: "ESP", label: "Especialidad/curso/grupo" },
+            { id: "mail", label: "Correo electrónico" },
+            { id: "tel", label: "Teléfono" },
+            { id: "expone", label: "Expone" },
+            { id: "solicita", label: "Solicita" },
+            { id: "fecha", label: "Fecha" },
+        ];
+
+        for (const campo of required) {
+            if (!getVal(campo.id)) {
+                alert(`El campo "${campo.label}" es obligatorio.`);
+                return false;
+            }
+        }
+
+        if (signaturePad?.isEmpty()) {
+            alert("Es necesario firmar el documento.");
+            return false;
+        }
+
+        return true;
+    }
+
+    // ── PDF text helpers ─────────────────────────────────────
+    function drawMultilineText(
+        page: PDFPage,
+        text: string,
+        position: { x: number; y: number; maxWidth: number },
+        font: PDFFont,
+        fontSize: number,
+        color: RGB,
+    ) {
+        const { x, y, maxWidth } = position;
+        const lineHeight = fontSize * 1.2;
+        const charWidth = font.widthOfTextAtSize("a", fontSize);
+        const maxChars = Math.floor(maxWidth / charWidth);
+        let words = text.replace(/\n/g, " \n ").split(" ");
+        words = words.flatMap((word) => {
+            if (word === "\n" || word.length <= maxChars) return [word];
+            const parts: string[] = [];
+            for (let i = 0; i < word.length; i += maxChars) {
+                parts.push(word.substr(i, maxChars));
+            }
+            return parts;
+        });
+        let currentLine = "";
+        let currentY = y;
+
+        for (const word of words) {
+            if (word === "\n") {
+                page.drawText(currentLine, {
+                    x,
+                    y: currentY,
+                    font,
+                    size: fontSize,
+                    color,
+                });
+                currentLine = "";
+                currentY -= lineHeight;
+                continue;
+            }
+            const testLine = currentLine ? `${currentLine} ${word}` : word;
+            const testWidth = font.widthOfTextAtSize(testLine, fontSize);
+            if (testWidth > maxWidth && currentLine) {
+                page.drawText(currentLine, {
+                    x,
+                    y: currentY,
+                    font,
+                    size: fontSize,
+                    color,
+                });
+                currentLine = word;
+                currentY -= lineHeight;
+            } else {
+                currentLine = testLine;
+            }
+        }
+        page.drawText(currentLine, {
+            x,
+            y: currentY,
+            font,
+            size: fontSize,
+            color,
+        });
+    }
+
+    function truncateText(
+        text: string,
+        font: PDFFont,
+        size: number,
+        maxWidth: number,
+    ): string {
+        if (!text) return "";
+        if (font.widthOfTextAtSize(text, size) <= maxWidth) return text;
+        let truncated = text;
+        while (
+            truncated.length > 0 &&
+            font.widthOfTextAtSize(truncated + "...", size) > maxWidth
+        ) {
+            truncated = truncated.slice(0, -1);
+        }
+        return truncated + "...";
+    }
+
+    // ── Generate PDF ─────────────────────────────────────────
+    async function procesarFormulario() {
+        const submitBtn = document.getElementById(
+            "submitBtn",
+        ) as HTMLButtonElement;
+        const submitText = document.getElementById("submitBtnText");
+        submitBtn.disabled = true;
+        if (submitText) submitText.textContent = "Generando PDF...";
+
+        try {
+            const pdfPath = "/FORMULARIO-EXPONE_SOLICITA.pdf";
+            const existingPdfBytes = await fetch(pdfPath).then((r) =>
+                r.arrayBuffer(),
+            );
+            const pdfDoc = await PDFDocument.load(existingPdfBytes);
+            const monoFont = await pdfDoc.embedFont(StandardFonts.Courier);
+            const firstPage = pdfDoc.getPages()[0];
+
+            const positions = {
+                apellidos: { x: 105, y: 685 },
+                nombre: { x: 100, y: 667 },
+                nif: { x: 85, y: 649 },
+                especialidad: { x: 165, y: 631 },
+                email: { x: 140, y: 614 },
+                telefono: { x: 430, y: 614 },
+                expone: { x: 70, y: 584, maxWidth: 450 },
+                solicita: { x: 70, y: 410, maxWidth: 450 },
+                documentos: { x: 70, y: 243, maxWidth: 450 },
+                firma: { x: 230, y: 112, width: 150, height: 45 },
+                dia: { x: 239, y: 177 },
+                mes: { x: 288, y: 177 },
+                ano: { x: 420, y: 177 },
+            };
+
+            const fontSize = 11;
+            const fontColor = rgb(0, 0, 0);
+            const maxNameWidth = 200;
+
+            const nombreText = truncateText(
+                getVal("Nombre"),
+                monoFont,
+                fontSize,
+                maxNameWidth,
+            );
+            const apellidosText = truncateText(
+                getVal("Apellidos"),
+                monoFont,
+                fontSize,
+                maxNameWidth,
+            );
+
+            firstPage.drawText(nombreText, {
+                ...positions.nombre,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+            firstPage.drawText(apellidosText, {
+                ...positions.apellidos,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+            firstPage.drawText(getVal("NIF"), {
+                ...positions.nif,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+            firstPage.drawText(getVal("ESP"), {
+                ...positions.especialidad,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+            firstPage.drawText(getVal("mail"), {
+                ...positions.email,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+            firstPage.drawText(getVal("tel"), {
+                ...positions.telefono,
+                size: fontSize,
+                color: fontColor,
+                font: monoFont,
+            });
+
+            drawMultilineText(
+                firstPage,
+                getVal("expone"),
+                positions.expone,
+                monoFont,
+                fontSize,
+                fontColor,
+            );
+            drawMultilineText(
+                firstPage,
+                getVal("solicita"),
+                positions.solicita,
+                monoFont,
+                fontSize,
+                fontColor,
+            );
+            drawMultilineText(
+                firstPage,
+                getVal("documentos"),
+                positions.documentos,
+                monoFont,
+                fontSize,
+                fontColor,
+            );
+
+            // Date
+            const fechaVal = getVal("fecha");
+            if (fechaVal) {
+                const fechaObj = new Date(fechaVal);
+                const dia = fechaObj.getUTCDate().toString().padStart(2, "0");
+                const meses = [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre",
+                ];
+                const mes = meses[fechaObj.getUTCMonth()];
+                const ano = fechaObj.getUTCFullYear().toString().slice(-2);
+
+                firstPage.drawText(dia, {
+                    ...positions.dia,
+                    size: fontSize,
+                    color: fontColor,
+                    font: monoFont,
+                });
+                firstPage.drawText(mes, {
+                    ...positions.mes,
+                    size: fontSize,
+                    color: fontColor,
+                    font: monoFont,
+                });
+                firstPage.drawText(ano, {
+                    ...positions.ano,
+                    size: fontSize,
+                    color: fontColor,
+                    font: monoFont,
+                });
+            }
+
+            // Signature
+            if (signaturePad && !signaturePad.isEmpty()) {
+                const firmaImgBase64 = signaturePad.toDataURL("image/png");
+                const firmaImgBytes = await fetch(firmaImgBase64).then((r) =>
+                    r.arrayBuffer(),
+                );
+                const firmaImage = await pdfDoc.embedPng(firmaImgBytes);
+                const firmaDims = firmaImage.scale(1);
+                const firmaPos = positions.firma;
+                const scale = Math.min(
+                    firmaPos.width / firmaDims.width,
+                    firmaPos.height / firmaDims.height,
+                );
+                firstPage.drawImage(firmaImage, {
+                    x: firmaPos.x,
+                    y: firmaPos.y,
+                    width: firmaDims.width * scale,
+                    height: firmaDims.height * scale,
+                });
+            }
+
+            // Save & download
+            const pdfBytes = await pdfDoc.save();
+            const blob = new Blob([pdfBytes], { type: "application/pdf" });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+
+            const now = new Date();
+            const dia = now.getDate().toString().padStart(2, "0");
+            const mes = (now.getMonth() + 1).toString().padStart(2, "0");
+            const nombre = getVal("Nombre") || "Nombre";
+            const apellidos = getVal("Apellidos") || "Apellidos";
+            link.download = `${dia}-${mes}_${apellidos}_${nombre}_FORMULARIO-EXPONE_SOLICITA.pdf`;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showNotification("PDF generado y descargado con éxito.");
+        } catch (error) {
+            console.error("Error al generar el PDF:", error);
+            alert(
+                "Hubo un error al generar el PDF. Revisa la consola para más detalles.",
+            );
+        } finally {
+            submitBtn.disabled = false;
+            if (submitText) submitText.textContent = "Generar PDF";
+        }
+    }
+
+    // ── Submit button ────────────────────────────────────────
+    document.getElementById("submitBtn")?.addEventListener("click", () => {
+        if (validateForm()) {
+            procesarFormulario();
+        }
+    });
+</script>

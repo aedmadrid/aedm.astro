@@ -1,0 +1,205 @@
+---
+import NotionBlocks from "./NotionBlocks.astro";
+import Boton from "./Boton.astro";
+
+interface NotionPageResponse {
+    current_page_title: string;
+    blocks: any[];
+    tags?: string[];
+}
+
+interface Props {
+    pageId: string;
+}
+
+const { pageId } = Astro.props;
+
+const API_BASE_URL = "https://api.aedm.org.es";
+
+let page: NotionPageResponse | null = null;
+let fetchError = false;
+let notFound = false;
+
+try {
+    const res = await fetch(`${API_BASE_URL}/id/${pageId}.json`);
+    if (res.status === 404) {
+        notFound = true;
+    } else if (!res.ok) {
+        fetchError = true;
+    } else {
+        page = await res.json();
+    }
+} catch (err) {
+    console.error("Error fetching Notion page:", err);
+    try {
+        const fallbackRes = await fetch(
+            `${API_BASE_URL}/failback/${pageId}.json`,
+        );
+        if (fallbackRes.ok) {
+            page = await fallbackRes.json();
+        } else {
+            fetchError = true;
+        }
+    } catch {
+        fetchError = true;
+    }
+}
+
+const tags: string[] =
+    page && Array.isArray((page as any)?.tags)
+        ? ((page as any).tags as string[])
+        : [];
+---
+
+{
+    notFound && (
+        <div class="notion-error">
+            <h2>Página no encontrada</h2>
+            <p>
+                No se ha encontrado ninguna página con el identificador
+                solicitado.
+            </p>
+            <Boton texto="Volver al inicio" url="/" />
+        </div>
+    )
+}
+
+{
+    fetchError && (
+        <div class="notion-error">
+            <h2>Error</h2>
+            <p>No hemos podido cargar la página solicitada.</p>
+            <Boton texto="Volver al inicio" url="/" />
+        </div>
+    )
+}
+
+{
+    page && (
+        <article class="notion-page">
+            <header>
+                <h1>{page.current_page_title}</h1>
+                {tags.length > 0 && (
+                    <div class="notion-tags">
+                        {tags.map((t) => (
+                            <span class="notion-tag">{t}</span>
+                        ))}
+                    </div>
+                )}
+            </header>
+            <section class="notion-content">
+                <NotionBlocks blocks={(page.blocks ?? []) as any} />
+            </section>
+        </article>
+    )
+}
+
+<style>
+    .notion-error {
+        text-align: center;
+        padding: 2rem 0;
+    }
+
+    .notion-page header {
+        margin-bottom: 16px;
+    }
+
+    .notion-tags {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .notion-tag {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f1f1f1;
+        font-size: 12px;
+    }
+
+    .notion-content {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    :global(.notion-block.paragraph) {
+        margin: 0.25em 0;
+    }
+
+    :global(.notion-block.heading-1) {
+        margin: 1em 0 0.5em;
+    }
+
+    :global(.notion-block.heading-2) {
+        margin: 0.8em 0 0.4em;
+    }
+
+    :global(.notion-block.heading-3) {
+        margin: 0.6em 0 0.3em;
+    }
+
+    :global(.notion-block.quote) {
+        border-left: 3px solid var(--verde, #36e452);
+        padding-left: 1em;
+        margin: 1em 0;
+        font-style: italic;
+    }
+
+    :global(.notion-block.bulleted-list) {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+    }
+
+    :global(.notion-block.todo-item) {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0.3em 0;
+    }
+
+    :global(.notion-block.code-block) {
+        background: #f5f5f5;
+        padding: 1em;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 1em 0;
+    }
+
+    :global(.notion-block.code-block code) {
+        font-family: monospace;
+        font-size: 14px;
+    }
+
+    :global(.notion-block.divider) {
+        border: none;
+        border-top: 1px solid #e0e0e0;
+        margin: 1.5em 0;
+    }
+
+    :global(.notion-block.embed) {
+        margin: 1em 0;
+    }
+
+    :global(.notion-block.image) {
+        margin: 1em 0;
+    }
+
+    :global(.notion-block.image figcaption) {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 0.5em;
+        text-align: center;
+    }
+
+    :global(.notion-block.bookmark a) {
+        word-break: break-all;
+    }
+
+    :global(.notion-block.child-page) {
+        margin: 0.5em 0;
+    }
+</style>

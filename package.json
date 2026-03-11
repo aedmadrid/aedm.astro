@@ -9,9 +9,12 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9.5.5",
     "astro": "^5.17.1",
     "astro-icon": "^1.1.5",
     "imagesloaded": "^5.0.0",
-    "masonry-layout": "^4.2.2"
+    "masonry-layout": "^4.2.2",
+    "pdf-lib": "^1.17.1",
+    "signature_pad": "^5.1.3"
   }
 }
