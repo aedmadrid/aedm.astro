@@ -6,4 +6,4 @@ dist
 .vscode
 *.md
 bun.lock
-package-lock.json
+legacy
