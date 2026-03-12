@@ -1,16 +1,14 @@
 ---
-export const prerender = false;
-
 import Default from "../../layouts/Default.astro";
 import NotionPage from "../../components/NotionPage.astro";
 
-const { pageId } = Astro.params;
-
-if (!pageId) {
-    return Astro.redirect("/404");
+export function getStaticPaths() {
+    return [];
 }
+
+const { pageId } = Astro.params;
 ---
 
 <Default title="" header={false}>
-    <NotionPage pageId={pageId} />
+    <NotionPage pageId={pageId!} />
 </Default>
