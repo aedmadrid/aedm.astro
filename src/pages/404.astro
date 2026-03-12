@@ -14,7 +14,7 @@ import Boton from "../components/Boton.astro";
     <!-- Contenedor de la página de Notion (oculto por defecto) -->
     <div id="notion-container" style="display:none;">
         <div id="notion-loading">
-            <p>Cargando...</p>
+            <img id="loading-spinner" src="/aedm.svg" alt="Cargando..." />
         </div>
         <div id="notion-content" style="display:none;"></div>
         <div id="notion-error" style="display:none;">
@@ -202,6 +202,27 @@ import Boton from "../components/Boton.astro";
 </script>
 
 <style>
+    #notion-loading {
+        display: flex;
+        justify-content: center;
+        padding: 4rem 0;
+    }
+
+    #loading-spinner {
+        height: 80px;
+        width: auto;
+        animation: spin 1.2s linear infinite;
+    }
+
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
     /* Estilos del contenido Notion renderizado en cliente */
     #notion-content :global(.notion-page header) {
         margin-bottom: 16px;
