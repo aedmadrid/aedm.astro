@@ -1,8 +1,6 @@
 ---
 import Default from "../layouts/Default.astro";
 import Boton from "../components/Boton.astro";
-
-const API_BASE_URL = "https://api.aedm.org.es";
 ---
 
 <Default title="404" header={false}>
@@ -27,7 +25,8 @@ const API_BASE_URL = "https://api.aedm.org.es";
     </div>
 </Default>
 
-<script define:vars={{ API_BASE_URL }}>
+<script>
+    const API_BASE_URL = "https://api.aedm.org.es";
     const path = window.location.pathname;
     const match = path.match(/^\/id\/([^/]+)\/?$/);
 
