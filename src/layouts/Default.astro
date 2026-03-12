@@ -91,27 +91,39 @@ const documentTitle = title ? title + " | aedm" : "aedm";
                 acceptBtn?.addEventListener("click", () => {
                     setCookie(COOKIE_NAME, "true", 365);
                     if (banner) banner.style.display = "none";
+                    loadAnalytics();
                 });
+
+                // If already accepted on a previous visit, load immediately
+                if (getCookie(COOKIE_NAME) === "true") {
+                    loadAnalytics();
+                }
+            }
+
+            function loadAnalytics() {
+                if ((window as any).__gaLoaded) return;
+                (window as any).__gaLoaded = true;
+
+                const GA_ID = "G-4BDXW4TRWE";
+
+                // Inject the gtag.js loader script
+                const s = document.createElement("script");
+                s.async = true;
+                s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+                document.head.appendChild(s);
+
+                // Initialise dataLayer and send the first hit once the script loads
+                s.onload = () => {
+                    (window as any).dataLayer = (window as any).dataLayer || [];
+                    function gtag(...args: any[]) {
+                        (window as any).dataLayer.push(args);
+                    }
+                    (window as any).gtag = gtag;
+                    gtag("js", new Date());
+                    gtag("config", GA_ID);
+                };
             }
         </script>
-
-        <!-- Unnamed script -->
-        <!-- Google tag (gtag.js) -->
-        <script
-            data-cookie-consent="strictly-necessary"
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-4BDXW4TRWE"
-        ></script>
-        <script type="text/plain" data-cookie-consent="strictly-necessary">
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-
-            gtag("config", "G-4BDXW4TRWE");
-        </script>
-        <!-- end of Unnamed script-->
     </body>
 </html>
 
