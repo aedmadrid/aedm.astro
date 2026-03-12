@@ -5,7 +5,7 @@
     "": {
       "name": "aedm.astro",
       "dependencies": {
-        "@astrojs/node": "^9.5.5",
+        "@astrojs/node": "9",
         "astro": "^5.17.1",
         "astro-icon": "^1.1.5",
         "imagesloaded": "^5.0.0",

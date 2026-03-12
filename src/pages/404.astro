@@ -201,7 +201,7 @@ import Boton from "../components/Boton.astro";
     }
 </script>
 
-<style>
+<style is:global>
     #notion-loading {
         display: flex;
         justify-content: center;
@@ -211,31 +211,21 @@ import Boton from "../components/Boton.astro";
     #loading-spinner {
         height: 80px;
         width: auto;
-        animation: spin 1.2s linear infinite;
-    }
-
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
     }
 
     /* Estilos del contenido Notion renderizado en cliente */
-    #notion-content :global(.notion-page header) {
+    #notion-content .notion-page header {
         margin-bottom: 16px;
     }
 
-    #notion-content :global(.notion-tags) {
+    #notion-content .notion-tags {
         margin-top: 8px;
         display: flex;
         flex-wrap: wrap;
         gap: 6px;
     }
 
-    #notion-content :global(.notion-tag) {
+    #notion-content .notion-tag {
         display: inline-block;
         padding: 2px 8px;
         border-radius: 999px;
@@ -243,25 +233,25 @@ import Boton from "../components/Boton.astro";
         font-size: 12px;
     }
 
-    #notion-content :global(.notion-content) {
+    #notion-content .notion-content {
         margin-top: 16px;
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
 
-    #notion-content :global(.notion-block.paragraph) {
+    #notion-content .notion-block.paragraph {
         margin: 0.25em 0;
     }
 
-    #notion-content :global(.notion-block.quote) {
+    #notion-content .notion-block.quote {
         border-left: 3px solid var(--verde, #36e452);
         padding-left: 1em;
         margin: 1em 0;
         font-style: italic;
     }
 
-    #notion-content :global(.notion-block.code-block) {
+    #notion-content .notion-block.code-block {
         background: #f5f5f5;
         padding: 1em;
         border-radius: 4px;
@@ -269,36 +259,46 @@ import Boton from "../components/Boton.astro";
         margin: 1em 0;
     }
 
-    #notion-content :global(.notion-block.code-block code) {
+    #notion-content .notion-block.code-block code {
         font-family: monospace;
         font-size: 14px;
     }
 
-    #notion-content :global(.notion-block.divider) {
+    #notion-content .notion-block.divider {
         border: none;
         border-top: 1px solid #e0e0e0;
         margin: 1.5em 0;
     }
 
-    #notion-content :global(.notion-block.image) {
+    #notion-content .notion-block.image {
         margin: 1em 0;
     }
 
-    #notion-content :global(.notion-block.image figcaption) {
+    #notion-content .notion-block.image figcaption {
         font-size: 0.85em;
         color: #666;
         margin-top: 0.5em;
         text-align: center;
     }
 
-    #notion-content :global(.notion-block.embed) {
+    #notion-content .notion-block.embed {
         margin: 1em 0;
     }
 
-    #notion-content :global(.notion-block.todo-item) {
+    #notion-content .notion-block.todo-item {
         display: flex;
         align-items: center;
         gap: 8px;
         margin: 0.3em 0;
+    }
+
+    #notion-content .notion-page {
+        width: 100%;
+    }
+
+    #notion-content h1,
+    #notion-content h2,
+    #notion-content h3 {
+        margin: 0.6em 0 0.3em;
     }
 </style>
