@@ -1,9 +1,284 @@
 ---
 import Default from "../layouts/Default.astro";
 import Boton from "../components/Boton.astro";
+
+const API_BASE_URL = "https://api.aedm.org.es";
 ---
 
-<Default title="Error 404">
-    <p>Lo sentimos, la página que buscas no se ha encontrado.</p>
-    <Boton texto="Ir a la página de inicio" url="/" />
+<Default title="404" header={false}>
+    <!-- Contenedor del error 404 (se oculta si la URL es /id/{pageId}) -->
+    <div id="error-404">
+        <h1>404</h1>
+        <p>Lo sentimos, la página que buscas no se ha encontrado.</p>
+        <Boton texto="Ir a la página de inicio" url="/" />
+    </div>
+
+    <!-- Contenedor de la página de Notion (oculto por defecto) -->
+    <div id="notion-container" style="display:none;">
+        <div id="notion-loading">
+            <p>Cargando...</p>
+        </div>
+        <div id="notion-content" style="display:none;"></div>
+        <div id="notion-error" style="display:none;">
+            <h1>Error</h1>
+            <p>No hemos podido cargar la página solicitada.</p>
+            <a href="/">Ir a la página de inicio</a>
+        </div>
+    </div>
 </Default>
+
+<script define:vars={{ API_BASE_URL }}>
+    const path = window.location.pathname;
+    const match = path.match(/^\/id\/([^/]+)\/?$/);
+
+    if (match) {
+        const pageId = match[1];
+
+        // Ocultar 404 y mostrar contenedor Notion
+        document.getElementById("error-404").style.display = "none";
+        document.getElementById("notion-container").style.display = "block";
+
+        // Actualizar el título de la página mientras carga
+        document.title = "Cargando... | aedm";
+
+        async function loadPage(url) {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(res.status);
+            return res.json();
+        }
+
+        async function renderPage() {
+            let page = null;
+
+            try {
+                page = await loadPage(`${API_BASE_URL}/id/${pageId}.json`);
+            } catch (err) {
+                // Intentar fallback
+                try {
+                    page = await loadPage(
+                        `${API_BASE_URL}/failback/${pageId}.json`,
+                    );
+                } catch {
+                    document.getElementById("notion-loading").style.display =
+                        "none";
+                    document.getElementById("notion-error").style.display =
+                        "block";
+                    document.title = "Error | aedm";
+                    return;
+                }
+            }
+
+            document.title = (page.current_page_title || "") + " | aedm";
+
+            // Construir el HTML del contenido
+            const tags = Array.isArray(page.tags) ? page.tags : [];
+
+            let html = `<article class="notion-page">`;
+            html += `<header><h1>${escapeHtml(page.current_page_title || "")}</h1>`;
+
+            if (tags.length > 0) {
+                html += `<div class="notion-tags">`;
+                tags.forEach((t) => {
+                    html += `<span class="notion-tag">${escapeHtml(t)}</span>`;
+                });
+                html += `</div>`;
+            }
+
+            html += `</header><section class="notion-content">`;
+            html += renderBlocks(page.blocks || []);
+            html += `</section></article>`;
+
+            const contentEl = document.getElementById("notion-content");
+            contentEl.innerHTML = html;
+            document.getElementById("notion-loading").style.display = "none";
+            contentEl.style.display = "block";
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;");
+        }
+
+        function renderRichText(richTexts) {
+            if (!Array.isArray(richTexts)) return "";
+            return richTexts
+                .map((rt) => {
+                    let text = escapeHtml(rt.plain_text || "");
+                    const ann = rt.annotations || {};
+                    if (ann.bold) text = `<strong>${text}</strong>`;
+                    if (ann.italic) text = `<em>${text}</em>`;
+                    if (ann.strikethrough) text = `<s>${text}</s>`;
+                    if (ann.underline) text = `<u>${text}</u>`;
+                    if (ann.code) text = `<code>${text}</code>`;
+                    if (rt.href)
+                        text = `<a href="${escapeHtml(rt.href)}">${text}</a>`;
+                    return text;
+                })
+                .join("");
+        }
+
+        function renderBlocks(blocks) {
+            let html = "";
+            let i = 0;
+
+            while (i < blocks.length) {
+                const block = blocks[i];
+                const type = block.type;
+                const data = block[type] || {};
+
+                if (
+                    type === "bulleted_list_item" ||
+                    type === "numbered_list_item"
+                ) {
+                    const tag = type === "bulleted_list_item" ? "ul" : "ol";
+                    html += `<${tag} class="notion-block ${tag}">`;
+                    while (i < blocks.length && blocks[i].type === type) {
+                        const b = blocks[i];
+                        const d = b[b.type] || {};
+                        html += `<li>${renderRichText(d.rich_text)}</li>`;
+                        i++;
+                    }
+                    html += `</${tag}>`;
+                    continue;
+                }
+
+                switch (type) {
+                    case "paragraph":
+                        html += `<p class="notion-block paragraph">${renderRichText(data.rich_text)}</p>`;
+                        break;
+                    case "heading_1":
+                        html += `<h1 class="notion-block heading-1">${renderRichText(data.rich_text)}</h1>`;
+                        break;
+                    case "heading_2":
+                        html += `<h2 class="notion-block heading-2">${renderRichText(data.rich_text)}</h2>`;
+                        break;
+                    case "heading_3":
+                        html += `<h3 class="notion-block heading-3">${renderRichText(data.rich_text)}</h3>`;
+                        break;
+                    case "quote":
+                        html += `<blockquote class="notion-block quote">${renderRichText(data.rich_text)}</blockquote>`;
+                        break;
+                    case "code":
+                        html += `<div class="notion-block code-block"><pre><code>${escapeHtml(data.rich_text?.map((r) => r.plain_text).join("") || "")}</code></pre></div>`;
+                        break;
+                    case "divider":
+                        html += `<hr class="notion-block divider" />`;
+                        break;
+                    case "image": {
+                        const src =
+                            data.type === "external"
+                                ? data.external?.url
+                                : data.file?.url;
+                        const caption = renderRichText(data.caption);
+                        html += `<figure class="notion-block image"><img src="${escapeHtml(src || "")}" alt="${caption || ""}" style="max-width:100%;" />${caption ? `<figcaption>${caption}</figcaption>` : ""}</figure>`;
+                        break;
+                    }
+                    case "bookmark":
+                        html += `<div class="notion-block bookmark"><a href="${escapeHtml(data.url || "")}" target="_blank" rel="noopener noreferrer">${escapeHtml(data.url || "")}</a></div>`;
+                        break;
+                    case "child_page":
+                        html += `<div class="notion-block child-page"><a href="/id/${escapeHtml(block.id || "")}">${escapeHtml(data.title || "")}</a></div>`;
+                        break;
+                    case "embed":
+                        html += `<div class="notion-block embed"><iframe src="${escapeHtml(data.url || "")}" style="width:100%;border:none;" loading="lazy"></iframe></div>`;
+                        break;
+                    case "to_do":
+                        html += `<div class="notion-block todo-item"><input type="checkbox" disabled ${data.checked ? "checked" : ""} /><span>${renderRichText(data.rich_text)}</span></div>`;
+                        break;
+                    default:
+                        break;
+                }
+
+                i++;
+            }
+
+            return html;
+        }
+
+        renderPage();
+    }
+</script>
+
+<style>
+    /* Estilos del contenido Notion renderizado en cliente */
+    #notion-content :global(.notion-page header) {
+        margin-bottom: 16px;
+    }
+
+    #notion-content :global(.notion-tags) {
+        margin-top: 8px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    #notion-content :global(.notion-tag) {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        background: #f1f1f1;
+        font-size: 12px;
+    }
+
+    #notion-content :global(.notion-content) {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    #notion-content :global(.notion-block.paragraph) {
+        margin: 0.25em 0;
+    }
+
+    #notion-content :global(.notion-block.quote) {
+        border-left: 3px solid var(--verde, #36e452);
+        padding-left: 1em;
+        margin: 1em 0;
+        font-style: italic;
+    }
+
+    #notion-content :global(.notion-block.code-block) {
+        background: #f5f5f5;
+        padding: 1em;
+        border-radius: 4px;
+        overflow-x: auto;
+        margin: 1em 0;
+    }
+
+    #notion-content :global(.notion-block.code-block code) {
+        font-family: monospace;
+        font-size: 14px;
+    }
+
+    #notion-content :global(.notion-block.divider) {
+        border: none;
+        border-top: 1px solid #e0e0e0;
+        margin: 1.5em 0;
+    }
+
+    #notion-content :global(.notion-block.image) {
+        margin: 1em 0;
+    }
+
+    #notion-content :global(.notion-block.image figcaption) {
+        font-size: 0.85em;
+        color: #666;
+        margin-top: 0.5em;
+        text-align: center;
+    }
+
+    #notion-content :global(.notion-block.embed) {
+        margin: 1em 0;
+    }
+
+    #notion-content :global(.notion-block.todo-item) {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0.3em 0;
+    }
+</style>
