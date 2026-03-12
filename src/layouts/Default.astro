@@ -51,7 +51,6 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         <script>
             const isAsoApp = navigator.userAgent.includes("ASO.app 2");
 
-            // Hide navbar, footer and cookies inside the ASO.app 2 webview
             if (isAsoApp) {
                 const chrome = document.getElementById("aso-chrome");
                 const footer = document.getElementById("aso-chrome-footer");
@@ -95,6 +94,24 @@ const documentTitle = title ? title + " | aedm" : "aedm";
                 });
             }
         </script>
+
+        <!-- Unnamed script -->
+        <!-- Google tag (gtag.js) -->
+        <script
+            data-cookie-consent="strictly-necessary"
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-4BDXW4TRWE"
+        ></script>
+        <script type="text/plain" data-cookie-consent="strictly-necessary">
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+
+            gtag("config", "G-4BDXW4TRWE");
+        </script>
+        <!-- end of Unnamed script-->
     </body>
 </html>
 
