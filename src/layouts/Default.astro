@@ -7,7 +7,6 @@ interface Props {
     title: string;
     header?: boolean;
 }
-console.log("aedm.astro GC2");
 
 const { title, header = true } = Astro.props;
 
@@ -116,6 +115,7 @@ const documentTitle = title ? title + " | aedm" : "aedm";
             function loadAnalytics() {
                 console.log("cookieok");
             }
+            console.log("aedm.astro GC2");
         </script>
     </body>
 </html>
