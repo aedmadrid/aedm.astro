@@ -1,26 +1,24 @@
 ---
-const { texto, enlace, icono } = Astro.props;
+const { texto, enlace, icono, target = "_self" } = Astro.props;
 import "../styles/main.css";
 
 interface Props {
     texto: string;
     enlace?: string;
     icono: string;
+    target?: "_self" | "_blank";
 }
 
 const normalizedLink = enlace?.trim() || "";
 const isDeviceLink = /^(mailto:|tel:|sms:|geo:)/i.test(normalizedLink);
-const isExternalLink = /^https?:\/\//i.test(normalizedLink);
-
-let target = "_self";
-let rel = "";
-if (isExternalLink) {
-    target = "_blank";
-    rel = "noopener noreferrer";
-}
 
 const isInteractive = !!normalizedLink;
 const headingClass = isInteractive ? "hclick hclick--interactive" : "hclick";
+
+let rel = "";
+if (target === "_blank") {
+    rel = "noopener noreferrer";
+}
 ---
 
 {

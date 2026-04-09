@@ -3,9 +3,44 @@ import Default from "../layouts/Default.astro";
 import HClick from "../components/HClick.astro";
 
 type Project = {
-    pageId: string;
+    pageId?: string;
+    destino?: string;
     name: string;
 };
+
+function getEnlace(project: Project): string {
+    if (project.pageId) {
+        return `/id/${project.pageId}`;
+    }
+    if (project.destino) {
+        return project.destino;
+    }
+    return "";
+}
+
+const getTarget = (enlace: string): "_self" | "_blank" => {
+    if (!enlace) return "_self";
+    try {
+        const url = new URL(enlace);
+        if (url.hostname.endsWith("aedm.org.es")) {
+            return "_self";
+        }
+        return "_blank";
+    } catch {
+        return "_self";
+    }
+};
+
+function isInternal(enlace: string): boolean {
+    if (!enlace) return true;
+    if (!/^https?:\/\//i.test(enlace)) return true;
+    try {
+        const url = new URL(enlace);
+        return url.hostname.endsWith("aedm.org.es");
+    } catch {
+        return true;
+    }
+}
 
 let projects: Project[] = [];
 let error: string | null = null;
@@ -26,12 +61,16 @@ try {
     {error && <p>{error}</p>}
 
     {
-        projects.map((project) => (
-            <HClick
-                texto={project.name}
-                enlace={`/id/${project.pageId}`}
-                icono="arrow_forward"
-            />
-        ))
+        projects.map((project) => {
+            const enlace = getEnlace(project);
+            return (
+                <HClick
+                    texto={project.name}
+                    {enlace}
+                    icono="arrow_forward"
+                    target={getTarget(enlace)}
+                />
+            );
+        })
     }
 </Default>
