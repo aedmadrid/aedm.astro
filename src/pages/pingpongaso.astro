@@ -1,15 +1,70 @@
 ---
+import IMGCol from "../components/IMGCol.astro";
 import Default from "../layouts/Default.astro";
+import GranBoton from "../components/GranBoton.astro";
 ---
 
 <Default title="PingPongASO" header={false}>
     <div id="hellospace"></div>
-
+    <div id="ball"></div>
     <img id="hello" src="/img/pingponghola.png" alt="" />
-    <p>test</p>
+    <div id="moTitle">
+        <p>Crea tu propia pala para jugar en el torneo.</p>
+        <div style="width: 600px;">
+            <GranBoton texto="Quiero Participar" url="https://google.es" />
+        </div>
+    </div>
+    <IMGCol
+        src="/aso-content/pingpongaso/superbola.png"
+        alt="PingPongPala"
+        wait2appear={4}
+    >
+        El PingPongASO es un torneo de ping-pong en el que el requisito para
+        participar es diseñar y fabricar tu propia pala.
+    </IMGCol>
+
+    <h3>Requisitos</h3>
+    <ol style="list-style-type: decimal; text-indent: 20px; font-size: 18px;">
+        <li>Ser parte de la ESD.</li>
+        <li>Haberte fabricado tú tu propia pala.</li>
+    </ol>
+    <img src="/aso-content/pingpongaso/pin.jpg" alt="" />
+    <br /><br />
+    <img src="/aso-content/pingpongaso/inspo.svg" alt="" height="40px" />
+    <p>
+        Únete a nuestro panel de referencias para inspirarte en tu propia pala.
+        Es un tablero de Pinterest abierto a los participantes.
+    </p>
+    <GranBoton texto="Acceder" url="https://google.es" />
+    <hr />
+    <i
+        >Actividad no asegurada, estamos tanteando si participarás. Necesitas o
+        bien un correo @educa.madrid.org con acceso a emails externos
+        habilitados o un correo @esdmadrid.es y ser parte de la ESD actualmente.</i
+    >
 </Default>
 
 <style>
+    #moTitle {
+        position: absolute;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 40px;
+        width: 100%;
+        transition: opacity 1s ease;
+        opacity: 0;
+        text-align: center;
+
+        p {
+            font-size: 30px;
+            text-transform: uppercase;
+        }
+    }
     #hello {
         position: absolute;
         width: 100vw;
@@ -18,10 +73,234 @@ import Default from "../layouts/Default.astro";
         top: 0;
         mix-blend-mode: darken;
         z-index: -100000;
+        transition: top 1s ease;
     }
     #hellospace {
-        width: 100vw;
-        aspect-ratio: 16 / 9;
         overflow: hidden;
+        width: 100%;
+        margin-top: 0;
+    }
+    @keyframes shake {
+        0%,
+        100% {
+            transform: translateX(0) scale(1);
+        }
+        25% {
+            transform: translateX(-2px) scale(1);
+        }
+        50% {
+            transform: translateX(2px) scale(1);
+        }
+        75% {
+            transform: translateX(-2px) scale(1);
+        }
+    }
+
+    #ball {
+        position: fixed;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        /*background: #a03e95;*/
+        background: #22c55e;
+        display: none;
+        z-index: 1000;
+        cursor: grab;
+        user-select: none;
+        /*mix-blend-mode: difference;*/
+        transition: scale 0.5s ease;
+    }
+    #ball.hovering-quiet {
+        animation: shake 0.3s infinite;
+        cursor: grab;
+    }
+    #ball.dragging {
+        cursor: grabbing;
+        user-select: none;
+        transition: scale 0.5s ease;
+        transform: scale(1.2);
+        z-index: 10000000001;
+        animation: none;
     }
 </style>
+
+<script>
+    function adjustHellospace() {
+        let hello = document.getElementById("hello");
+        let hellospace = document.getElementById("hellospace");
+        let moTitle = document.getElementById("moTitle");
+
+        if (hello && hellospace && moTitle) {
+            let helloHeight = Number(hello?.offsetHeight);
+            console.log(helloHeight);
+            let hellospaceHeight = helloHeight - 130;
+            hellospace.style.height = hellospaceHeight + "px";
+            let moTitleHeight = helloHeight * 0.7;
+            moTitle.style.top = moTitleHeight + "px";
+        }
+    }
+
+    // Pelota de pingpong
+    let ball = {
+        x: window.innerWidth / 2,
+        y: window.innerHeight / 2,
+        vx: 4,
+        vy: 4,
+        radius: 15,
+        visible: false,
+        isDragging: false,
+        dragOffsetX: 0,
+        dragOffsetY: 0,
+        prevX: window.innerWidth / 2,
+        prevY: window.innerHeight / 2,
+    };
+
+    function drawBall() {
+        const ballElement = document.getElementById("ball");
+        if (ballElement) {
+            ballElement.style.left = ball.x - ball.radius + "px";
+            ballElement.style.top = ball.y - ball.radius + "px";
+        }
+    }
+
+    function updateBall() {
+        if (ball.isDragging) return;
+
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        // Aplicar fricción (desaceleración)
+        ball.vx *= 0.98;
+        ball.vy *= 0.98;
+
+        // Rebotar en los bordes
+        if (
+            ball.x - ball.radius <= 0 ||
+            ball.x + ball.radius >= window.innerWidth
+        ) {
+            ball.vx = -ball.vx;
+            ball.x = Math.max(
+                ball.radius,
+                Math.min(window.innerWidth - ball.radius, ball.x),
+            );
+        }
+
+        if (
+            ball.y - ball.radius <= 0 ||
+            ball.y + ball.radius >= window.innerHeight
+        ) {
+            ball.vy = -ball.vy;
+            ball.y = Math.max(
+                ball.radius,
+                Math.min(window.innerHeight - ball.radius, ball.y),
+            );
+        }
+
+        drawBall();
+    }
+
+    function startBallAnimation() {
+        const ballElement = document.getElementById("ball");
+        if (ballElement) {
+            ball.visible = true;
+            ballElement.style.display = "block";
+        }
+
+        setInterval(updateBall, 20);
+    }
+
+    // Detectar hover y quiet state
+    let hoveringBall = false;
+
+    document.addEventListener("mousemove", (e) => {
+        const ballElement = document.getElementById("ball");
+        if (!ballElement || ballElement.style.display === "none") return;
+
+        const rect = ballElement.getBoundingClientRect();
+        const distance = Math.sqrt(
+            (e.clientX - (rect.left + rect.width / 2)) ** 2 +
+                (e.clientY - (rect.top + rect.height / 2)) ** 2,
+        );
+
+        const isHovering = distance <= ball.radius * 2;
+        const isQuiet = Math.abs(ball.vx) < 0.5 && Math.abs(ball.vy) < 0.5;
+
+        if (isHovering && isQuiet && !ball.isDragging) {
+            if (!hoveringBall) {
+                hoveringBall = true;
+                ballElement.classList.add("hovering-quiet");
+            }
+        } else {
+            if (hoveringBall) {
+                hoveringBall = false;
+                ballElement.classList.remove("hovering-quiet");
+            }
+        }
+    });
+
+    // Eventos de arrastre
+    document.addEventListener("mousedown", (e) => {
+        const ballElement = document.getElementById("ball");
+        if (!ballElement || ballElement.style.display === "none") return;
+
+        const rect = ballElement.getBoundingClientRect();
+        const distance = Math.sqrt(
+            (e.clientX - (rect.left + rect.width / 2)) ** 2 +
+                (e.clientY - (rect.top + rect.height / 2)) ** 2,
+        );
+
+        if (distance <= ball.radius) {
+            ball.isDragging = true;
+            ball.dragOffsetX = e.clientX - (rect.left + rect.width / 2);
+            ball.dragOffsetY = e.clientY - (rect.top + rect.height / 2);
+            ballElement.classList.add("dragging");
+            ballElement.classList.remove("hovering-quiet");
+            hoveringBall = false;
+        }
+    });
+
+    document.addEventListener(
+        "mousemove",
+        (e) => {
+            if (ball.isDragging) {
+                ball.prevX = ball.x;
+                ball.prevY = ball.y;
+                ball.x = e.clientX - ball.dragOffsetX;
+                ball.y = e.clientY - ball.dragOffsetY;
+                drawBall();
+            }
+        },
+        true,
+    );
+
+    document.addEventListener("mouseup", (e) => {
+        if (ball.isDragging) {
+            ball.isDragging = false;
+            const ballElement = document.getElementById("ball");
+            if (ballElement) {
+                ballElement.classList.remove("dragging");
+            }
+
+            // Calcular velocidad basada en el movimiento anterior
+            ball.vx = (ball.x - ball.prevX) * 0.5;
+            ball.vy = (ball.y - ball.prevY) * 0.5;
+        }
+    });
+
+    function moveHello6s() {
+        let hello = document.getElementById("hello");
+        let moTitle = document.getElementById("moTitle");
+        if (hello && moTitle) {
+            setTimeout(() => {
+                hello.style.top = "-100px";
+                moTitle.style.opacity = "1";
+                startBallAnimation();
+            }, 6000);
+        }
+    }
+
+    window.addEventListener("load", adjustHellospace);
+    window.addEventListener("resize", adjustHellospace);
+    window.addEventListener("load", moveHello6s);
+    window.addEventListener("resize", moveHello6s);
+</script>

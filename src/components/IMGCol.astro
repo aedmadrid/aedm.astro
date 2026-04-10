@@ -1,0 +1,65 @@
+---
+interface Props {
+    src: string;
+    alt: string;
+    wait2appear?: number;
+}
+
+const { src, alt, wait2appear = 1 } = Astro.props;
+---
+
+<section style={`--wait-time: ${wait2appear}s`}>
+    <img src={src} alt={alt} />
+    <p class="estiloso">
+        <slot />
+    </p>
+</section>
+
+<style>
+    .estiloso {
+        font-size: 1.7em;
+        line-height: 1.6;
+        text-indent: 50px;
+        kerning: -50px;
+        font-weight: 300;
+        font-family:
+            system-ui,
+            -apple-system,
+            BlinkMacSystemFont,
+            "Segoe UI",
+            Roboto,
+            Oxygen,
+            Ubuntu,
+            Cantarell,
+            "Open Sans",
+            "Helvetica Neue",
+            sans-serif;
+    }
+
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    section {
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+    }
+    section.visible {
+        opacity: 1;
+    }
+</style>
+
+<script>
+    const section = document.querySelector("section");
+    if (section) {
+        const computedStyle = getComputedStyle(section);
+        const waitTimeStr = computedStyle
+            .getPropertyValue("--wait-time")
+            .trim();
+        const waitTime = parseInt(waitTimeStr) * 1000;
+
+        setTimeout(() => {
+            section.classList.add("visible");
+        }, waitTime);
+    }
+</script>
