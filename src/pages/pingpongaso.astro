@@ -1,0 +1,27 @@
+---
+import Default from "../layouts/Default.astro";
+---
+
+<Default title="PingPongASO" header={false}>
+    <div id="hellospace"></div>
+
+    <img id="hello" src="/img/pingponghola.png" alt="" />
+    <p>test</p>
+</Default>
+
+<style>
+    #hello {
+        position: absolute;
+        width: 100vw;
+        left: 0;
+        right: 0;
+        top: 0;
+        mix-blend-mode: darken;
+        z-index: -100000;
+    }
+    #hellospace {
+        width: 100vw;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+    }
+</style>
