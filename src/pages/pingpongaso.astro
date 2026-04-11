@@ -178,13 +178,17 @@ import GranBoton from "../components/GranBoton.astro";
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            transition: all 1s ease;
         }
         #hellospace {
-            margin-bottom: 50px;
+            margin-bottom: 20px;
         }
         #ball {
             width: 60px;
             height: 60px;
+        }
+        .pinScroll {
+            height: 280px;
         }
     }
 </style>
@@ -357,6 +361,9 @@ import GranBoton from "../components/GranBoton.astro";
         if (hello && moTitle) {
             setTimeout(() => {
                 // hello.style.top = "-100px";
+                if (window.innerWidth < 768) {
+                    hello.style.top = "100px";
+                }
                 hello.style.aspectRatio = "21 / 9";
                 // esperar transición
                 setTimeout(() => {
