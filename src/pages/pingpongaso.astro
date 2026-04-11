@@ -7,11 +7,15 @@ import GranBoton from "../components/GranBoton.astro";
 <Default title="PingPongASO" header={false}>
     <div id="hellospace"></div>
     <div id="ball"></div>
-    <img id="hello" src="/img/pingponghola.png" alt="" />
+    <div id="hello"></div>
     <div id="moTitle">
         <p>Crea tu propia pala para jugar en el torneo.</p>
-        <div style="width: 600px;">
-            <GranBoton texto="Quiero Participar" url="https://google.es" />
+        <div>
+            <GranBoton
+                id="biGo"
+                texto="Quiero Participar"
+                url="https://google.es"
+            />
         </div>
     </div>
     <IMGCol
@@ -45,15 +49,18 @@ import GranBoton from "../components/GranBoton.astro";
 </Default>
 
 <style>
+    #biGo {
+        max-width: 800px;
+    }
     #moTitle {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+        /*position: absolute;
         top: 0;
         left: 0;
         right: 0;
+        display: flex;*/
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
         padding: 40px;
         width: 100%;
         transition: opacity 1s ease;
@@ -68,12 +75,17 @@ import GranBoton from "../components/GranBoton.astro";
     #hello {
         position: absolute;
         width: 100vw;
+        aspect-ratio: 16 / 9;
+        background: url("/img/pingponghola.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         left: 0;
         right: 0;
         top: 0;
         mix-blend-mode: darken;
         z-index: -100000;
-        transition: top 1s ease;
+        transition: aspect-ratio 1s ease;
     }
     #hellospace {
         overflow: hidden;
@@ -107,7 +119,7 @@ import GranBoton from "../components/GranBoton.astro";
         z-index: 1000;
         cursor: grab;
         user-select: none;
-        /*mix-blend-mode: difference;*/
+        /*mix-blend-mode: difference; no me convence esto*/
         transition: scale 0.5s ease;
     }
     #ball.hovering-quiet {
@@ -133,10 +145,8 @@ import GranBoton from "../components/GranBoton.astro";
         if (hello && hellospace && moTitle) {
             let helloHeight = Number(hello?.offsetHeight);
             console.log(helloHeight);
-            let hellospaceHeight = helloHeight - 130;
+            let hellospaceHeight = helloHeight - 200;
             hellospace.style.height = hellospaceHeight + "px";
-            let moTitleHeight = helloHeight * 0.7;
-            moTitle.style.top = moTitleHeight + "px";
         }
     }
 
@@ -292,9 +302,15 @@ import GranBoton from "../components/GranBoton.astro";
         let moTitle = document.getElementById("moTitle");
         if (hello && moTitle) {
             setTimeout(() => {
-                hello.style.top = "-100px";
-                moTitle.style.opacity = "1";
-                startBallAnimation();
+                // hello.style.top = "-100px";
+                hello.style.aspectRatio = "21 / 9";
+
+                // Esperar a que termine la transición de aspect-ratio (1s)
+                setTimeout(() => {
+                    adjustHellospace();
+                    moTitle.style.opacity = "1";
+                    startBallAnimation();
+                }, 1100);
             }, 6000);
         }
     }
@@ -303,4 +319,18 @@ import GranBoton from "../components/GranBoton.astro";
     window.addEventListener("resize", adjustHellospace);
     window.addEventListener("load", moveHello6s);
     window.addEventListener("resize", moveHello6s);
+
+    function handleImageLoad() {
+        adjustHellospace();
+        moveHello6s();
+    }
+
+    const hello = document.getElementById("hello");
+    if (hello) {
+        if (hello.complete) {
+            handleImageLoad();
+        } else {
+            hello.addEventListener("load", handleImageLoad);
+        }
+    }
 </script>
