@@ -150,7 +150,7 @@ import GranBoton from "../components/GranBoton.astro";
         }
     }
 
-    // Pelota de pingpong
+    // Pelota de pingpong (escrito por ia)
     let ball = {
         x: window.innerWidth / 2,
         y: window.innerHeight / 2,
@@ -298,14 +298,14 @@ import GranBoton from "../components/GranBoton.astro";
     });
 
     function moveHello6s() {
+        // a partir de aquí que acaba lo relacionado con la pelota, ya me podeis crucuficar si algo falla
         let hello = document.getElementById("hello");
         let moTitle = document.getElementById("moTitle");
         if (hello && moTitle) {
             setTimeout(() => {
                 // hello.style.top = "-100px";
                 hello.style.aspectRatio = "21 / 9";
-
-                // Esperar a que termine la transición de aspect-ratio (1s)
+                // esperar transición
                 setTimeout(() => {
                     adjustHellospace();
                     moTitle.style.opacity = "1";
