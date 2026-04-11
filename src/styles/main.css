@@ -107,3 +107,9 @@ h3 {
     margin: 20px 0 10px;
     scroll-margin-top: 130px;
 }
+
+hr {
+    border: none;
+    border-top: 1px solid var(--verde);
+    margin: 20px 0;
+}
