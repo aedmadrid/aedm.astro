@@ -14,7 +14,7 @@ import GranBoton from "../components/GranBoton.astro";
             <GranBoton
                 id="biGo"
                 texto="Quiero Participar"
-                url="https://google.es"
+                url="/demasiadorapido"
             />
         </div>
     </div>
@@ -32,14 +32,29 @@ import GranBoton from "../components/GranBoton.astro";
         <li>Ser parte de la ESD.</li>
         <li>Haberte fabricado tú tu propia pala.</li>
     </ol>
-    <img src="/aso-content/pingpongaso/pin.jpg" alt="" />
-    <br /><br />
-    <img src="/aso-content/pingpongaso/inspo.svg" alt="" height="40px" />
-    <p>
-        Únete a nuestro panel de referencias para inspirarte en tu propia pala.
-        Es un tablero de Pinterest abierto a los participantes.
+    <h1 style="text-align: center; margin: 10px 0;">Caza de Referencias</h1>
+
+    <section class="skipMargins">
+        <section class="pinScroll">
+            <img src="/aso-content/pingpongaso/pin/1.jpg" alt="" />
+            <img src="/aso-content/pingpongaso/pin/2.jpg" alt="" />
+            <img src="/aso-content/pingpongaso/pin/3.jpg" alt="" />
+            <img src="/aso-content/pingpongaso/pin/4.jpg" alt="" />
+            <img src="/aso-content/pingpongaso/pin/5.jpg" alt="" />
+            <img src="/aso-content/pingpongaso/pin/6.jpg" alt="" />
+        </section>
+    </section>
+    <p style="font-size: 18px">
+        Únete a nuestro panel de referencias colaborativo para inspirarte en tu
+        propia pala. Es un <a href="https://pin.it/2noJ6xLKs" target="_blank">
+            tablero de Pinterest</a
+        > en el que <b>todos</b>
+
+        <i style="color: var(--gris4); font-style: normal">
+            (los de la ESD) <b>pueden colaborar añadiendo referencias.</b>
+        </i>
     </p>
-    <GranBoton texto="Acceder" url="https://google.es" />
+    <GranBoton texto="Colaborar" url="/demasiadorapido" />
     <hr />
     <i
         >Actividad no asegurada, estamos tanteando si participarás. Necesitas o
@@ -56,6 +71,18 @@ import GranBoton from "../components/GranBoton.astro";
 </Default>
 
 <style>
+    .pinScroll {
+        display: flex;
+        overflow-x: auto;
+        width: calc(100% - 10px);
+        gap: 10px;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        height: 400px;
+        position: relative;
+        padding-left: 10px;
+    }
     #biGo {
         max-width: 800px;
     }
@@ -117,21 +144,22 @@ import GranBoton from "../components/GranBoton.astro";
 
     #ball {
         position: fixed;
-        width: 30px;
-        height: 30px;
+        width: 40px;
+        height: 40px;
         border-radius: 50%;
         /*background: #a03e95;*/
         background: #22c55e;
         display: none;
         z-index: 1000;
         cursor: grab;
-        user-select: none;
+        user-select: none !important;
         /*mix-blend-mode: difference; no me convence esto*/
         transition: scale 0.5s ease;
     }
     #ball.hovering-quiet {
         animation: shake 0.3s infinite;
         cursor: grab;
+        user-select: none !important;
     }
     #ball.dragging {
         cursor: grabbing;
@@ -140,6 +168,24 @@ import GranBoton from "../components/GranBoton.astro";
         transform: scale(1.2);
         z-index: 10000000001;
         animation: none;
+        user-select: none !important;
+    }
+
+    @media (max-width: 850px) {
+        #hello {
+            background: url("/img/pingpongphone.png");
+            aspect-ratio: 1 / 1;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        #hellospace {
+            margin-bottom: 50px;
+        }
+        #ball {
+            width: 60px;
+            height: 60px;
+        }
     }
 </style>
 
