@@ -40,6 +40,12 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         <div id="aso-chrome">
             <NavBar />
         </div>
+        <div id="errInfo">
+            <p>
+                Ahora mismo tenemos un problema con el servidor físico ubicado
+                en la ESD. Algunas páginas no se cargan correctamente.
+            </p>
+        </div>
 
         <main>
             {header && <h1>{title}</h1>}
@@ -121,6 +127,27 @@ const documentTitle = title ? title + " | aedm" : "aedm";
 </html>
 
 <style>
+    #errInfo {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 99999;
+        background: var(--rojo);
+        color: #fff;
+        padding: 2px 20px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+    }
+
+    #errInfo p {
+        margin: 0;
+        font-size: 14px;
+        color: #fff;
+        flex: 1;
+    }
+
     #cookie-banner {
         display: none; /* shown via JS only if needed */
         position: fixed;
@@ -159,3 +186,13 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         opacity: 0.85;
     }
 </style>
+
+<script>
+    const errInfo = document.getElementById("errInfo");
+
+    if (errInfo) {
+        errInfo.onclick = () => {
+            errInfo.style.display = "none";
+        };
+    }
+</script>
