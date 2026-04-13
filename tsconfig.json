@@ -1,8 +1,15 @@
 {
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "jsxImportSource": "astro",
-  },
-  "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "legacy"],
+	"extends": "astro/tsconfigs/strict",
+	"compilerOptions": {
+		"jsxImportSource": "astro"
+	},
+	"include": [
+		".astro/types.d.ts",
+		"**/*",
+		"./worker-configuration.d.ts"
+	],
+	"exclude": [
+		"dist",
+		"legacy"
+	]
 }
