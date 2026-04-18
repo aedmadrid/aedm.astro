@@ -90,6 +90,18 @@ h2 {
     font-weight: 400;
     font-size: 40px;
     text-align: left;
+    i {
+        font-family: TitleFont, serif !important;
+    }
+    b {
+        font-family: TitleFont, serif !important;
+    }
+    a {
+        font-family: TitleFont, serif !important;
+    }
+    u {
+        font-family: TitleFont, serif !important;
+    }
 }
 
 @media (max-width: 600px) {
@@ -106,8 +118,16 @@ h3 {
     font-weight: 400;
     margin: 20px 0 10px;
     scroll-margin-top: 130px;
+    a {
+        text-decoration: none;
+        font-family: MainFont, sans-serif;
+        color: var(--gris4);
+    }
 }
 
+ul {
+    margin-top: 0;
+}
 hr {
     border: none;
     border-top: 1px solid var(--verde);

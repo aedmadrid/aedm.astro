@@ -1,0 +1,113 @@
+---
+import GranBoton from "../components/GranBoton.astro";
+import Default from "../layouts/Default.astro";
+import "../styles/main.css";
+---
+
+<Default title="La Asociación" header={false}>
+    <div id="heybar">
+        <a href="#aso">Misión</a>
+        <a href="#org">Estructura Organizativa</a>
+        <a href="#contacto">Contacto</a>
+    </div>
+
+    <hr style="margin: 0; padding: 0;" />
+    <h1 id="aso">Misión</h1>
+    <h2>
+        La <i
+            >(aso)ciación de estudiantes de diseño de madrid<a
+                href="#nota1"
+                style="text-decoration: none !important;">*</a
+            ></i
+        > o aedm, <u>conecta</u>.<br />
+        <br />
+        Conectamos a las y los estudiantes con <u>Moratalaz</u>
+        <i style="color: var(--gris5;">(el barrio)</i>, la <a
+            href="https://esdmadrid.es"
+            target="_blank">Escuela Superior de Diseño de Madrid</a
+        > y su administración por medio del <i>Consejo Escolar</i> y también entre
+        ell@s.
+        <br />
+        <br />
+        Para ello, organizamos actividades abietas al barrio y/o a la escuela dependiendo
+        de la ocasión. Tenemos dos representantes del consejo escolar en nuestras
+        filas y tratan de llevar las preocupaciones del alumnado a la dirección.
+    </h2>
+    <GranBoton texto="(asó)ciate" url="/asocia" />
+    <h1 id="org">Estructura Organizativa</h1>
+    <h3>
+        Coordinación/Presidencia <a href="mailto:aadm@esdmadrid.es"
+            >(aadm@esdmadrid.es)</a
+        >
+    </h3>
+    <ul>
+        <li>Mar Frontán</li>
+        <li>Sayén Cabrera</li>
+        <li>Daniel Hernández</li>
+    </ul>
+    <h3>Tesorería</h3>
+    <ul>
+        <li>Daniel Hernández</li>
+        <li>Sergio Garrigós</li>
+    </ul>
+    <h3>
+        Secretaría <a href="mailto:aadm@esdmadrid.es">(aadm@esdmadrid.es)</a>
+    </h3>
+    <ul>
+        <li>Lucas Peinado</li>
+        <li>Adrián Caparrós</li>
+    </ul>
+    <h3>Gestión Asociativa</h3>
+    <ul>
+        <li>María Helena Valencia</li>
+    </ul>
+    <h3>
+        Comunicación <a target="_blank" href="https://instagram.com/aso.esd/"
+            >(@aso.esd)</a
+        >
+    </h3>
+    <ul>
+        <li>Mar Frontán</li>
+        <li>Sonia Prada</li>
+        <li>Laura Halcón</li>
+        <li>Enrique Serrano</li>
+    </ul>
+    <h3>Inventario</h3>
+    <ul>
+        <li>Blanca Benito</li>
+        <li>Irene Cortina</li>
+    </ul>
+    <h3>
+        Medios Digitales <a href="mailto:tic@aedm.org.es">(tic@aedm.org.es)</a>
+    </h3>
+    <ul>
+        <li>Lucas Peinado</li>
+    </ul>
+    <h1 id="contacto">Contacto</h1>
+    <p>¿Dudas? ¿Sugerencias? No dudes en contactarnos ;-)</p>
+    <GranBoton
+        texto="Correo Electrónico"
+        url="mailto:aadm@esdmadrid.es"
+        tipo="verde"
+    />
+    <GranBoton
+        texto="Instagram"
+        url="https://www.instagram.com/aso.esd/"
+        tipo="verde"
+    />
+    <br /><br />
+    <hr />
+    <i id="nota1"
+        >*La asociación se encuentra inscrita actualmente bajo el nombre de
+        Asociación de Alumnos de Diseño de Madrid en el Registro de Asociaciones
+        de la Comunidad de Madrid.</i
+    >
+</Default>
+<style>
+    #heybar {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+        padding: 0;
+    }
+</style>
