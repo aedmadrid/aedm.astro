@@ -8,6 +8,6 @@ export default defineConfig({
   output: "static",
   adapter: cloudflare(),
   redirects: {
-    "/contacto": "/info#contacto",
+    "/contacto": "/info",
   },
 });
