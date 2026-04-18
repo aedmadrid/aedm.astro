@@ -7,7 +7,5 @@ export default defineConfig({
   site: "https://aedm.org.es",
   output: "static",
   adapter: cloudflare(),
-  redirects: {
-    "/contacto": "/info",
-  },
+  redirects: {},
 });
