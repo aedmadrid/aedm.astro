@@ -102,6 +102,9 @@ h2 {
     u {
         font-family: TitleFont, serif !important;
     }
+    span {
+        font-family: TitleFont, serif !important;
+    }
 }
 
 @media (max-width: 600px) {
