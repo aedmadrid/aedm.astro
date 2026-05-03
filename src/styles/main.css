@@ -1,6 +1,7 @@
 @font-face {
     font-family: MainFont;
-    src: url("/src/fonts/NeueMontreal-Regular.ttf") format(truetype);
+    src: url("/src/fonts/Schibsted_Grotesk/SchibstedGrotesk-VariableFont_wght.ttf")
+        format(truetype);
 }
 .material-symbols-outlined {
     font-variation-settings:
@@ -12,8 +13,10 @@
 
 @font-face {
     font-family: TitleFont;
-    src: url("/src/fonts/PKiko-Regular.otf");
+    src: url("/src/fonts/Mozilla_Headline/MozillaHeadline-VariableFont_wdth,wght.ttf")
+        format(truetype);
 }
+
 :root {
     --verde: #36e452;
     --azul: #3cadff;
