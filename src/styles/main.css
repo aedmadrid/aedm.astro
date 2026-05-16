@@ -13,8 +13,9 @@
 
 @font-face {
     font-family: TitleFont;
-    src: url("/src/fonts/Mozilla_Headline/MozillaHeadline-VariableFont_wdth,wght.ttf")
+    src: url("/src/fonts/Stick_No_Bills/StickNoBills-VariableFont_wght.ttf")
         format(truetype);
+    font-weight: 200;
 }
 
 :root {
