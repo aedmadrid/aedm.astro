@@ -1,0 +1,48 @@
+---
+import GranBoton from "../../components/GranBoton.astro";
+import HClick from "../../components/HClick.astro";
+import Default from "../../layouts/Default.astro";
+---
+
+<Default title="Consejo Escolar">
+    <p>
+        La (aso)ciación de estudiantes tiene dos representantes en el consejo.
+        Aunque la asociación no tenga una vinculación directa con la ESD o el
+        Consejo Escolar, los representantes de nuestra parte harán lo posible
+        para hacer llegar tu opinión al centro.
+    </p>
+    <h2>Integrantes del Consejo Escolar</h2>
+    <h3>Equipo Directivo</h3>
+    <ul>
+        <li>Óscar Jimenez</li>
+        <li>Antonio Cobo</li>
+        <li>Guadalupe Martín</li>
+    </ul>
+    <h3>Profesores</h3>
+    <ul>
+        <li>Óscar Beade</li>
+        <li>Beatriz Ortega</li>
+        <li>Ana García</li>
+        <li>Marta Ruiz de León</li>
+    </ul>
+    <h3>Estudiantes</h3>
+    <ul>
+        <li>Aitana Galván</li>
+        <li>Lucas Peinado</li>
+        <li>Alba Tornero</li>
+        <li>Darlin Lorena</li>
+    </ul>
+    <h3>PAS</h3>
+    <ul>
+        <li>Azucena Martín Herranz</li>
+    </ul>
+
+    <GranBoton texto="Contactar con mis representantes" url="/info/#cesc" />
+
+    <h2>Proyectos de aedm + Consejo</h2>
+    <HClick
+        texto="Asignaturas: Opiniones y Sugerencias"
+        enlace="/consejo/asignaturas/"
+        icono="arrow_forward"
+    />
+</Default>
