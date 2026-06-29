@@ -1,0 +1,26 @@
+---
+import Default from "../layouts/Default.astro";
+import GranBoton from "../components/GranBoton.astro";
+---
+
+<Default title="MueblASO">
+    <img src="/pescadilla.png" alt="Demasiado Rápido" id="pescadilla" />
+
+    <p>
+        Vas demasiado rápido. Estas intentando llegar a algo que aún no existe y
+        has acabado aquí.
+    </p>
+    <GranBoton orden={1} icono="arrow_back" texto="Volver" url="/" />
+</Default>
+<style>
+    #pescadilla {
+        max-width: 300px;
+        margin: auto;
+        margin-bottom: 1rem;
+    }
+    p {
+        text-align: center;
+        margin: auto;
+        padding: 1rem;
+    }
+</style>
