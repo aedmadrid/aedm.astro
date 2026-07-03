@@ -2,12 +2,17 @@
 import Boton from "../components/Boton.astro";
 import Blog from "../components/Blog.astro";
 import Default from "../layouts/Default.astro";
+import Banda from "../components/Banda.astro";
 ---
 
 <Default
     title="ASO o aedm - La (aso)ciación de estudiantes de diseño de madrid"
     header={false}
 >
+    <Banda
+        texto="Obtén información sobre el proceso de matriculación. Haz clic aquí."
+        url="/matricula"
+    />
     <img
         src="/Banner.png"
         style="width:100%;height:auto;padding-bottom:20px;"
