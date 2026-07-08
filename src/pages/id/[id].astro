@@ -1,0 +1,30 @@
+---
+export const prerender = false;
+
+import Default from "../../layouts/Default.astro";
+import NotionPage from "../../components/NotionPage.astro";
+import { fetchNotionPage } from "../../lib/notion";
+
+const { id } = Astro.params;
+
+if (!id) {
+    return Astro.redirect("/404");
+}
+
+const result = await fetchNotionPage(id);
+
+if (!result.ok && result.notFound) {
+    Astro.response.status = 404;
+    Astro.response.headers.set("Cache-Control", "no-store");
+}
+
+const title = result.ok
+    ? result.page.current_page_title
+    : result.notFound
+      ? "Página no encontrada"
+      : "Error";
+---
+
+<Default title={title} header={false}>
+    <NotionPage pageId={id} />
+</Default>

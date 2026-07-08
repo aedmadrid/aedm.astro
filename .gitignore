@@ -32,3 +32,6 @@ legacy
 .dev.vars*
 !.dev.vars.example
 !.env.example
+
+# Local Netlify folder
+.netlify

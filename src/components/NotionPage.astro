@@ -1,12 +1,7 @@
 ---
 import NotionBlocks from "./NotionBlocks.astro";
 import Boton from "./Boton.astro";
-
-interface NotionPageResponse {
-    current_page_title: string;
-    blocks: any[];
-    tags?: string[];
-}
+import { fetchNotionPage, type NotionPage as NotionPageData } from "../lib/notion";
 
 interface Props {
     pageId: string;
@@ -14,41 +9,22 @@ interface Props {
 
 const { pageId } = Astro.props;
 
-const API_BASE_URL = "https://api.aedm.org.es";
+const result = await fetchNotionPage(pageId);
 
-let page: NotionPageResponse | null = null;
-let fetchError = false;
+let page: NotionPageData | null = null;
 let notFound = false;
+let fetchError = false;
 
-try {
-    const res = await fetch(`${API_BASE_URL}/id/${pageId}.json`);
-    if (res.status === 404) {
-        notFound = true;
-    } else if (!res.ok) {
-        fetchError = true;
-    } else {
-        page = await res.json();
-    }
-} catch (err) {
-    console.error("Error fetching Notion page:", err);
-    try {
-        const fallbackRes = await fetch(
-            `${API_BASE_URL}/failback/${pageId}.json`,
-        );
-        if (fallbackRes.ok) {
-            page = await fallbackRes.json();
-        } else {
-            fetchError = true;
-        }
-    } catch {
-        fetchError = true;
-    }
+if (result.ok) {
+    page = result.page;
+} else if (result.notFound) {
+    notFound = true;
+} else {
+    fetchError = true;
 }
 
 const tags: string[] =
-    page && Array.isArray((page as any)?.tags)
-        ? ((page as any).tags as string[])
-        : [];
+    page && Array.isArray(page.tags) ? (page.tags as string[]) : [];
 ---
 
 {
@@ -175,8 +151,6 @@ const tags: string[] =
     }
 
     :global(.notion-block.divider) {
-        border: none;
-        border-top: 1px solid #e0e0e0;
         margin: 1.5em 0;
     }
 

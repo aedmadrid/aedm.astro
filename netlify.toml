@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# La página dinámica /id/[id] ejecuta una secuencia de reintentos
+# 10s + 20s + 30s + 40s = 100s en el peor caso, así que necesitamos
+# un timeout de función superior a 100s para que no se aborte.
+# El adapter @astrojs/netlify genera una función llamada "ssr".
+[functions."ssr"]
+  timeout = 120
