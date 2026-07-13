@@ -10,12 +10,12 @@ import Banda from "../components/Banda.astro";
     header={false}
 >
     <Banda
-        texto="Obtén información sobre el proceso de matriculación. Haz clic aquí."
-        url="/matricula"
+        texto="¿No te matriculaste de lo que querías? Haz clic aquí."
+        url="/id/39c76f0f98e280ab8c05d49da90a0b07"
     />
     <img
         src="/Banner.png"
-        style="width:100%;height:auto;padding-bottom:20px;"
+        id="imgbnr"
     />
     <h1 style="text-align: left ;">¡Hola!</h1>
     <p>
@@ -47,3 +47,20 @@ import Banda from "../components/Banda.astro";
 
     <Boton texto="Ver más posts" url="https://asoesdm.substack.com/" />
 </Default>
+
+
+<style>
+.imgbnr{
+    width:100%;
+    height:auto;
+    padding-bottom:20px;
+}
+
+@media screen and (max-width:768px){
+
+	#imgbnr{
+        margin-top:40px;
+    }
+
+}
+</style>
