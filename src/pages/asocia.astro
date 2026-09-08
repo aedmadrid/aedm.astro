@@ -1,10 +1,10 @@
 ---
 import GranBoton from "../components/GranBoton.astro";
 import Default from "../layouts/Default.astro";
+import  Columnas  from "../components/layouts/Columnas.astro";
 ---
 
 <Default title="ASÓciate">
-    <main>
         <h2>
             ‘La (aso)ciación de estudiantes de diseño de madrid o aedm tiene
             como objetivo crear conectar el barrio, la escuela y el alumnado.’
@@ -18,15 +18,34 @@ import Default from "../layouts/Default.astro";
         <b
             >Si quieres tomar parte en todo en todo esto, únete a la aso ahora.
         </b>
-        <h2>Atención: Estamos cambiando como gestionamos los ASOciad@s. Hasta la semana del 14 de septiembre.</h2>
-        <GranBoton
-            texto="(asó)ciate"
-            url="https://aedm.notion.site/20f76f0f98e280deb2e7d011cc1d39e9?pvs=105"
-        />
+
+        <Columnas>
+            <div>
+                <h3>Alumn@s</h3>
+                <br/>
+                <p>Para registrarte como Alumn@, deberás tener una cuenta en VerificASO antes. Puedes crear tu cuenta y solicitar tu adhesión abajo:</p>
+                <div style="background-color: var(--rojo); ">
+                    <p style="padding: 30px 10px 20px 10px; color: var(--blanco); font-weight: 500;">Actualmente por cambio de CRM las inscripciones se retrasarán hasta el 14 de septiembre. Lamentamos las molestias.</p>
+                </div>
+                <GranBoton
+                    texto="Alta Alumnado"
+                    url="https://aedm.notion.site/20f76f0f98e280deb2e7d011cc1d39e9?pvs=105"
+                />
+
+            </div>
+
+            <div>
+                <h3>Otros</h3>
+                <br/>
+
+                <p>Para asociarte sin ser parte del alumnado, puedes escribirnos a <a href="mailto:aadm@esdmadrid.es" target="_blank">aadm@esdmadrid.es</a> y contarnos tu caso y motivaciones. Ten en cuenta que los asociados externos tienen diferentes derechos con respecto al alumnado. También colaborar donando <a href="https://pay.sumup.com/b2c/Q2S1VB87" target="_blank">aquí</a>. </p>
+            </div>
+        </Columnas>
+
+
         <br />
         <i
             >La cuota son 10€ al año para mantener algunas cosas de
             las que tenemos. Los alumnos de primero no pagan nada.
         </i>
-    </main>
 </Default>

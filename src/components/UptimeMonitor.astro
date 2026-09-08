@@ -1,0 +1,189 @@
+---
+// Monitor de uptime para la página /fail.
+//
+// Edita SERVICIOS para controlar cada elemento:
+//   - "manual": pon "green", "yellow" o "red" para fijar el color a mano.
+//   - "manual": null  -> se hace ping automático a las URLs indicadas.
+//
+// En "Web" se comprueban las tres URLs: verde si funcionan todas, amarillo si
+// funciona al menos una, rojo si no funciona ninguna.
+const SERVICIOS = [
+    {
+        nombre: "Web",
+        urls: [
+            "https://aedm.org.es/",
+            "https://api.aedm.org.es/",
+            "https://api.failback.aedm.org.es/",
+        ],
+        manual: null, // "green" | "yellow" | "red" | null (null = ping)
+    },
+    {
+        nombre: "VerificASO",
+        urls: ["https://verificaso.aedm.org.es/login"],
+        manual: "red", // "green" | "yellow" | "red" | null (null = ping)
+    },
+    {
+        nombre: "IdeASO",
+        urls: ["https://ideaso.aedm.org.es/"],
+        manual: null,
+    },
+    {
+        nombre: "EncuestASO",
+        urls: ["https://encuestaso.aedm.org.es/"],
+        manual: null,
+    },
+];
+
+// Pasamos la config al navegador de forma segura (escapamos < por si acaso).
+const configJson = JSON.stringify(SERVICIOS).replace(/</g, "\\u003c");
+---
+
+<section class="uptime" id="uptime">
+
+    <ul class="uptime-list" id="uptime-list">
+        {SERVICIOS.map((s) => (
+            <li class="uptime-row">
+                <span class="dot" data-key={s.nombre}></span>
+                <span>{s.nombre}</span>
+                <span class="uptime-state" data-state-key={s.nombre}></span>
+            </li>
+        ))}
+    </ul>
+
+    <script type="application/json" id="uptime-config" set:html={configJson}></script>
+</section>
+
+<style>
+    .uptime {
+        margin: 24px 0;
+        max-width: 720px;
+    }
+
+    .dot {
+        flex: none;
+        width: 12px;
+        height: 12px;
+        background: var(--gris3);
+        display: inline-block;
+    }
+    .dot.green {
+        background: var(--verde);
+    }
+    .dot.yellow {
+        background: #ffc400;
+    }
+    .dot.red {
+        background: var(--rojo);
+    }
+    .dot.unknown {
+        background: var(--gris3);
+    }
+    .dot.loading {
+        animation: uptime-blink 1.2s ease-in-out infinite;
+    }
+    @keyframes uptime-blink {
+        0%,
+        100% {
+            opacity: 0.2;
+        }
+        50% {
+            opacity: 1;
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .dot.loading {
+            animation: none;
+        }
+    }
+
+    .uptime-list {
+        list-style: none;
+        padding: 0;
+        margin: 16px 0 0;
+        display: grid;
+        gap: 8px;
+    }
+    .uptime-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border: 1px solid var(--gris2);
+        background: var(--blanco);
+    }
+    .uptime-state {
+        margin-left: auto;
+        color: var(--gris4);
+        font-size: 0.9em;
+    }
+</style>
+
+<script>
+    const ENDPOINT = "/api/uptime";
+    const SERVICIOS = JSON.parse(
+        document.getElementById("uptime-config")!.textContent,
+    );
+
+    const ETIQUETAS: Record<string, string> = {
+        green: "Operativo",
+        yellow: "Atención",
+        red: "Caído",
+    };
+
+    let data: any = null;
+
+    function estadoServicio(s: any, results: any): { state: string; msg: string } {
+        if (s.manual) {
+            return { state: s.manual, msg: ETIQUETAS[s.manual] || "" };
+        }
+        const res = s.urls.map((u: string) => results?.[u]);
+        if (s.urls.length > 1) {
+            const oks = res.filter((r: any) => r?.ok).length;
+            if (oks === s.urls.length) return { state: "green", msg: "Operativo" };
+            if (oks > 0) return { state: "yellow", msg: "Parcialmente operativo" };
+            return { state: "red", msg: "Caído" };
+        }
+        const r = res[0];
+        if (!r) return { state: "unknown", msg: "—" };
+        return {
+            state: r.ok ? "green" : "red",
+            msg: r.ok ? "Operativo" : "Caído",
+        };
+    }
+
+    async function load() {
+        // Mientras carga, los indicadores parpadean en gris.
+        SERVICIOS.forEach((s: any) => setDot(s.nombre, "loading"));
+        try {
+            const res = await fetch(ENDPOINT, { cache: "no-store" });
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            data = await res.json();
+        } catch (err) {
+            data = null;
+        }
+        render();
+    }
+
+    function render() {
+        const results = data?.results || {};
+
+        SERVICIOS.forEach((s: any) => {
+            const { state, msg } = estadoServicio(s, results);
+            setDot(s.nombre, state);
+            setStateLabel(s.nombre, msg);
+        });
+    }
+
+    function setDot(key: string, state: string) {
+        const el = document.querySelector(`[data-key="${key}"]`);
+        if (el) el.className = "dot " + state;
+    }
+
+    function setStateLabel(key: string, text: string) {
+        const el = document.querySelector(`[data-state-key="${key}"]`);
+        if (el) el.textContent = text;
+    }
+
+    load();
+    setInterval(load, 60000);
+</script>

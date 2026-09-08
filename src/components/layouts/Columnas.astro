@@ -1,0 +1,23 @@
+---
+---
+
+<div class="columnas">
+    <slot></slot>
+</div>
+
+<style>
+    .columnas {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Pantallas grandes: dos columnas del mismo ancho */
+    @media (min-width: 768px) {
+        .columnas {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+</style>

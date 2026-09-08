@@ -11,3 +11,12 @@
 # El adapter @astrojs/netlify genera una función llamada "ssr".
 [functions."ssr"]
   timeout = 120
+
+# Monitor de uptime de la página /fail
+[functions.uptime]
+  timeout = 20
+
+[[redirects]]
+  from = "/api/uptime"
+  to = "/.netlify/functions/uptime"
+  status = 200
