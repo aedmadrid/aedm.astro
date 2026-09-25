@@ -7,6 +7,7 @@
 const URLS = [
     "https://aedm.org.es/",
     "https://api.aedm.org.es/",
+    "https://aedm-cora.onrender.com/",
     "https://api.failback.aedm.org.es/",
     "https://verificaso.aedm.org.es/login",
     "https://ideaso.aedm.org.es/",

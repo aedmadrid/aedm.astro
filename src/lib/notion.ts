@@ -1,5 +1,8 @@
-const PRIMARY_API = "https://api.aedm.org.es";
-const FALLBACK_API = "https://api.failback.aedm.org.es";
+import {
+    PRIMARY_API,
+    FALLBACK_API,
+    fetchWithTimeout,
+} from "./api";
 
 export interface NotionBlock {
     id: string;
@@ -29,14 +32,6 @@ export interface FetchAttempt {
     outcome: "ok" | "not_found" | "timeout" | "error";
     status?: number;
     error?: string;
-}
-
-function fetchWithTimeout(url: string, timeoutMs: number): Promise<Response> {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), timeoutMs);
-    return fetch(url, { signal: controller.signal }).finally(() =>
-        clearTimeout(timer),
-    );
 }
 
 async function tryFetch(
@@ -117,22 +112,23 @@ async function tryFetch(
  * Obtiene una página de Notion a través de la API principal con fallback.
  *
  * Secuencia de reintentos (por intento, timeout individual):
- *   1. api.aedm.org.es          -> 10s
- *   2. api.failback.aedm.org.es  -> 20s
- *   3. api.aedm.org.es          -> 30s
- *   4. api.failback.aedm.org.es  -> 40s
+ *   1. api.aedm.org.es          -> 8s
+ *   2. aedm-cora.onrender.com   -> 60s (Render free, arranque en frío)
+ *   3. api.aedm.org.es          -> 15s
+ *   4. aedm-cora.onrender.com   -> 25s
  *
- * Peor caso total: 10 + 20 + 30 + 40 = 100s.
+ * Peor caso total: 8 + 60 + 15 + 25 = 108s (dentro del timeout de 120s
+ * de la función SSR en netlify.toml).
  */
 export async function fetchNotionPage(
     pageId: string,
 ): Promise<FetchResult> {
     const sequence: Array<{ host: "primary" | "fallback"; timeoutMs: number }> =
         [
-            { host: "primary", timeoutMs: 10_000 },
-            { host: "fallback", timeoutMs: 20_000 },
-            { host: "primary", timeoutMs: 30_000 },
-            { host: "fallback", timeoutMs: 40_000 },
+            { host: "primary", timeoutMs: 8_000 },
+            { host: "fallback", timeoutMs: 60_000 },
+            { host: "primary", timeoutMs: 15_000 },
+            { host: "fallback", timeoutMs: 25_000 },
         ];
 
     const attempts: FetchAttempt[] = [];

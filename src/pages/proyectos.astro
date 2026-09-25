@@ -1,6 +1,9 @@
 ---
+export const prerender = false;
+
 import Default from "../layouts/Default.astro";
 import HClick from "../components/HClick.astro";
+import { fetchJsonWithFallback } from "../lib/api";
 
 type Project = {
     pageId?: string;
@@ -46,11 +49,7 @@ let projects: Project[] = [];
 let error: string | null = null;
 
 try {
-    const response = await fetch("https://api.aedm.org.es/PROYECTOS_DB.json");
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    projects = await response.json();
+    projects = await fetchJsonWithFallback<Project[]>("/PROYECTOS_DB.json");
 } catch (err) {
     console.error("Error fetching projects:", err);
     error = "No se pudieron cargar los proyectos.";

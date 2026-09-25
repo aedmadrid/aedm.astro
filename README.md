@@ -4,11 +4,13 @@
 
 Este es el frontend de la web de la (aso)ciación de estudiantes de diseño de madrid. El código está disponible bajo la MPL 2.0.
 
-El sitio se despliega en Netlify. La mayor parte son páginas estáticas. La ruta
-`/id/[id]` se renderiza bajo demanda en una función SSR (`@astrojs/netlify`)
-y obtiene la página de `https://api.aedm.org.es` con fallback automático a
-`https://api.failback.aedm.org.es` si la principal falla. La secuencia de
-reintentos vive en `src/lib/notion.ts`.
+El sitio se despliega en Netlify. La mayor parte son páginas estáticas. Las
+rutas `/id/[id]`, `/actividades` y `/proyectos` se renderizan bajo demanda en
+una función SSR (`@astrojs/netlify`) y obtienen los datos de
+`https://api.aedm.org.es` con fallback automático a
+`https://aedm-cora.onrender.com` si la principal falla, así que los datos
+cambian sin recompilar. El helper común vive en `src/lib/api.ts` y la secuencia
+de reintentos de las páginas de Notion en `src/lib/notion.ts`.
 
 
 # IMPORTANTE
