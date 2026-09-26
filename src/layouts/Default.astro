@@ -28,6 +28,28 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         gtag("config", "G-BKX38RNZGX");
     </script>
 
+    <script is:inline>
+        // Modo app decidido antes de pintar (sin parpadeo): marca <html> y el
+        // CSS (main.css) oculta cabecera, footer y aviso de cookies desde el
+        // primer frame. Se activa con el user-agent de ASO.app o ?app
+        // (cualquier valor salvo "0"/"false", p. ej. ?app, ?app=1).
+        (function () {
+            var appParam = new URLSearchParams(window.location.search).get(
+                "app",
+            );
+            var isAppParam =
+                appParam !== null &&
+                appParam !== "0" &&
+                appParam.toLowerCase() !== "false";
+            var isApp =
+                isAppParam ||
+                navigator.userAgent.indexOf("ASO.app 2") !== -1;
+            if (isApp) {
+                document.documentElement.setAttribute("data-app", "true");
+            }
+        })();
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
@@ -67,15 +89,68 @@ const documentTitle = title ? title + " | aedm" : "aedm";
         </div>
 
         <script>
-            const isAsoApp = navigator.userAgent.includes("ASO.app 2");
+            // Modo app: lo decide el script inline del <head>, que marca
+            // <html data-app="true"> y el CSS oculta el chrome sin parpadeo.
+            // Aquí solo leemos esa marca.
+            const appParam = new URLSearchParams(window.location.search).get(
+                "app",
+            );
+            const isAppParam =
+                appParam !== null &&
+                appParam !== "0" &&
+                appParam.toLowerCase() !== "false";
+            const isAsoApp =
+                document.documentElement.getAttribute("data-app") === "true";
 
             if (isAsoApp) {
-                const chrome = document.getElementById("aso-chrome");
-                const footer = document.getElementById("aso-chrome-footer");
-                const banner = document.getElementById("cookie-banner");
-                if (chrome) chrome.style.display = "none";
-                if (footer) footer.style.display = "none";
-                if (banner) banner.style.display = "none";
+                const appValue = isAppParam ? appParam || "1" : "1";
+
+                // Todos los enlaces abren en pestaña nueva y, si son internos,
+                // arrastran ?app para que la nueva pestaña siga en modo app.
+                // Excepción: los chips de Expone-Solicita (?expone=...), que
+                // navegan en la misma pestaña para rellenar el formulario.
+                const processLinks = () => {
+                    document.querySelectorAll("a[href]").forEach((anchor) => {
+                        if (anchor.dataset.appLink === "1") return;
+
+                        const raw = anchor.getAttribute("href") ?? "";
+                        if (
+                            !raw ||
+                            raw.startsWith("#") ||
+                            raw.startsWith("javascript:")
+                        ) {
+                            return;
+                        }
+                        anchor.dataset.appLink = "1";
+
+                        const isChip =
+                            anchor.classList.contains("chip") ||
+                            raw.startsWith("?");
+
+                        let url: URL;
+                        try {
+                            url = new URL(raw, window.location.href);
+                        } catch {
+                            return;
+                        }
+
+                        if (url.origin === window.location.origin) {
+                            url.searchParams.set("app", appValue);
+                            anchor.setAttribute("href", url.toString());
+                        }
+
+                        if (isChip) return;
+
+                        anchor.setAttribute("target", "_blank");
+                        anchor.setAttribute("rel", "noopener noreferrer");
+                    });
+                };
+
+                processLinks();
+                new MutationObserver(processLinks).observe(document.body, {
+                    childList: true,
+                    subtree: true,
+                });
             } else {
                 // Cookie consent logic
                 const banner = document.getElementById("cookie-banner");

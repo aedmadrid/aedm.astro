@@ -161,3 +161,10 @@ hr {
     margin-right: calc(-50vw + 50%);
     padding: 0;
 }
+
+/* Modo app (ver Default.astro): oculta el chrome desde el primer frame. */
+html[data-app="true"] #aso-chrome,
+html[data-app="true"] #aso-chrome-footer,
+html[data-app="true"] #cookie-banner {
+    display: none !important;
+}

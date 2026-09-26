@@ -2,6 +2,7 @@
 import Default from "../layouts/Default.astro";
 import Caratula from "../components/Caratula.astro";
 import { fetchJsonWithFallback } from "../lib/api";
+import { safeImage } from "../lib/images";
 
 interface Actividad {
     name: string;
@@ -68,7 +69,7 @@ const actividadesOrdenadas = actividades.slice().sort((a, b) => {
                     titulo={actividad.name}
                     descripcion={actividad.descripcion}
                     fecha={formatFecha(actividad.fecha)}
-                    imagen={actividad.imagen}
+                    imagen={safeImage(actividad.imagen)}
                     destino={actividad.destino || `/id/${actividad.pageId}`}
                 />
             ))

@@ -1,5 +1,6 @@
 ---
 import Boton from "./Boton.astro";
+import { link } from "../lib/paths";
 
 interface Props {
     titulo: string;
@@ -10,6 +11,9 @@ interface Props {
 }
 
 const { titulo, descripcion, fecha = "", imagen, destino } = Astro.props;
+
+const imagenSrc = imagen.startsWith("/") ? link(imagen) : imagen;
+const fallbackSrc = link("/img/no-disponible.svg");
 
 const mesesMap: Record<string, string> = {
     enero: "01",
@@ -76,10 +80,11 @@ const botonTipo = esActivo ? "verde" : "outline";
             }
         </div>
         <img
-            src={imagen}
+            src={imagenSrc}
             alt={titulo}
             class="caratula__imagen"
             loading="lazy"
+            onerror={`this.onerror=null;this.src='${fallbackSrc}';`}
         />
     </div>
 </div>
