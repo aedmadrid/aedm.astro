@@ -4,8 +4,8 @@
 
 Este es el frontend de la web de la (aso)ciación de estudiantes de diseño de madrid. El código está disponible bajo la MPL 2.0.
 
-El sitio se despliega en GitHub Pages como página de proyecto
-(`https://aedmadrid.github.io/aedm.astro/`). Todo es estático: la web se
+El sitio se despliega en GitHub Pages con dominio propio
+(`https://aedm.org.es/`, gracias a `public/CNAME`). Todo es estático: la web se
 pre-genera en cada build y obtiene los datos de `https://api.aedm.org.es` con
 fallback automático a `https://aedm-cora.onrender.com` (helper en
 `src/lib/api.ts`, reintentos de Notion en `src/lib/notion.ts`).
@@ -20,10 +20,11 @@ Notion usan el formato sin guiones). Como las URLs de imagen de Notion caducan
 a los 60 minutos, el workflow `.github/workflows/deploy.yml` recompila
 automáticamente cada 15 minutos (además de en cada push y de forma manual). Los
 enlaces internos usan el helper `link()` de `src/lib/paths.ts` para respetar el
-`base` de GitHub Pages.
+`base` de Astro.
 
-Para servir en el dominio propio: pon `site`/`base` en `astro.config.mjs` a
-`https://aedm.org.es` y `/`, y añade `public/CNAME` con `aedm.org.es`.
+Para cambiar de dominio: ajusta `site`/`base` en `astro.config.mjs` y
+`public/CNAME` (que debe coincidir con el dominio configurado en las
+preferencias de GitHub Pages).
 
 ## Imágenes
 
