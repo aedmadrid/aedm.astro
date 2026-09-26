@@ -1,10 +1,11 @@
 ---
 import GranBoton from "../components/GranBoton.astro";
 import Default from "../layouts/Default.astro";
+import { link } from "../lib/paths";
 ---
 
 <Default title="Café y Cultura">
-    <img src="/img/esdPatio.jpg" alt="Café y Cultura" />
+    <img src={link("/img/esdPatio.jpg")} alt="Café y Cultura" />
     <h2>
         Desde la ASO (<i style="color: var(--verde);"
             >con la inestimable ayuda de Marta Ruiz de León</i

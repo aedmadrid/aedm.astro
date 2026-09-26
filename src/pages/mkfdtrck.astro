@@ -1,6 +1,7 @@
 ---
 import Default from "../layouts/Default.astro";
 import GranBoton from "../components/GranBoton.astro";
+import { link } from "../lib/paths";
 sitemap: false;
 ---
 
@@ -72,5 +73,5 @@ sitemap: false;
         editar la pizarra, necesitas una cuenta de VerificASO.</i
     >
     <hr />
-    <img src="/img/asoxesd.png" alt="asoxesd" width="200px" />
+    <img src={link("/img/asoxesd.png")} alt="asoxesd" width="200px" />
 </Default>

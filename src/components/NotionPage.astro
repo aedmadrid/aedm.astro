@@ -5,22 +5,25 @@ import { fetchNotionPage, type NotionPage as NotionPageData } from "../lib/notio
 
 interface Props {
     pageId: string;
+    page?: NotionPageData;
 }
 
-const { pageId } = Astro.props;
+const { pageId, page: pageProp } = Astro.props;
 
-const result = await fetchNotionPage(pageId);
-
-let page: NotionPageData | null = null;
+let page: NotionPageData | null = pageProp ?? null;
 let notFound = false;
 let fetchError = false;
 
-if (result.ok) {
-    page = result.page;
-} else if (result.notFound) {
-    notFound = true;
-} else {
-    fetchError = true;
+if (!page) {
+    const result = await fetchNotionPage(pageId);
+
+    if (result.ok) {
+        page = result.page;
+    } else if (result.notFound) {
+        notFound = true;
+    } else {
+        fetchError = true;
+    }
 }
 
 const tags: string[] =

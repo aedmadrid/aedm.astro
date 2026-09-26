@@ -3,6 +3,7 @@ import Boton from "../components/Boton.astro";
 import Blog from "../components/Blog.astro";
 import Default from "../layouts/Default.astro";
 import Banda from "../components/Banda.astro";
+import { link } from "../lib/paths";
 ---
 
 <Default
@@ -11,7 +12,7 @@ import Banda from "../components/Banda.astro";
 >
 
     <img
-        src="/Banner.png"
+        src={link("/Banner.png")}
         id="imgbnr"
     />
     <h1 style="text-align: left ;">¡Hola!</h1>

@@ -1,6 +1,8 @@
 ---
-const { texto, url, tipo } = Astro.props;
 import "../styles/main.css";
+import { link } from "../lib/paths";
+
+const { texto, url, tipo } = Astro.props;
 
 type tiposDeTipo = "verde" | "negro" | "outline";
 
@@ -10,14 +12,11 @@ interface Props {
     tipo?: tiposDeTipo;
 }
 
-if (url?.startsWith("http")) {
-    var target = "_blank";
-} else {
-    var target = "_self";
-}
+const href = link(url);
+const target = href.startsWith("http") ? "_blank" : "_self";
 ---
 
-<a href={url} target={target}
+<a href={href} target={target}
     ><button class={tipo || "verde"}> {texto} </button></a
 >
 

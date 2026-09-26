@@ -1,6 +1,8 @@
 ---
-const { texto, enlace, icono, target = "_self" } = Astro.props;
 import "../styles/main.css";
+import { link } from "../lib/paths";
+
+const { texto, enlace, icono, target = "_self" } = Astro.props;
 
 interface Props {
     texto: string;
@@ -9,7 +11,8 @@ interface Props {
     target?: "_self" | "_blank";
 }
 
-const normalizedLink = enlace?.trim() || "";
+const rawLink = enlace?.trim() || "";
+const normalizedLink = rawLink ? link(rawLink) : "";
 const isDeviceLink = /^(mailto:|tel:|sms:|geo:)/i.test(normalizedLink);
 
 const isInteractive = !!normalizedLink;

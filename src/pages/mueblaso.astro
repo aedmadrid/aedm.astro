@@ -1,11 +1,12 @@
 ---
 import Default from "../layouts/Default.astro";
 import GranBoton from "../components/GranBoton.astro";
+import { link } from "../lib/paths";
 sitemap: false;
 ---
 
 <Default title="MueblASO">
-    <img src="/pescadilla.png" alt="Demasiado Rápido" id="pescadilla" />
+    <img src={link("/pescadilla.png")} alt="Demasiado Rápido" id="pescadilla" />
 
     <p>
         Vas demasiado rápido. Estas intentando llegar a algo que aún no existe y

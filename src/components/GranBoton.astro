@@ -1,6 +1,8 @@
 ---
-const { texto, url, tipo, icono, orden } = Astro.props;
 import "../styles/main.css";
+import { link } from "../lib/paths";
+
+const { texto, url, tipo, icono, orden } = Astro.props;
 
 type tiposDeTipo = "verde" | "negro" | "outline";
 
@@ -20,16 +22,13 @@ if (orden === 1) {
     jusDir = "start";
 }
 
-let displayIcono = icono || "arrow_outward";
+const displayIcono = icono || "arrow_outward";
 
-let target = "_self";
-
-if (url?.startsWith("http")) {
-    target = "_blank";
-}
+const href = link(url);
+const target = href.startsWith("http") ? "_blank" : "_self";
 ---
 
-<a href={url} target={target}
+<a href={href} target={target}
     ><div
         class={tipo || "verde"}
         style={`flex-direction: ${botonDir}; justify-content: ${jusDir};`}

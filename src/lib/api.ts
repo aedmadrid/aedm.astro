@@ -2,7 +2,7 @@ export const PRIMARY_API = "https://api.aedm.org.es";
 export const FALLBACK_API = "https://aedm-cora.onrender.com";
 
 export const PRIMARY_TIMEOUT_MS = 8_000;
-export const FALLBACK_TIMEOUT_MS = 60_000;
+export const FALLBACK_TIMEOUT_MS = 120_000;
 
 export function fetchWithTimeout(
     url: string,

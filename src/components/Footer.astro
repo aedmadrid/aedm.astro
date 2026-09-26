@@ -1,11 +1,12 @@
 ---
 import "../styles/main.css";
+import { link } from "../lib/paths";
 ---
 
 <footer class="footer">
     <div class="footer__inner">
         <div class="footer__brand">
-            <img src="/aedm.svg" alt="Logo" height="90" />
+            <img src={link("/aedm.svg")} alt="Logo" height="90" />
             <p>(aso)ciación de estudiantes de diseño de madrid</p>
         </div>
         <div class="footer__links">
@@ -30,7 +31,7 @@ import "../styles/main.css";
             >
                 VerificASO
             </a>
-            <a href="/privacidad/"> Política de Privacidad </a>
+            <a href={link("/privacidad/")}> Política de Privacidad </a>
         </div>
     </div>
 </footer>

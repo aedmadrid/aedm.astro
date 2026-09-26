@@ -1,9 +1,10 @@
 ---
 import Default from "../layouts/Default.astro";
+import { link } from "../lib/paths";
 ---
 
 <Default title="MuseASO" header={false}>
-    <img src="/img/museasoport.jpg" />
+    <img src={link("/img/museasoport.jpg")} />
     <h3>Una carta sobre el futuro del MuseASO</h3>
 
     <p>

@@ -1,17 +1,18 @@
 ---
 import "../styles/main.css";
+import { link } from "../lib/paths";
 ---
 
 <header>
-    <a href="/" style="padding: 0;margin: 0;"><img id="aedm" src="/aedm.svg" /></a>
+    <a href={link("/")} style="padding: 0;margin: 0;"><img id="aedm" src={link("/aedm.svg")} /></a>
     <span id="moBotn" class="material-symbols-outlined">menu</span>
     <div class="botones">
-        <a href="/">Inicio</a>
-        <a href="/reclama">Expone-Solicita</a>
-        <a href="/actividades">Actividades</a>
-        <a href="/proyectos">Proyectos</a>
-        <!--<a href="/app">APP</a>-->
-        <a href="/info">Asociación</a>
+        <a href={link("/")}>Inicio</a>
+        <a href={link("/reclama")}>Expone-Solicita</a>
+        <a href={link("/actividades")}>Actividades</a>
+        <a href={link("/proyectos")}>Proyectos</a>
+        <!--<a href={link("/app")}>APP</a>-->
+        <a href={link("/info")}>Asociación</a>
     </div>
 </header>
 

@@ -1,11 +1,14 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Activa el flujo de trabajo cada vez que hagas push a la rama `main`
-  # Usando un nombre de rama diferente? Reemplaza `main` con el nombre de tu rama
+  # Recompila en cada push a main.
   push:
     branches: [ main ]
-  # Te permite ejecutar este flujo de trabajo manualmente desde la pestaña Acciones en GitHub.
+  # Recompila cada 15 min para refrescar los datos del API y, sobre todo, las
+  # URLs de imagen de Notion, que caducan a los 60 minutos.
+  schedule:
+    - cron: "*/15 * * * *"
+  # Permite lanzarlo a mano desde la pestaña Actions.
   workflow_dispatch:
 
 # Permite que este trabajo clone el repositorio y cree un despliegue de página
@@ -13,6 +16,10 @@ permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
