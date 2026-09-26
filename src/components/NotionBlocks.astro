@@ -2,6 +2,8 @@
 import GranBoton from "./GranBoton.astro";
 import HClick from "./HClick.astro";
 import Boton from "./Boton.astro";
+import { link } from "../lib/paths";
+import { pageIdFromHref } from "../lib/notion";
 import "../styles/main.css";
 
 interface RichTextAnnotations {
@@ -109,10 +111,15 @@ function richTextToHtml(items: RichTextItem[] = []): string {
                 .replace(/>/g, "&gt;");
 
             if (item.href) {
-                if (item.href.startsWith("/")) {
-                    return `<a href="${item.href}"${styleAttr}>${escaped}</a>`;
+                const pageId = pageIdFromHref(item.href);
+                if (pageId) {
+                    return `<a href="${link(`/id/${pageId}`)}"${styleAttr}>${escaped}</a>`;
                 }
-                return `<a href="${item.href}"${styleAttr} target="_blank" rel="noreferrer">${escaped}</a>`;
+                const href = link(item.href);
+                if (/^https?:/i.test(href)) {
+                    return `<a href="${href}"${styleAttr} target="_blank" rel="noreferrer">${escaped}</a>`;
+                }
+                return `<a href="${href}"${styleAttr}>${escaped}</a>`;
             }
             return `<span${styleAttr}>${escaped}</span>`;
         })

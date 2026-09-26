@@ -1,14 +1,27 @@
 ---
 import Default from "../../layouts/Default.astro";
 import NotionPage from "../../components/NotionPage.astro";
-import { discoverPageIds, fetchNotionPage } from "../../lib/notion";
+import {
+    discoverPageIds,
+    fetchNotionPage,
+    normalizePageId,
+} from "../../lib/notion";
 
 export async function getStaticPaths() {
     const ids = await discoverPageIds();
-    return ids.map((id) => ({ params: { id } }));
+
+    // Se genera una ruta por id, y además el alias sin guiones (formato que
+    // usan los enlaces internos de Notion).
+    const params = new Set<string>();
+    for (const id of ids) {
+        params.add(id);
+        params.add(id.replace(/-/g, ""));
+    }
+
+    return [...params].map((id) => ({ params: { id } }));
 }
 
-const id = Astro.params.id ?? "";
+const id = normalizePageId(Astro.params.id ?? "");
 
 const result = id ? await fetchNotionPage(id) : null;
 const page = result && result.ok ? result.page : null;

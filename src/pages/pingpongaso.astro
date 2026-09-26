@@ -2,7 +2,7 @@
 import IMGCol from "../components/IMGCol.astro";
 import Default from "../layouts/Default.astro";
 import GranBoton from "../components/GranBoton.astro";
-import { link } from "../lib/paths";
+import Pic from "../components/Pic.astro";
 ---
 
 <Default title="PingPongASO" header={false}>
@@ -20,7 +20,7 @@ import { link } from "../lib/paths";
         </div>
     </div>
     <IMGCol
-        src={link("/aso-content/pingpongaso/superbola.png")}
+        src="/aso-content/pingpongaso/superbola.png"
         alt="PingPongPala"
         wait2appear={4}
     >
@@ -37,12 +37,12 @@ import { link } from "../lib/paths";
 
     <section class="skipMargins">
         <section class="pinScroll">
-            <img src={link("/aso-content/pingpongaso/pin/1.jpg")} alt="" />
-            <img src={link("/aso-content/pingpongaso/pin/2.jpg")} alt="" />
-            <img src={link("/aso-content/pingpongaso/pin/3.jpg")} alt="" />
-            <img src={link("/aso-content/pingpongaso/pin/4.jpg")} alt="" />
-            <img src={link("/aso-content/pingpongaso/pin/5.jpg")} alt="" />
-            <img src={link("/aso-content/pingpongaso/pin/6.jpg")} alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/1.jpg" alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/2.jpg" alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/3.jpg" alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/4.jpg" alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/5.jpg" alt="" />
+            <Pic src="/aso-content/pingpongaso/pin/6.jpg" alt="" />
         </section>
     </section>
     <p style="font-size: 18px">

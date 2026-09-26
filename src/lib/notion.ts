@@ -159,20 +159,128 @@ export async function fetchNotionPage(
     return { ok: false, notFound: false, attempts };
 }
 
+const DB_PATHS = [
+    "/ACTIVIDADES_DB.json",
+    "/PROYECTOS_DB.json",
+    "/WEB_DB.json",
+    "/ESCUELA_DB.json",
+    "/AEDM_DB.json",
+    "/INICIO_DB.json",
+];
+
+function collectDbPageIds(db: unknown): string[] {
+    const ids = new Set<string>();
+    const seen = new Set<unknown>();
+
+    const visit = (node: any) => {
+        if (!node || typeof node !== "object" || seen.has(node)) return;
+        seen.add(node);
+
+        if (Array.isArray(node)) {
+            for (const value of node) visit(value);
+            return;
+        }
+
+        for (const [key, value] of Object.entries(node)) {
+            if (typeof value === "string") {
+                if (key === "pageId" || key === "page_id") {
+                    ids.add(normalizePageId(value));
+                } else {
+                    const match =
+                        value.match(/(?:^|\/)(?:id|app\/i)\/([0-9a-f-]{32,36})/i) ||
+                        value.match(/^\/([0-9a-f]{32})/i);
+                    if (match) ids.add(normalizePageId(match[1]));
+                }
+            }
+            visit(value);
+        }
+    };
+
+    visit(db);
+    return [...ids];
+}
+
+/**
+ * Normaliza un id de página de Notion a la forma con guiones. La API acepta
+ * ambas formas, pero las URLs de Notion suelen venir sin guiones (32 hex).
+ */
+export function normalizePageId(value: string): string {
+    const hex = value.replace(/[^0-9a-f]/gi, "").toLowerCase();
+    if (hex.length === 32) {
+        return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+    }
+    return value;
+}
+
+/**
+ * Extrae el id de página de un enlace interno de Notion: `/id/<id>`,
+ * `/<id>` (sin guiones), o una URL de notion.so/notion.site. Devuelve null
+ * para cualquier otro enlace.
+ */
+export function pageIdFromHref(href: string): string | null {
+    const value = href.trim();
+
+    let match = value.match(/^\/id\/([0-9a-f-]{32,36})\/?(?:[?#].*)?$/i);
+    if (match) return normalizePageId(match[1]);
+
+    match = value.match(/^\/([0-9a-f]{32})\/?(?:[?#].*)?$/i);
+    if (match) return normalizePageId(match[1]);
+
+    match = value.match(
+        /^https?:\/\/[^/]*notion\.(?:so|site)\/[^\s?#]*-([0-9a-f]{32})/i,
+    );
+    if (match) return normalizePageId(match[1]);
+
+    return null;
+}
+
+function collectPageRefs(page: NotionPage): string[] {
+    const refs = new Set<string>();
+    const seen = new Set<unknown>();
+
+    const visit = (node: any) => {
+        if (!node || typeof node !== "object" || seen.has(node)) return;
+        seen.add(node);
+
+        if (Array.isArray(node)) {
+            for (const value of node) visit(value);
+            return;
+        }
+
+        if (typeof node.href === "string") {
+            const id = pageIdFromHref(node.href);
+            if (id) refs.add(id);
+        }
+
+        if (typeof node.mention?.page?.id === "string") {
+            refs.add(normalizePageId(node.mention.page.id));
+        }
+
+        if (node.type === "child_page" || node.type === "link_to_page") {
+            if (typeof node.id === "string") refs.add(normalizePageId(node.id));
+            if (typeof node.page_id === "string")
+                refs.add(normalizePageId(node.page_id));
+        }
+
+        for (const value of Object.values(node)) visit(value);
+    };
+
+    visit(page.blocks);
+    return [...refs];
+}
+
 /**
  * Descubre todas las páginas que hay que pre-generar: los pageId de las bases
- * de datos de actividades y proyectos más sus páginas hijas (child_page),
- * recorridas recursivamente. Devuelve solo las que se han podido descargar.
+ * de datos más las páginas referenciadas desde su contenido (child_page,
+ * link_to_page, enlaces y menciones en rich_text), de forma recursiva.
+ * Devuelve solo las que se han podido descargar.
  */
 export async function discoverPageIds(): Promise<string[]> {
     const seeds: string[] = [];
-    for (const path of ["/ACTIVIDADES_DB.json", "/PROYECTOS_DB.json"]) {
+    for (const path of DB_PATHS) {
         try {
-            const items =
-                await fetchJsonWithFallback<Array<{ pageId?: string }>>(path);
-            for (const item of items) {
-                if (item?.pageId) seeds.push(item.pageId);
-            }
+            const db = await fetchJsonWithFallback<unknown>(path);
+            seeds.push(...collectDbPageIds(db));
         } catch (err) {
             console.warn(
                 `[notion] no se pudo leer ${path}:`,
@@ -194,14 +302,8 @@ export async function discoverPageIds(): Promise<string[]> {
         if (!result.ok) continue;
 
         found.push(id);
-        for (const block of result.page.blocks ?? []) {
-            if (
-                block.type === "child_page" &&
-                typeof block.id === "string" &&
-                !visited.has(block.id)
-            ) {
-                queue.push(block.id);
-            }
+        for (const ref of collectPageRefs(result.page)) {
+            if (!visited.has(ref)) queue.push(ref);
         }
     }
 

@@ -1,0 +1,49 @@
+---
+import { existsSync } from "node:fs";
+import path from "node:path";
+import { link } from "../lib/paths";
+
+interface Props {
+    src: string;
+    alt?: string;
+    class?: string;
+    id?: string;
+    loading?: "lazy" | "eager";
+    width?: string | number;
+    height?: string | number;
+}
+
+const {
+    src,
+    alt = "",
+    class: className,
+    id,
+    loading,
+    width,
+    height,
+    ...attrs
+} = Astro.props;
+
+const publicDir = path.join(process.cwd(), "public");
+const clean = src.split(/[?#]/)[0];
+const webp = clean.replace(/\.(png|jpe?g)$/i, ".webp");
+
+const hasWebp =
+    /^\/.+\.(png|jpe?g)$/i.test(clean) &&
+    existsSync(path.join(publicDir, clean)) &&
+    existsSync(path.join(publicDir, webp));
+---
+
+<picture style="display: contents">
+    {hasWebp && <source srcset={link(webp)} type="image/webp" />}
+    <img
+        src={link(clean)}
+        alt={alt}
+        class={className}
+        id={id}
+        loading={loading}
+        width={width}
+        height={height}
+        {...attrs}
+    />
+</picture>
