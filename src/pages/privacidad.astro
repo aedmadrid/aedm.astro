@@ -4,7 +4,7 @@ import Default from "../layouts/Default.astro";
 
 <Default title="Política de Privacidad">
     <article>
-        <p><small>Última actualización: abril de 2026</small></p>
+        <p><small>Última actualización: octubre de 2026</small></p>
 
         <!-- ─── 1. RESPONSABLE ─── -->
         <section id="responsable">
@@ -103,36 +103,127 @@ import Default from "../layouts/Default.astro";
             <h3>3.2 VerificASO (verificaso.aedm.org.es)</h3>
             <p>
                 VerificASO es el sistema de verificación de identidad
-                estudiantil de AEDM. Al crear una cuenta, recopilamos los
-                siguientes datos:
+                estudiantil de AEDM. A toda persona que se verifica se le
+                solicitan estos datos mínimos, necesarios para comprobar que
+                estudia en la ESD Madrid:
             </p>
             <ul>
-                <li>Correo electrónico universitario</li>
-                <li>Correo electrónico de EducaMadrid</li>
+                <li>Correo electrónico universitario (@esdmadrid.es)</li>
+                <li>
+                    Correo electrónico de EducaMadrid (@educa.madrid.org) o
+                    correo personal, para vincular tu cuenta
+                </li>
                 <li>Nombre y apellidos</li>
-                <li>Fecha de ingreso al centro educativo</li>
+                <li>Curso y especialidad, y fecha de ingreso al centro</li>
             </ul>
             <p>
-                <strong>Finalidad:</strong> verificar tu condición de estudiante y
-                determinar tu elegibilidad para participar en actividades y beneficios
-                ofrecidos por la asociación. Cuando eres miembro de AEDM, VerificASO
-                también actúa como herramienta de gestión interna (CRM y administración
-                asociativa).
+                A partir de ahí, <strong>los datos que tratamos dependen de tu
+                relación con la asociación</strong>:
+            </p>
+            <ul>
+                <li>
+                    <strong>Socios (miembros de pleno derecho):</strong> además
+                    de los datos de verificación, los necesarios para la gestión
+                    asociativa y la <em>ficha legal de socio</em>: documento de
+                    identidad (DNI/NIE), domicilio, teléfono, firma y
+                    consentimiento RGPD, fecha de alta y cargo, así como el
+                    estado de cuotas, comisiones y asistencia.
+                    <br /><em>Para qué:</em> gestionar la membresía, registrar y
+                    cobrar la cuota, organizar comisiones y asambleas, y cumplir
+                    con las obligaciones legales y contables de la asociación.
+                </li>
+                <li>
+                    <strong>Ex-socios:</strong> conservamos el registro de tu
+                    etapa como socio (fechas y motivo de baja) mientras exista
+                    obligación legal o interés legítimo. El resto de datos se
+                    elimina según el apartado 7.
+                </li>
+                <li>
+                    <strong>No socios y colaboradores:</strong> únicamente los
+                    datos de verificación del primer punto. <strong>No se
+                    solicita DNI, domicilio ni firma</strong>, porque no forman
+                    parte de la ficha legal de socio.
+                </li>
+            </ul>
+            <p>
+                <strong>Autenticación:</strong> mediante Google OAuth (cuentas
+                <code>@esdmadrid.es</code>) y enlaces mágicos a EducaMadrid
+                (<code>@educa.madrid.org</code>). AEDM <strong>no almacena
+                contraseñas</strong>: la verificación la gestiona el proveedor de
+                identidad. La vinculación de correos se realiza a través de un
+                proveedor de correo transaccional.
+            </p>
+            <p>
+                <strong>Finalidad:</strong> verificar tu condición de estudiante
+                y determinar tu elegibilidad para participar en actividades y
+                beneficios ofrecidos por la asociación. Cuando eres miembro de
+                AEDM, VerificASO actúa también como herramienta de gestión
+                interna (CRM y administración asociativa).
+            </p>
+            <p>
+                VerificASO actúa además como <strong>proveedor de identidad
+                (OAuth 2.0)</strong> para aplicaciones propias como ASO.app:
+                cuando inicias sesión en ellas, solo se comparte el nombre y el
+                correo electrónico que autorices.
             </p>
             <p>
                 <strong>Base legal:</strong> ejecución de una relación asociativa
-                o precontractual (art. 6.1.b RGPD) y consentimiento explícito al crear
-                la cuenta (art. 6.1.a RGPD).
+                o precontractual (art. 6.1.b RGPD) y consentimiento explícito al
+                crear la cuenta (art. 6.1.a RGPD).
             </p>
 
             <h3>3.3 ASO.app</h3>
             <p>
-                Puedes consultar la información detallada en
+                La ASO.app es la aplicación móvil de la asociación, actualmente
+                en beta privada. Puedes consultar qué hace y su estado en
                 <a
                     href="https://aedm.org.es/app/"
                     target="_blank"
                     rel="noopener noreferrer">aedm.org.es/app</a
                 >.
+            </p>
+            <p>
+                La app funciona como un cliente ligero sobre servicios ya
+                existentes de AEDM y de la ESD Madrid, con los siguientes
+                tratamientos:
+            </p>
+            <ul>
+                <li>
+                    <strong>Contenido:</strong> muestra el feed de la asociación
+                    y la agenda y noticias de la escuela
+                    (<code>esdmadrid.es</code>), abriendo las páginas web en un
+                    navegador integrado en la propia app.
+                </li>
+                <li>
+                    <strong>Identificación:</strong> para las funciones de la
+                    asociación, te identifica a través de VerificASO (OAuth 2.0),
+                    que comparte únicamente tu nombre y correo electrónico.
+                </li>
+                <li>
+                    <strong>Correo (opcional):</strong> si activas las funciones
+                    de correo, la app guarda tus credenciales IMAP
+                    <strong>cifradas en el propio dispositivo</strong> (almacén
+                    seguro del sistema) y las envía a un proxy
+                    (<code>api-app.aedm.org.es</code>) para consultar tu bandeja.
+                    Las credenciales no se almacenan en los servidores de AEDM;
+                    el proxy solo las usa para conectar con el servidor de correo
+                    durante la consulta.
+                </li>
+                <li>
+                    <strong>Notificaciones push:</strong> si lo autorizas, la app
+                    registra un token de notificaciones para enviarte avisos del
+                    feed, de la escuela, del correo y de la asociación. Puedes
+                    desactivarlas por categorías en los ajustes de la app.
+                </li>
+            </ul>
+            <p>
+                La app <strong>no utiliza herramientas de analítica ni
+                rastreadores publicitarios</strong>.
+            </p>
+            <p>
+                <strong>Base legal:</strong> consentimiento (art. 6.1.a RGPD) al
+                activar cada función, y ejecución de la relación asociativa
+                (art. 6.1.b RGPD) para las funciones de miembro.
             </p>
 
             <h3>3.4 Formularios de inscripción a eventos</h3>

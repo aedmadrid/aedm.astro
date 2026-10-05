@@ -1,13 +1,104 @@
 ---
 import Default from "../layouts/Default.astro";
-sitemap: false
+import GranBoton from "../components/GranBoton.astro";
+import Columnas from "../components/layouts/Columnas.astro";
+import CarruselApp from "../components/CarruselApp.astro";
 ---
 
 <Default title="ASO.app">
-    <p>La ASO.app está siendo redesarrollada en una beta privada.</p>
+    <CarruselApp />
+
+    <p style="font-size:1.25em">
+        <strong>Próximamente.</strong> La app de la (aso) está en{" "}
+        <strong>beta privada</strong>. Estamos afinando los últimos detalles
+        antes de abrirla a todo el alumnado de la ESD Madrid.
+    </p>
+
+    <p>
+        La ASO.app reúne en un mismo sitio lo que pasa en la escuela y en la
+        asociación, con un diseño nativo y sin ruido. Esto es lo que hace:
+    </p>
+
+    <h2>Qué hace</h2>
+    <Columnas>
+        <div>
+            <h3>Inicio</h3>
+            <p>
+                El feed de la (aso): novedades, convocatorias y todo lo que va
+                publicando la asociación, siempre a mano.
+            </p>
+        </div>
+        <div>
+            <h3>Escuela</h3>
+            <p>
+                La agenda y las noticias de la ESD Madrid, más accesos rápidos a
+                los servicios de la escuela: horarios, biblioteca, guías
+                docentes, calendario académico y más.
+            </p>
+        </div>
+        <div>
+            <h3>AEDM</h3>
+            <p>
+                Lo esencial de la asociación en un toque, con información sobre la asociación, eventos, y herramientas.
+            </p>
+        </div>
+        <div>
+            <h3>Correo</h3>
+            <p>
+                Tu correo de EducaMadrid al fin el el teléfono(opcional).
+            </p>
+        </div>
+    </Columnas>
+
+    <h2>Y además</h2>
+    <ul>
+        <li>
+            <strong>Notificaciones útiles:</strong> avisos del feed, de la
+            escuela y de la asociación. Tú decides cuáles quieres en cada
+            momento.
+        </li>
+
+
+
+
+        <li>
+            <strong>MiniApps:</strong> herramientas para estudiantes ofrecidas por la asociación.
+        </li>
+        <li>
+            <strong>VerificASO:</strong> sincronización de notas, identidades y horarios con VerificASO y EdHorario.
+        </li>
+        <li>
+            <strong>Accesos rápidos:</strong> a la biblioteca, aulas virtuales,
+            guías docentes, calendario académico y más.
+        </li>
+
+        <li>
+
+        <strong>Eventos:</strong> eventos de la asociación y de la escuela, con notificaciones y recordatorios.
+        </li>
+        <li>
+        <strong>Zona ASOciad@s:</strong>
+
+espacio para asociad@s con información y servicios exclusivos.
+        </li>
+        <li>
+            <strong>Gratis:</strong> para estudiantes de la AEDM.
+        </li>
+    </ul>
+
+    <h2>Estado</h2>
+    <p>
+        Actualmente en <strong>beta privada</strong>, disponible para un grupo
+        reducido de personas mientras terminamos de probarla. Si quieres ser de
+        los primeros en probarla, únete a la asociación o escríbenos.
+    </p>
+
     <h2>Política de Privacidad de la ASO.app</h2>
     <p>
-        La ASO.app, a fecha de 26 de enero de 2026, no recoge ni almacena datos
-        personales de sus usuarios.
+        La ASO.app no utiliza herramientas de analítica ni rastreadores
+        publicitarios. Si activas las funciones de correo, tus credenciales se
+        guardan cifradas en tu propio dispositivo y nunca se almacenan en los
+        servidores de AEDM. Puedes consultar todos los detalles en la{" "}
+        <a href="/privacidad">política de privacidad</a>.
     </p>
 </Default>
