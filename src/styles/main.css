@@ -145,6 +145,23 @@ h3 {
     }
 }
 
+
+h4 {
+    color: var(--negro);
+    font-family: MainFont, sans-serif;
+    font-size: 1.6em;
+    font-weight: 400;
+    margin: 20px 0 10px;
+    scroll-margin-top: 130px;
+    a {
+        text-decoration: none;
+        font-family: MainFont, sans-serif;
+        color: var(--gris4);
+    }
+    text-indent: 30px;
+}
+
+
 ul {
     margin-top: 0;
 }
