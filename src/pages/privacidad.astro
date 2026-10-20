@@ -41,6 +41,11 @@ import Default from "../layouts/Default.astro";
                     > (<code>verificaso.aedm.org.es</code>)
                 </li>
                 <li>
+                    La plataforma de votación electrónica auditable <strong
+                        >VotASO</strong
+                    > (<code>votaso.aedm.org.es</code>)
+                </li>
+                <li>
                     La aplicación <strong>ASO.app</strong> y sus servicios asociados
                 </li>
                 <li>
@@ -162,9 +167,12 @@ import Default from "../layouts/Default.astro";
             </p>
             <p>
                 VerificASO actúa además como <strong>proveedor de identidad
-                (OAuth 2.0)</strong> para aplicaciones propias como ASO.app:
-                cuando inicias sesión en ellas, solo se comparte el nombre y el
-                correo electrónico que autorices.
+                (OAuth 2.0)</strong> para aplicaciones propias como ASO.app y
+                VotASO: cuando inicias sesión en ellas, únicamente se comparten
+                los datos de perfil necesarios para cada servicio (como tu
+                identidad, correos verificados, pertenencia a la asociación u
+                horario de clases), los cuales se te indican en pantalla antes
+                de autorizar el acceso.
             </p>
             <p>
                 <strong>Base legal:</strong> ejecución de una relación asociativa
@@ -172,7 +180,30 @@ import Default from "../layouts/Default.astro";
                 crear la cuenta (art. 6.1.a RGPD).
             </p>
 
-            <h3>3.3 ASO.app</h3>
+            <h3>3.3 VotASO (votaso.aedm.org.es)</h3>
+            <p>
+                VotASO es la plataforma de votación electrónica de la
+                asociación. Cuando participas en una votación, el sistema
+                comprueba a través de VerificASO que cumples los requisitos del
+                censo (por ejemplo, ser estudiante registrado o miembro de la
+                asociación) e impide que una misma persona pueda votar más de
+                una vez.
+            </p>
+            <p>
+                <strong>El voto es siempre secreto y anónimo:</strong> tu
+                identidad y tu dirección de correo electrónico nunca se asocian
+                al sentido de tu voto. En la urna únicamente se registra la
+                opción elegida junto con un código aleatorio de verificación que
+                te permite comprobar que tu papeleta fue contabilizada
+                correctamente.
+            </p>
+            <p>
+                <strong>Base legal:</strong> ejecución de la relación asociativa
+                (art. 6.1.b RGPD) y consentimiento al participar en cada proceso
+                electoral (art. 6.1.a RGPD).
+            </p>
+
+            <h3>3.4 ASO.app</h3>
             <p>
                 La ASO.app es la aplicación móvil de la asociación, actualmente
                 en beta privada. Puedes consultar qué hace y su estado en
@@ -226,7 +257,7 @@ import Default from "../layouts/Default.astro";
                 (art. 6.1.b RGPD) para las funciones de miembro.
             </p>
 
-            <h3>3.4 Formularios de inscripción a eventos</h3>
+            <h3>3.5 Formularios de inscripción a eventos</h3>
             <p>
                 Para algunos eventos, podemos utilizar formularios gestionados
                 por plataformas de terceros como <strong>Notion</strong>, <strong
@@ -304,14 +335,18 @@ import Default from "../layouts/Default.astro";
                         href="https://github.com/aedmadrid/aedm.cora"
                         target="_blank"
                         rel="noopener noreferrer">backend (aedm.cora)</a
+                    >, así como la plataforma de votaciones{" "}
+                    <a
+                        href="https://github.com/aedmadrid/votaso"
+                        target="_blank"
+                        rel="noopener noreferrer">VotASO (votaso)</a
                     >.
                 </li>
                 <li>
-                    <strong>VerificASO</strong> y <strong>ASO.app</strong> son actualmente
-                    de código cerrado mientras se realizan las comprobaciones de seguridad
-                    pertinentes. Una vez completadas, ambos proyectos serán publicados
-                    como código abierto en GitHub, en línea con nuestros estándares
-                    de transparencia.
+                    <strong>VerificASO</strong> y <strong>ASO.app</strong> se mantienen
+                    como software de código cerrado por motivos de seguridad y
+                    protección de la infraestructura interna de verificación y
+                    gestión asociativa.
                 </li>
             </ul>
             <p>
