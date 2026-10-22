@@ -29,6 +29,7 @@ interface NotionBlock {
         | "heading_2"
         | "heading_3"
         | "bulleted_list_item"
+        | "numbered_list_item"
         | "to_do"
         | "quote"
         | "bookmark"
@@ -130,22 +131,32 @@ function getPlainText(items: RichTextItem[] = []): string {
     return items.map((i) => i.plain_text).join("");
 }
 
-// Group consecutive bulleted_list_item blocks into lists
+// Group consecutive list items into lists
 type SingleGroup = { type: "single"; block: NotionBlock };
-type ListGroup = { type: "list"; blocks: NotionBlock[] };
+type ListGroup = {
+    type: "list";
+    listType: "bulleted" | "numbered";
+    blocks: NotionBlock[];
+};
 type BlockGroup = SingleGroup | ListGroup;
 
 const groups: BlockGroup[] = [];
 let i = 0;
 while (i < blocks.length) {
     const block = blocks[i];
-    if (block.type === "bulleted_list_item") {
+
+    if (
+        block.type === "bulleted_list_item" ||
+        block.type === "numbered_list_item"
+    ) {
+        const listType =
+            block.type === "numbered_list_item" ? "numbered" : "bulleted";
         const items: NotionBlock[] = [];
-        while (i < blocks.length && blocks[i].type === "bulleted_list_item") {
+        while (i < blocks.length && blocks[i].type === block.type) {
             items.push(blocks[i]);
             i++;
         }
-        groups.push({ type: "list", blocks: items });
+        groups.push({ type: "list", listType, blocks: items });
     } else {
         groups.push({ type: "single", block });
         i++;
@@ -158,6 +169,19 @@ while (i < blocks.length) {
 {
     groups.map((group) => {
         if (group.type === "list") {
+            if (group.listType === "numbered") {
+                return (
+                    <ol class="notion-block numbered-list">
+                        {group.blocks.map((item) => (
+                            <li
+                                class="notion-block numbered-list-item"
+                                set:html={richTextToHtml(item.rich_text)}
+                            />
+                        ))}
+                    </ol>
+                );
+            }
+
             return (
                 <ul class="notion-block bulleted-list">
                     {group.blocks.map((item) => (
@@ -336,6 +360,16 @@ while (i < blocks.length) {
     }
 
     :global(.notion-block.bulleted-list-item) {
+        margin: 0.2em 0;
+    }
+
+    :global(.notion-block.numbered-list) {
+        margin: 0.5em 0;
+        padding-left: 1.5em;
+        list-style-type: decimal;
+    }
+
+    :global(.notion-block.numbered-list-item) {
         margin: 0.2em 0;
     }
 
