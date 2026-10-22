@@ -1,0 +1,166 @@
+---
+import "../../styles/main.css";
+
+interface Props {
+    /** Filas de hashtags (sin la almohadilla). */
+    rows: string[][];
+    /** Si es true, los hashtags se pueden pulsar para buscar. */
+    interactive?: boolean;
+    label?: string;
+}
+
+const {
+    rows,
+    interactive = false,
+    label = "Hashtags de los puestos del mercadillo",
+} = Astro.props;
+
+const rowClass = ["hashtag-row--left", "hashtag-row--right", "hashtag-row--left"];
+---
+
+<div class="hashtag-scroll" role="region" aria-label={label}>
+    {
+        rows.map((row, index) => (
+            <div class={`hashtag-row ${rowClass[index % rowClass.length]}`}>
+                {[0, 1].map((copia) => (
+                    <div
+                        class="hashtag-group"
+                        aria-hidden={copia === 1 ? "true" : undefined}
+                    >
+                        {row.map((tag) =>
+                            interactive ? (
+                                <button
+                                    type="button"
+                                    class="hashtag"
+                                    data-hashtag={tag}
+                                    title={`Buscar #${tag}`}
+                                    tabindex={copia === 1 ? -1 : undefined}
+                                >
+                                    #{tag}
+                                </button>
+                            ) : (
+                                <span class="hashtag">#{tag}</span>
+                            ),
+                        )}
+                    </div>
+                ))}
+            </div>
+        ))
+    }
+</div>
+
+<script>
+    // Delegación: cualquier marquesina de la página puede emitir la búsqueda.
+    document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement | null;
+        const tag = target?.closest<HTMLElement>("[data-hashtag]");
+        if (!tag) return;
+
+        event.preventDefault();
+        const hashtag = tag.dataset.hashtag ?? "";
+        window.dispatchEvent(
+            new CustomEvent("mercadillo:hashtag", { detail: hashtag }),
+        );
+    });
+</script>
+
+<style>
+    .hashtag-scroll {
+        width: 100%;
+        overflow: hidden;
+        padding: 10px 0;
+        gap: 10px;
+        display: flex;
+        flex-direction: column;
+        margin: 8px 0;
+    }
+
+    .hashtag-row {
+        display: flex;
+        width: max-content;
+        animation-timing-function: linear;
+        animation-iteration-count: infinite;
+    }
+
+    .hashtag-group {
+        display: flex;
+        gap: 10px;
+        padding-right: 10px;
+    }
+
+    .hashtag-row--left {
+        animation-name: scroll-left;
+        animation-duration: 40s;
+    }
+
+    .hashtag-row--right {
+        animation-name: scroll-right;
+        animation-duration: 45s;
+    }
+
+    /* La tercera fila va algo más lenta, como en la web anterior. */
+    .hashtag-row:nth-child(3) {
+        animation-duration: 50s;
+    }
+
+    .hashtag {
+        display: inline-block;
+        padding: 6px 12px;
+        background-color: var(--verde);
+        color: var(--negro);
+        font-family: MainFont, Arial, Helvetica, sans-serif;
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 1;
+        border: 0;
+        border-radius: 20px;
+        white-space: nowrap;
+        text-decoration: none;
+    }
+
+    button.hashtag {
+        cursor: pointer;
+        transition: background-color 0.15s ease;
+    }
+
+    button.hashtag:hover,
+    button.hashtag:focus-visible {
+        background-color: var(--negro);
+        color: var(--verde);
+        outline: none;
+    }
+
+    @keyframes scroll-left {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes scroll-right {
+        from {
+            transform: translateX(-50%);
+        }
+        to {
+            transform: translateX(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hashtag-scroll {
+            overflow-x: auto;
+            -webkit-mask-image: none;
+            mask-image: none;
+        }
+
+        .hashtag-row {
+            animation: none;
+        }
+
+        .hashtag-row:nth-child(2) {
+            display: none;
+        }
+    }
+</style>

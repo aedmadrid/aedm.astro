@@ -1,0 +1,208 @@
+---
+import "../../styles/main.css";
+import { link } from "../../lib/paths";
+import type { MercadilloMesa } from "../../data/mercadillo";
+
+interface Props {
+    mesas: MercadilloMesa[];
+    mapa: string;
+    ancho: number;
+    alto: number;
+}
+
+const { mesas, mapa, ancho, alto } = Astro.props;
+
+const datos = {
+    mapa: link(mapa),
+    ancho,
+    alto,
+    mesas: mesas.map(({ id, mesa, nombre, pos }) => ({
+        id,
+        mesa,
+        nombre,
+        pos,
+    })),
+};
+---
+
+<div class="plano">
+    <div id="map"></div>
+    <script
+        type="application/json"
+        id="plano-datos"
+        is:inline
+        set:html={JSON.stringify(datos)}
+    />
+</div>
+
+<script>
+    import L from "leaflet";
+    import "leaflet/dist/leaflet.css";
+
+    interface PuestoMapa {
+        id: string;
+        mesa: string;
+        nombre: string;
+        pos: [number, number];
+    }
+
+    interface DatosPlano {
+        mapa: string;
+        ancho: number;
+        alto: number;
+        mesas: PuestoMapa[];
+    }
+
+    const contenedor = document.getElementById("map");
+    const datosEl = document.getElementById("plano-datos");
+
+    if (contenedor && datosEl) {
+        const datos: DatosPlano = JSON.parse(datosEl.textContent || "{}");
+        const bounds: L.LatLngBoundsExpression = [
+            [0, 0],
+            [datos.alto, datos.ancho],
+        ];
+
+        const map = L.map(contenedor, {
+            crs: L.CRS.Simple,
+            minZoom: -2,
+            maxZoom: 2,
+        });
+
+        L.imageOverlay(datos.mapa, bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        const marcadores = new Map<
+            string,
+            { marker: L.Marker; pos: [number, number] }
+        >();
+
+        const crearPopup = (puesto: PuestoMapa) => {
+            const popup = document.createElement("div");
+
+            const titulo = document.createElement("div");
+            titulo.className = "popup-mesa-titulo";
+            titulo.textContent = `Mesa ${puesto.mesa}`;
+
+            const nombre = document.createElement("div");
+            nombre.className = "popup-mesa-nombre";
+            nombre.textContent = puesto.nombre;
+
+            const enlace = document.createElement("a");
+            enlace.className = "popup-btn";
+            enlace.href = `#tb${puesto.mesa.toLowerCase()}`;
+            enlace.textContent = "Ver descripción";
+
+            popup.append(titulo, nombre, enlace);
+            return popup;
+        };
+
+        for (const puesto of datos.mesas) {
+            const icono = L.divIcon({
+                className: "chincheta-icon",
+                html: puesto.mesa,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14],
+            });
+
+            const marker = L.marker(puesto.pos, { icon: icono })
+                .addTo(map)
+                .bindPopup(crearPopup(puesto));
+
+            marcadores.set(puesto.id, { marker, pos: puesto.pos });
+        }
+
+        const enfocar = (id: string) => {
+            const marcador = marcadores.get(id);
+            if (!marcador) return;
+            map.setView(marcador.pos, 1);
+            marcador.marker.openPopup();
+        };
+
+        // La página del plano pide enfocar una mesa al pulsar "Ver en el mapa".
+        window.addEventListener("mercadillo:focus", (event) => {
+            const id = (event as CustomEvent<string>).detail;
+            if (id) enfocar(id);
+        });
+
+        // La búsqueda por hashtag también filtra las chinchetas.
+        window.addEventListener("mercadillo:filter", (event) => {
+            const visibles = (event as CustomEvent<string[] | null>).detail;
+            const ids = visibles ? new Set(visibles) : null;
+
+            for (const [id, { marker }] of marcadores) {
+                if (!ids || ids.has(id)) {
+                    marker.addTo(map);
+                } else {
+                    marker.removeFrom(map);
+                }
+            }
+        });
+    }
+</script>
+
+<style>
+    #map {
+        width: 100%;
+        height: 500px;
+        background: #f5f5f5;
+        border-radius: 0;
+    }
+
+    /* Leaflet inserta estos nodos en tiempo de ejecución: :global() */
+    :global(.chincheta-icon) {
+        background: var(--azul);
+        border: none;
+        border-radius: 50%;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--blanco);
+        font-weight: bold;
+        font-size: 11px;
+        font-family: MainFont, sans-serif;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    :global(.leaflet-popup-content-wrapper) {
+        border-radius: 0;
+        font-family: MainFont, sans-serif;
+    }
+
+    :global(.popup-mesa-titulo) {
+        font-family: MainFont, sans-serif;
+        font-weight: bold;
+        font-size: 12px;
+        margin-bottom: 4px;
+    }
+
+    :global(.popup-mesa-nombre) {
+        font-family: TitleFont, sans-serif;
+        font-size: 32px;
+        line-height: 1.1;
+        margin-bottom: 8px;
+    }
+
+    :global(.leaflet-popup-tip) {
+        background: white;
+    }
+
+    :global(.leaflet-container .popup-btn) {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6px 12px;
+        background: var(--verde);
+        color: var(--negro);
+        text-decoration: none;
+        border-radius: 0;
+        font-size: 12px;
+        font-family: MainFont, sans-serif;
+        cursor: pointer;
+    }
+
+    :global(.leaflet-container .popup-btn:hover) {
+        background: #2bc943;
+    }
+</style>

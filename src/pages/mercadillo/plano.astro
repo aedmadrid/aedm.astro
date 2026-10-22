@@ -1,0 +1,161 @@
+---
+import Default from "../../layouts/Default.astro";
+import HashtagMarquee from "../../components/mercadillo/HashtagMarquee.astro";
+import MercadilloMesa from "../../components/mercadillo/MercadilloMesa.astro";
+import PlanoMercadillo from "../../components/mercadillo/PlanoMercadillo.astro";
+import { edicion, hashtagsPlano, mesas } from "../../data/mercadillo";
+---
+
+<Default title="Mercadillo" header={false}>
+    <div class="mercadillo">
+        <h1 class="hTitle">Plano Mercadillo</h1>
+
+        <PlanoMercadillo
+            mesas={mesas}
+            mapa={edicion.mapa}
+            ancho={edicion.mapaAncho}
+            alto={edicion.mapaAlto}
+        />
+
+        <HashtagMarquee
+            rows={hashtagsPlano}
+            interactive
+            label="Hashtags de los puestos del mercadillo"
+        />
+
+        <div class="search-container">
+            <input
+                type="text"
+                id="hashtag-search"
+                placeholder="Buscar por hashtag..."
+                autofocus
+            />
+        </div>
+
+        {mesas.map((mesa) => <MercadilloMesa mesa={mesa} />)}
+    </div>
+</Default>
+
+<script>
+    const input = document.getElementById(
+        "hashtag-search",
+    ) as HTMLInputElement | null;
+    const sections = Array.from(
+        document.querySelectorAll<HTMLElement>("main section"),
+    );
+
+    const filtrar = () => {
+        if (!input) return;
+
+        const searchTerm = input.value
+            .toLowerCase()
+            .trim()
+            .replace("#", "");
+        const visibles: string[] = [];
+
+        sections.forEach((section) => {
+            const hashtags = (section.dataset.hashtags ?? "")
+                .split(/\s+/)
+                .filter(Boolean);
+            let hasMatch = false;
+
+            if (searchTerm === "") {
+                hasMatch = true;
+            } else {
+                hashtags.forEach((tag) => {
+                    if (tag.toLowerCase().replace("#", "").startsWith(searchTerm)) {
+                        hasMatch = true;
+                    }
+                });
+            }
+
+            section.hidden = !hasMatch;
+            if (hasMatch && section.dataset.mesa) {
+                visibles.push(section.dataset.mesa);
+            }
+        });
+
+        window.dispatchEvent(
+            new CustomEvent("mercadillo:filter", {
+                detail: searchTerm === "" ? null : visibles,
+            }),
+        );
+    };
+
+    input?.addEventListener("input", filtrar);
+
+    // Los hashtags son clicables, como en la web anterior.
+    window.addEventListener("mercadillo:hashtag", (event) => {
+        if (!input) return;
+        const tag = String((event as CustomEvent<string>).detail ?? "");
+        input.value = tag;
+        filtrar();
+        input.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+
+    // "Ver en el mapa": abre la chincheta de esa mesa.
+    document.addEventListener("click", (event) => {
+        const target = event.target as HTMLElement | null;
+        const enlace = target?.closest<HTMLElement>("[data-ir-mesa]");
+        if (!enlace) return;
+
+        event.preventDefault();
+        const id = enlace.dataset.irMesa ?? "";
+        window.dispatchEvent(
+            new CustomEvent("mercadillo:focus", { detail: id }),
+        );
+        document
+            .getElementById("map")
+            ?.scrollIntoView({ behavior: "smooth" });
+    });
+
+    filtrar();
+</script>
+
+<style>
+    .mercadillo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .mercadillo p {
+        margin: 0.35em 0;
+    }
+
+    .mercadillo h3 {
+        margin: 12px 0 4px;
+    }
+
+    .hTitle {
+        margin: 0;
+        padding-top: 0;
+        text-align: center;
+    }
+
+    .search-container {
+        margin-bottom: 8px;
+    }
+
+    #hashtag-search {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 16px;
+        border: 2px solid var(--verde);
+        border-radius: 0;
+        color: var(--negro);
+        font-family: MainFont, Arial, Helvetica, sans-serif;
+        margin-top: 4px;
+        box-sizing: border-box;
+        background: var(--blanco);
+    }
+
+    #hashtag-search::placeholder {
+        color: var(--gris3);
+    }
+
+    #hashtag-search:focus {
+        outline: none;
+        border-color: #2bc943;
+    }
+</style>

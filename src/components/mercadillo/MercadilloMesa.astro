@@ -1,0 +1,83 @@
+---
+import "../../styles/main.css";
+import GranBoton from "../GranBoton.astro";
+import HashtagMarquee from "./HashtagMarquee.astro";
+import type { MercadilloMesa } from "../../data/mercadillo";
+
+interface Props {
+    mesa: MercadilloMesa;
+}
+
+const { mesa } = Astro.props;
+---
+
+<section
+    class="mesa"
+    id={`tb${mesa.mesa.toLowerCase()}`}
+    data-mesa={mesa.id}
+    data-hashtags={mesa.hashtags.join(" ")}
+>
+    <h3>Mesa {mesa.mesa}</h3>
+    <h1>{mesa.nombre}</h1>
+    <p>{mesa.descripcion}</p>
+
+    <div class="socialrow">
+        {
+            mesa.redes.map((red) => (
+                <a href={red.url} target="_blank" rel="noopener noreferrer">
+                    {red.usuario}
+                </a>
+            ))
+        }
+    </div>
+
+    <HashtagMarquee rows={[mesa.hashtags]} interactive />
+
+    <div data-ir-mesa={mesa.id}>
+        <GranBoton texto="Ver en el mapa" url="#map" icono="map" />
+    </div>
+</section>
+
+<style>
+    .mesa {
+        scroll-margin-top: 100px;
+        margin-bottom: 20px;
+        margin-top: 20px;
+    }
+
+    .mesa[hidden] {
+        display: none;
+    }
+
+    h3 {
+        margin: 0 0 10px;
+    }
+
+    h1 {
+        margin: 0 0 10px;
+        font-size: 2.8em;
+        line-height: 1.1;
+        text-align: left;
+    }
+
+    p {
+        margin: 0.35em 0;
+    }
+
+    .socialrow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+    }
+
+    .socialrow a {
+        color: var(--azul);
+        text-decoration: none;
+    }
+
+    @media (max-width: 600px) {
+        h1 {
+            font-size: 2.2em;
+        }
+    }
+</style>

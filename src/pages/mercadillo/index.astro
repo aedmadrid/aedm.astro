@@ -1,0 +1,200 @@
+---
+import Default from "../../layouts/Default.astro";
+import GranBoton from "../../components/GranBoton.astro";
+import Pic from "../../components/Pic.astro";
+import HashtagMarquee from "../../components/mercadillo/HashtagMarquee.astro";
+import TicketMercadillo from "../../components/mercadillo/TicketMercadillo.astro";
+import { edicion, hashtagsPortada } from "../../data/mercadillo";
+---
+
+<Default title="Mercadillo" header={false}>
+    <div class="mercadillo">
+        <Pic
+            src={edicion.cartel}
+            alt="Mercadillo de Navidad en la ESD Madrid"
+            class="notion-image"
+            loading="eager"
+        />
+
+        <h1 class="hTitle">{edicion.nombre}</h1>
+        <p class="intro">
+            Vuelve el Mercadillo de Navidad de la ESD Madrid.
+        </p>
+
+
+
+
+        <div class="linea">
+            <h1><a href="#vende">Vender</a></h1>
+            <h1><a href="#info">Información</a></h1>
+            <h1><a href="#qsv">¿Qué se vende?</a></h1>
+            <h1><a href="#despues">Después</a></h1>
+            <h1><a href="#newsletter">Newsletter</a></h1>
+            {edicion.cartelesUrl && <h1><a href="#carteles">Carteles</a></h1>}
+        </div>
+        <h3 id="vende">¿Quieres vender?</h3>
+        <p>
+            <b>¿Quieres vender en el mercadillo?</b> Hemos habilitado un
+            formulario de inscripción. Revisaremos tu respuesta y te
+            contactaremos lo antes posible.
+        </p>
+        {
+            edicion.avisoInscripcion && (
+                <p>
+                    <b style="color: chocolate">AVISO:</b>{" "}
+                    {edicion.avisoInscripcion}{" "}
+                    {edicion.avisoNota && <i>{edicion.avisoNota}</i>}
+                </p>
+            )
+        }
+        <GranBoton
+            texto={`Vender en el Mercadillo ${edicion.year}`}
+            url={edicion.inscripcionUrl}
+            icono="arrow_forward"
+        />
+
+        <h3 id="info">Información</h3>
+
+    <p>
+        ¡Hola! Presentamos la segunda edición (desde que organiza la ASO) del
+        Mercadillo de Navidad de la ESD, donde se ponen a la venta piezas de
+        diseño creadas por el alumnado. En esta escuela hay mucho talento, y
+        queremos que salga de estos muros. ¿Y qué mejor manera de hacerlo que
+        llevándote a casa una muestra de ese talento?
+    </p>
+    <p>
+        Por eso creemos que el Mercadillo de Navidad es la mejor oportunidad para
+        mostrar al mundo lo que se crea en la ESD.
+    </p>
+    <p>
+        Además, por primera vez, se permite la participación de exalumnos, para
+        que se vea hasta donde puede llegar el talento de la ESD.
+    </p>
+    <p>
+        <b>
+            Esto es una llamada a todo el mundo para que acuda a la ESD y se
+            lleve un trocito de talento a su casa, o la casa de quien regale en
+            fiestas.
+        </b>
+    </p>
+    <p>
+        Añade el mercadillo a tu calendario. Es el {edicion.fecha} en la
+        {edicion.lugar}. {edicion.horario}.
+    </p>
+
+    <GranBoton
+        texto="Añadir al calendario"
+        url={edicion.calendarioUrl}
+        icono="calendar_add_on"
+    />
+
+    <h3 id="qsv">¿Qué se vende?</h3>
+    <p>Esto es lo que otros años se ha vendido.</p>
+
+    <HashtagMarquee rows={hashtagsPortada} />
+
+    <!-- GranBoton
+        texto="Ver plano de puestos"
+        url="/mercadillo/plano/"
+        icono="map"
+    /-->
+
+    <h3 id="despues">Después</h3>
+    <p>
+        El mercadillo no acaba a las 20h. Continua con un evento de networking
+        con DJ. ¡No te lo pierdas!
+    </p>
+
+    <h3 id="newsletter">Apúntate al newsletter de la ASO</h3>
+    <p>No te pierdas nada de lo que pasa en la escuela.</p>
+
+    <GranBoton
+        texto="Newsletter ASO"
+        url={edicion.newsletterUrl}
+        icono="forward_to_inbox"
+    />
+
+    {
+        edicion.cartelesUrl && (
+            <>
+                <h3 id="carteles">Carteles</h3>
+                <p>
+                    Nos harías un gran favor si compartieras el cartel del
+                    mercadillo. Te lo adjuntamos.
+                </p>
+
+                <GranBoton
+                    texto="Descargar carteles"
+                    url={edicion.cartelesUrl}
+                    icono="file_download"
+                />
+            </>
+        )
+    }
+    </div>
+</Default>
+
+<style>
+    .mercadillo {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .mercadillo p {
+        margin: 0.35em 0;
+    }
+
+    .mercadillo h3 {
+        margin: 12px 0 4px;
+    }
+
+    .mercadillo br {
+        display: none;
+    }
+
+    .notion-image {
+        width: 100%;
+        height: auto;
+    }
+
+    .hTitle {
+        margin: 0;
+        padding-top: 0;
+        text-align: center;
+    }
+
+    .intro {
+        text-align: center;
+        padding-top: 0;
+        margin: -10px 0 0;
+    }
+
+    .linea {
+        padding: 4px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+        margin: 12px 0;
+    }
+
+    .linea h1 {
+        margin: 0;
+        font-size: 26px;
+        line-height: 1.55;
+        transition: all 0.2s;
+    }
+
+    .linea h1 a {
+        color: var(--negro);
+        font-family: TitleFont, serif;
+        text-decoration: dotted underline;
+    }
+
+    .linea h1 a:hover {
+        color: var(--verde);
+        transition: all 0.2s;
+    }
+</style>
