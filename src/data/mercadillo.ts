@@ -61,7 +61,7 @@ export const edicion: MercadilloEdicion = {
     mapaAncho: 2670,
     mapaAlto: 1641,
     calendarioUrl:
-        "https://www.icloud.com/invites/0a9sCfwRz72QmFiwCM5TMIJ0A",
+        "https://www.icloud.com/invites/036H00cwSGz6EeFEa9plaXkCQ",
     newsletterUrl:
         "https://asoaadm.substack.com/subscribe?utm_source=menu&simple=true&next=https%3A%2F%2Fwww.instagram.com%2Faso.esd%2F",
     inscripcionUrl:
