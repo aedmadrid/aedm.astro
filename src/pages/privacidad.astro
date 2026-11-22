@@ -170,6 +170,12 @@ import Default from "../layouts/Default.astro";
                 correo transaccional.
             </p>
             <p>
+                Tu cuenta de VerificASO y los datos asociados (perfil, notas,
+                enlaces y estado de socio) se almacenan en la base de datos
+                Postgres de Supabase, que también gestiona la autenticación. El
+                detalle se explica en el apartado 3.6.
+            </p>
+            <p>
                 <strong>Finalidad:</strong> verificar tu condición de estudiante
                 y determinar tu elegibilidad para participar en actividades y
                 beneficios ofrecidos por la asociación. Cuando eres miembro de
@@ -209,6 +215,14 @@ import Default from "../layouts/Default.astro";
                 correctamente.
             </p>
             <p>
+                El censo, las papeletas y los datos de cada votación se alojan en
+                la base de datos Postgres de Supabase (apartado 3.6). Esa base de
+                datos guarda el sentido del voto junto al código aleatorio de
+                verificación, pero <strong>no lo asocia a tu identidad ni a tu
+                correo</strong>: la comprobación de quién puede votar se realiza
+                de forma separada del registro de la papeleta.
+            </p>
+            <p>
                 <strong>Base legal:</strong> ejecución de la relación asociativa
                 (art. 6.1.b RGPD) y consentimiento al participar en cada proceso
                 electoral (art. 6.1.a RGPD).
@@ -239,7 +253,8 @@ import Default from "../layouts/Default.astro";
                     correo, guardamos tu usuario y tu contraseña de IMAP/SMTP en
                     el almacén cifrado del sistema operativo (Keychain en iOS,
                     Keystore en Android). Se usan para conectarte al servidor de
-                    correo y no se comparten con terceros ajenos al servicio.
+                    correo y solo se transmiten al proxy de AEDM y a EducaMadrid,
+                    no a otros terceros.
                 </li>
                 <li>
                     <strong>Sesión de VerificASO:</strong> el token OAuth y los
@@ -297,7 +312,23 @@ import Default from "../layouts/Default.astro";
                 corresponde a las páginas web que se muestran en ella.
             </p>
 
-            <p><strong>e) Finalidades y bases jurídicas</strong></p>
+            <p><strong>e) Resolución alternativa de dominios (xdp.es)</strong></p>
+            <p>
+                Cuando tu red bloquea los dominios del servicio (por ejemplo,
+                durante bloqueos de operadores), la app resuelve las direcciones
+                mediante el DNS público
+                <a
+                    href="https://xdp.es"
+                    target="_blank"
+                    rel="noopener noreferrer">xdp.es</a
+                >. Eso implica que ese servicio ve las consultas de resolución
+                (dominio consultado e IP de origen), <strong>no el contenido del
+                tráfico</strong>. Es una función de resolución alternativa y no un
+                requisito para usar la app: puedes desactivarla y, en ese caso, se
+                usa el DNS de tu red.
+            </p>
+
+            <p><strong>f) Finalidades y bases jurídicas</strong></p>
             <ul>
                 <li>
                     <strong>Prestar las funciones que solicitas</strong> (inicio
@@ -314,15 +345,23 @@ import Default from "../layouts/Default.astro";
                     <strong>Seguridad, prevención de abusos y mantenimiento del
                     proxy:</strong> interés legítimo (art. 6.1.f RGPD).
                 </li>
+                <li>
+                    <strong>Resolución alternativa de dominios:</strong> interés
+                    legítimo en que el servicio siga siendo accesible cuando la
+                    red bloquea sus dominios (art. 6.1.f RGPD); puedes desactivar
+                    esta función.
+                </li>
             </ul>
 
-            <p><strong>f) Terceros que intervienen</strong></p>
+            <p><strong>g) Terceros que intervienen</strong></p>
             <p>
                 Cloudflare (red y seguridad), Google (Google Analytics, Firebase
                 Cloud Messaging y Google Cloud), Expo (entrega de notificaciones
-                push), EducaMadrid (proveedor del correo) y VerificASO (proveedor
-                de identidad de AEDM). El detalle y las transferencias
-                internacionales se explican en el apartado 8.
+                push), Supabase (base de datos y autenticación), xdp.es (DNS
+                público para la resolución alternativa de dominios), EducaMadrid
+                (proveedor del correo) y VerificASO (proveedor de identidad de
+                AEDM). El detalle y las transferencias internacionales se explican
+                en el apartado 8.
             </p>
 
             <h3>3.5 Formularios de inscripción a eventos</h3>
@@ -335,6 +374,26 @@ import Default from "../layouts/Default.astro";
                 indicará qué datos se solicitan y con qué finalidad. Estas
                 plataformas actúan como encargadas del tratamiento bajo sus
                 respectivas políticas de privacidad.
+            </p>
+
+            <h3>3.6 Base de datos y autenticación (Supabase)</h3>
+            <p>
+                <strong>Supabase</strong> (Postgres y autenticación) aloja la base
+                de datos de VerificASO y VotaASO; guarda tu perfil de socio, tus
+                notas, enlaces y los datos de votaciones. Supabase actúa como
+                encargado del tratamiento en la región de la UE.
+                <a
+                    href="https://supabase.com/privacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Consulta la política de privacidad de Supabase.
+                </a>
+            </p>
+            <p>
+                Además de almacenar esos datos, Supabase gestiona la autenticación
+                de las cuentas (sesiones y verificación de correo). No se utiliza
+                para publicidad ni para elaborar perfiles comerciales.
             </p>
         </section>
 
@@ -349,13 +408,18 @@ import Default from "../layouts/Default.astro";
                 <li>
                     <strong>Cookies técnicas:</strong> necesarias para el funcionamiento
                     del sitio (gestionadas por Cloudflare y por las propias
-                    aplicaciones para mantener la sesión).
+                    aplicaciones para mantener la sesión, incluida la sesión de
+                    autenticación de Supabase).
                 </li>
                 <li>
                     <strong>Cookies analíticas:</strong> Google Analytics utiliza
                     cookies para medir el uso del sitio.
                 </li>
             </ul>
+            <p>
+                No utilizamos cookies publicitarias propias ni cedemos datos de
+                navegación con fines comerciales.
+            </p>
             <p>
                 <strong>Dentro de ASO.app:</strong> las páginas de
                 <code>aedm.org.es</code>, <code>verificaso.aedm.org.es</code>,
@@ -511,6 +575,33 @@ import Default from "../layouts/Default.astro";
                     realizadas a través del proxy.
                 </li>
                 <li>
+                    <strong>Supabase:</strong> encargado del tratamiento que aloja
+                    la base de datos Postgres de VerificASO y VotaASO (perfil de
+                    socio, notas, enlaces y datos de votaciones) y gestiona la
+                    autenticación. Opera en la región de la UE.
+                    <a
+                        href="https://supabase.com/privacy"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Consulta la política de Supabase.
+                    </a>
+                </li>
+                <li>
+                    <strong>xdp.es:</strong> DNS público utilizado para la
+                    resolución alternativa de dominios cuando tu red los bloquea.
+                    Ve las consultas de resolución (dominio consultado e IP de
+                    origen), no el contenido del tráfico. Puedes desactivar esta
+                    función y usar el DNS de tu red.
+                    <a
+                        href="https://xdp.es"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Consulta xdp.es.
+                    </a>
+                </li>
+                <li>
                     <strong>VerificASO:</strong> proveedor de identidad de AEDM;
                     no es un tercero ajeno a la asociación.
                 </li>
@@ -531,6 +622,14 @@ import Default from "../layouts/Default.astro";
                 cláusulas contractuales tipo, junto con las medidas
                 complementarias que resulten necesarias. EducaMadrid presta el
                 servicio de correo desde España.
+            </p>
+            <p>
+                <strong>Supabase</strong> aloja la base de datos en la región de la
+                Unión Europea, por lo que el almacenamiento de los datos de
+                VerificASO y VotaASO se realiza dentro del EEE. Las consultas
+                enviadas al DNS público <strong>xdp.es</strong> se limitan a la
+                resolución de dominios y no incluyen el contenido del tráfico; ese
+                servicio se rige por su propia política de privacidad.
             </p>
         </section>
 
