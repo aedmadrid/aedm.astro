@@ -4,7 +4,7 @@ import Default from "../layouts/Default.astro";
 
 <Default title="Política de Privacidad">
     <article>
-        <p><small>Última actualización: octubre de 2026</small></p>
+        <p><small>Última actualización: noviembre de 2026</small></p>
 
         <!-- ─── 1. RESPONSABLE ─── -->
         <section id="responsable">
@@ -46,6 +46,11 @@ import Default from "../layouts/Default.astro";
                     > (<code>votaso.aedm.org.es</code>)
                 </li>
                 <li>
+                    El servicio de horarios <strong>EdHorario</strong> (<code
+                        >horario.aedm.org.es</code
+                    >)
+                </li>
+                <li>
                     La aplicación <strong>ASO.app</strong> y sus servicios asociados
                 </li>
                 <li>
@@ -53,6 +58,10 @@ import Default from "../layouts/Default.astro";
                     enlazados desde nuestras plataformas
                 </li>
             </ul>
+            <p>
+                El uso de la aplicación ASO.app se rige además por los
+                <a href="/terminos">Términos y condiciones de uso</a>.
+            </p>
         </section>
 
         <!-- ─── 3. DATOS RECOPILADOS ─── -->
@@ -61,17 +70,18 @@ import Default from "../layouts/Default.astro";
 
             <h3>3.1 Sitio web principal (aedm.org.es)</h3>
             <p>
-                El sitio web no recopila datos personales de forma directa. Sin
-                embargo, los siguientes servicios de terceros pueden tratar
-                datos de navegación al visitar la web:
+                El sitio web no dispone de registro de usuarios ni de formularios
+                que envíen datos personales directamente a AEDM. No obstante, al
+                visitarlo se tratan datos de navegación, y los siguientes
+                servicios de terceros pueden procesar información técnica:
             </p>
             <ul>
                 <li>
                     <strong>Google Analytics:</strong> recopila datos de uso y navegación
-                    de forma anonimizada (dirección IP truncada, páginas visitadas,
-                    duración de la sesión, dispositivo, etc.) con el fin de analizar
-                    el tráfico del sitio. Google actúa como encargado del tratamiento
-                    bajo sus propias condiciones.
+                    (páginas visitadas, duración de la sesión, dispositivo,
+                    ubicación aproximada e identificadores en línea) con el fin de
+                    analizar el tráfico del sitio. Google actúa como encargado del
+                    tratamiento bajo sus propias condiciones.
                     <a
                         href="https://policies.google.com/privacy"
                         target="_blank"
@@ -153,10 +163,11 @@ import Default from "../layouts/Default.astro";
             <p>
                 <strong>Autenticación:</strong> mediante Google OAuth (cuentas
                 <code>@esdmadrid.es</code>) y enlaces mágicos a EducaMadrid
-                (<code>@educa.madrid.org</code>). AEDM <strong>no almacena
-                contraseñas</strong>: la verificación la gestiona el proveedor de
-                identidad. La vinculación de correos se realiza a través de un
-                proveedor de correo transaccional.
+                (<code>@educa.madrid.org</code>). AEDM <strong>no almacena la
+                contraseña de tu cuenta de Google ni de EducaMadrid para la
+                verificación</strong>: la gestiona el proveedor de identidad. La
+                vinculación de correos se realiza a través de un proveedor de
+                correo transaccional.
             </p>
             <p>
                 <strong>Finalidad:</strong> verificar tu condición de estudiante
@@ -211,50 +222,107 @@ import Default from "../layouts/Default.astro";
                     href="https://aedm.org.es/app/"
                     target="_blank"
                     rel="noopener noreferrer">aedm.org.es/app</a
-                >.
+                >. <strong>No es una aplicación oficial de EducaMadrid</strong>:
+                es un cliente no oficial desarrollado por AEDM, y EducaMadrid
+                puede bloquear o limitar las conexiones IMAP/SMTP de terceros.
             </p>
             <p>
-                La app funciona como un cliente ligero sobre servicios ya
-                existentes de AEDM y de la ESD Madrid, con los siguientes
-                tratamientos:
+                Para prestar sus funciones, ASO.app trata datos tanto en tu
+                dispositivo como en servidores propios. Es importante distinguir
+                ambos:
             </p>
+
+            <p><strong>a) Datos guardados en tu dispositivo</strong></p>
             <ul>
                 <li>
-                    <strong>Contenido:</strong> muestra el feed de la asociación
-                    y la agenda y noticias de la escuela
-                    (<code>esdmadrid.es</code>), abriendo las páginas web en un
-                    navegador integrado en la propia app.
+                    <strong>Credenciales de EducaMadrid:</strong> si activas el
+                    correo, guardamos tu usuario y tu contraseña de IMAP/SMTP en
+                    el almacén cifrado del sistema operativo (Keychain en iOS,
+                    Keystore en Android). Se usan para conectarte al servidor de
+                    correo y no se comparten con terceros ajenos al servicio.
                 </li>
                 <li>
-                    <strong>Identificación:</strong> para las funciones de la
-                    asociación, te identifica a través de VerificASO (OAuth 2.0),
-                    que comparte únicamente tu nombre y correo electrónico.
+                    <strong>Sesión de VerificASO:</strong> el token OAuth y los
+                    datos de perfil asociados (identidad, nombre, correos
+                    <code>@esdmadrid.es</code> y <code>@educa.madrid.org</code>,
+                    condición de socio y horario de clases), para no pedirte que
+                    vuelvas a iniciar sesión en cada uso.
                 </li>
                 <li>
-                    <strong>Correo (opcional):</strong> si activas las funciones
-                    de correo, la app guarda tus credenciales IMAP
-                    <strong>cifradas en el propio dispositivo</strong> (almacén
-                    seguro del sistema) y las envía a un proxy
-                    (<code>api-app.aedm.org.es</code>) para consultar tu bandeja.
-                    Las credenciales no se almacenan en los servidores de AEDM;
-                    el proxy solo las usa para conectar con el servidor de correo
-                    durante la consulta.
+                    <strong>Ajustes y preferencias:</strong> categorías de
+                    notificaciones, cuenta activa y demás opciones de la app.
                 </li>
                 <li>
-                    <strong>Notificaciones push:</strong> si lo autorizas, la app
-                    registra un token de notificaciones para enviarte avisos del
-                    feed, de la escuela, del correo y de la asociación. Puedes
-                    desactivarlas por categorías en los ajustes de la app.
+                    <strong>Caché de correo:</strong> cabeceras y cuerpos de los
+                    mensajes y los adjuntos que descargas, para poder
+                    consultarlos sin conexión. Puede contener datos personales y
+                    el contenido de tus comunicaciones; se guarda solo en tu
+                    dispositivo y se elimina al cerrar sesión, al vaciar la caché
+                    o al desinstalar la app.
                 </li>
             </ul>
+
+            <p><strong>b) Datos tratados en servidores propios</strong></p>
             <p>
-                La app <strong>no utiliza herramientas de analítica ni
-                rastreadores publicitarios</strong>.
+                Para avisarte de correos nuevos, la app registra en
+                <code>api-app.aedm.org.es</code> un token de notificaciones push
+                (Expo/FCM) junto con tus credenciales IMAP. Ambos se almacenan en
+                la base de datos SQLite del servidor del proxy, alojado en Google
+                Cloud, y se usan únicamente para consultar tu buzón y enviarte el
+                aviso. El proxy sale a Internet a través de Cloudflare WARP y
+                conecta con <code>imap.educa.madrid.org</code> y
+                <code>smtp.educa.madrid.org</code>. No se utiliza para fines
+                distintos de los descritos en esta política.
             </p>
+
+            <p><strong>c) Datos obtenidos de VerificASO</strong></p>
             <p>
-                <strong>Base legal:</strong> consentimiento (art. 6.1.a RGPD) al
-                activar cada función, y ejecución de la relación asociativa
-                (art. 6.1.b RGPD) para las funciones de miembro.
+                Con tu autorización mediante OAuth 2.0, VerificASO comparte con
+                la app tu identidad, nombre, correos <code>@esdmadrid.es</code> y
+                <code>@educa.madrid.org</code>, tu condición de socio y tu
+                horario de clases. La app los usa para identificarte y mostrar las
+                funciones que te corresponden.
+            </p>
+
+            <p><strong>d) Webs abiertas dentro de la app (WebView)</strong></p>
+            <p>
+                ASO.app muestra páginas de <code>aedm.org.es</code>,
+                <code>verificaso.aedm.org.es</code>,
+                <code>votaso.aedm.org.es</code> y
+                <code>horario.aedm.org.es</code> en un navegador integrado. Esas
+                páginas utilizan cookies propias de sesión y Google Analytics
+                (identificador <code>G-BKX38RNZGX</code>; ver apartado 4), y su
+                tráfico pasa por Cloudflare. La app no incorpora SDKs
+                publicitarios ni herramientas de analítica propias: la analítica
+                corresponde a las páginas web que se muestran en ella.
+            </p>
+
+            <p><strong>e) Finalidades y bases jurídicas</strong></p>
+            <ul>
+                <li>
+                    <strong>Prestar las funciones que solicitas</strong> (inicio
+                    de sesión, correo, agenda, horario y contenidos): ejecución
+                    de un servicio solicitado (art. 6.1.b RGPD).
+                </li>
+                <li>
+                    <strong>Notificaciones push</strong> y tratamiento del token
+                    correspondiente: consentimiento (art. 6.1.a RGPD), que puedes
+                    retirar desactivando las notificaciones en los ajustes de la
+                    app o del sistema.
+                </li>
+                <li>
+                    <strong>Seguridad, prevención de abusos y mantenimiento del
+                    proxy:</strong> interés legítimo (art. 6.1.f RGPD).
+                </li>
+            </ul>
+
+            <p><strong>f) Terceros que intervienen</strong></p>
+            <p>
+                Cloudflare (red y seguridad), Google (Google Analytics, Firebase
+                Cloud Messaging y Google Cloud), Expo (entrega de notificaciones
+                push), EducaMadrid (proveedor del correo) y VerificASO (proveedor
+                de identidad de AEDM). El detalle y las transferencias
+                internacionales se explican en el apartado 8.
             </p>
 
             <h3>3.5 Formularios de inscripción a eventos</h3>
@@ -280,18 +348,29 @@ import Default from "../layouts/Default.astro";
             <ul>
                 <li>
                     <strong>Cookies técnicas:</strong> necesarias para el funcionamiento
-                    del sitio (gestionadas por Cloudflare).
+                    del sitio (gestionadas por Cloudflare y por las propias
+                    aplicaciones para mantener la sesión).
                 </li>
                 <li>
                     <strong>Cookies analíticas:</strong> Google Analytics utiliza
-                    cookies para medir el uso del sitio de forma anonimizada.
+                    cookies para medir el uso del sitio.
                 </li>
             </ul>
             <p>
+                <strong>Dentro de ASO.app:</strong> las páginas de
+                <code>aedm.org.es</code>, <code>verificaso.aedm.org.es</code>,
+                <code>votaso.aedm.org.es</code> y
+                <code>horario.aedm.org.es</code> que se muestran en el navegador
+                integrado usan cookies propias de sesión y Google Analytics. Las
+                cookies se guardan en el almacenamiento del WebView del
+                dispositivo y se eliminan al borrar los datos de la app o al
+                desinstalarla. La app no añade cookies publicitarias propias.
+            </p>
+            <p>
                 Puedes gestionar o deshabilitar las cookies desde la
-                configuración de tu navegador. Ten en cuenta que deshabilitar
-                determinadas cookies puede afectar a la experiencia de
-                navegación.
+                configuración de tu navegador o del sistema. Ten en cuenta que
+                deshabilitar determinadas cookies puede afectar a la experiencia
+                de navegación y al inicio de sesión en los servicios.
             </p>
         </section>
 
@@ -300,13 +379,19 @@ import Default from "../layouts/Default.astro";
             <h2>5. Proveedores de identidad (OAuth)</h2>
             <p>
                 Algunos servicios de AEDM pueden ofrecer autenticación mediante
-                proveedores externos como <strong>Google OAuth</strong>. En
-                estos casos, el proveedor de identidad gestiona tus credenciales
-                de acceso directamente; AEDM no almacena ni procesa contraseñas.
+                proveedores externos como <strong>Google OAuth</strong> o
+                <strong>VerificASO</strong>. En estos casos, el proveedor de
+                identidad gestiona tus credenciales de acceso directamente;
+                AEDM no almacena ni procesa la contraseña de esos proveedores.
                 Únicamente recibimos los datos de perfil que el proveedor
                 comparte según los permisos que tú autorices (habitualmente
-                nombre y correo electrónico). Una incidencia en nuestros
-                sistemas no comprometería tus credenciales de acceso.
+                nombre, correos verificados, condición de socio y horario).
+            </p>
+            <p>
+                La contraseña de EducaMadrid que utiliza ASO.app para el correo
+                es independiente de OAuth: se guarda cifrada en el dispositivo y
+                se trata conforme al apartado 3.4. Una incidencia en el inicio de
+                sesión federado no compromete tus credenciales de EducaMadrid.
             </p>
         </section>
 
@@ -368,6 +453,29 @@ import Default from "../layouts/Default.astro";
                 que exista obligación legal de conservarlos durante un período
                 superior.
             </p>
+            <p><strong>Datos de ASO.app:</strong></p>
+            <ul>
+                <li>
+                    <strong>En el dispositivo:</strong> las credenciales IMAP, el
+                    token de VerificASO, los ajustes y la caché de correo se
+                    conservan hasta que cierras sesión, vacías la caché o
+                    desinstalas la app.
+                </li>
+                <li>
+                    <strong>En servidores propios:</strong> el token push y las
+                    credenciales IMAP del proxy se conservan mientras mantengas
+                    activa la función de correo y notificaciones, y se eliminan
+                    cuando la desactivas o cuando solicitas su supresión. Si
+                    desinstalas la app sin cerrar sesión, puedes pedir la
+                    eliminación escribiendo a
+                    <a href="mailto:aadm@esdmadrid.es">aadm@esdmadrid.es</a>;
+                    la atenderemos en un plazo máximo de 30 días.
+                </li>
+                <li>
+                    <strong>Datos de VerificASO:</strong> se rigen por el primer
+                    párrafo de este apartado.
+                </li>
+            </ul>
         </section>
 
         <!-- ─── 8. COMUNICACIÓN A TERCEROS ─── -->
@@ -379,6 +487,50 @@ import Default from "../layouts/Default.astro";
                 proveedores de servicios mencionados en esta política, que
                 actúan como encargados del tratamiento bajo acuerdos que
                 garantizan el cumplimiento del RGPD.
+            </p>
+            <p>En particular, intervienen los siguientes proveedores:</p>
+            <ul>
+                <li>
+                    <strong>Cloudflare:</strong> red, seguridad, túneles y salida
+                    a Internet del proxy (WARP). Puede procesar direcciones IP,
+                    cabeceras y metadatos de conexión.
+                </li>
+                <li>
+                    <strong>Google:</strong> Google Analytics (medición en el
+                    sitio y en las webs abiertas dentro de la app), Firebase
+                    Cloud Messaging (entrega de notificaciones push) y Google
+                    Cloud (alojamiento del proxy de correo).
+                </li>
+                <li>
+                    <strong>Expo:</strong> entrega técnica de las notificaciones
+                    push.
+                </li>
+                <li>
+                    <strong>EducaMadrid (Comunidad de Madrid):</strong> proveedor
+                    del servicio de correo; recibe las conexiones IMAP/SMTP
+                    realizadas a través del proxy.
+                </li>
+                <li>
+                    <strong>VerificASO:</strong> proveedor de identidad de AEDM;
+                    no es un tercero ajeno a la asociación.
+                </li>
+            </ul>
+            <p>
+                Los formularios de eventos pueden usar plataformas como Notion o
+                Google Drive/Forms, según se indica en el apartado 3.5.
+            </p>
+
+            <h3 id="transferencias">8.1 Transferencias internacionales</h3>
+            <p>
+                Algunos de estos proveedores (Google, Cloudflare y Expo) operan
+                infraestructura fuera del Espacio Económico Europeo,
+                principalmente en Estados Unidos. Cuando se producen
+                transferencias internacionales, se amparan en una decisión de
+                adecuación de la Comisión Europea (como el Marco de Privacidad de
+                Datos UE-EE. UU., cuando el proveedor está certificado) o en las
+                cláusulas contractuales tipo, junto con las medidas
+                complementarias que resulten necesarias. EducaMadrid presta el
+                servicio de correo desde España.
             </p>
         </section>
 
@@ -421,6 +573,30 @@ import Default from "../layouts/Default.astro";
                     y sin que ello afecte a la licitud del tratamiento previo.
                 </li>
             </ul>
+            <h3 id="borrado">Cómo eliminar los datos de ASO.app</h3>
+            <ul>
+                <li>
+                    <strong>Cerrar sesión en la app:</strong> borra del
+                    dispositivo las credenciales de EducaMadrid, el token de
+                    VerificASO y la caché de correo de esa sesión.
+                </li>
+                <li>
+                    <strong>Desinstalar la app:</strong> elimina todos los datos
+                    locales, incluidas las cookies y el almacenamiento del
+                    WebView.
+                </li>
+                <li>
+                    <strong>Datos del proxy (token push y credenciales IMAP):</strong>
+                    desactiva el correo o las notificaciones en los ajustes de la
+                    app. Si no puedes hacerlo, escríbenos y los suprimiremos en
+                    un plazo máximo de 30 días.
+                </li>
+                <li>
+                    <strong>Cuenta de VerificASO:</strong> puedes eliminarla
+                    desde la propia plataforma, salvo que seas miembro activo de
+                    AEDM, en cuyo caso deberás causar baja en la asociación.
+                </li>
+            </ul>
             <p>
                 Para ejercer cualquiera de estos derechos, escríbenos a
                 <a href="mailto:aadm@esdmadrid.es">aadm@esdmadrid.es</a>.
@@ -449,10 +625,16 @@ import Default from "../layouts/Default.astro";
                 artículo 34 del RGPD.
             </p>
             <p>
-                AEDM no almacena contraseñas. La autenticación mediante
-                proveedores externos (OAuth) se gestiona íntegramente por dichos
-                proveedores, por lo que una eventual incidencia en nuestros
-                sistemas no comprometería tus credenciales de acceso.
+                En el sitio web y en VerificASO, la autenticación se delega en
+                proveedores de identidad y AEDM no almacena las contraseñas
+                correspondientes. En ASO.app, la contraseña de EducaMadrid se
+                guarda cifrada en el almacén del sistema operativo y, para el
+                aviso de correos nuevos, también en la base de datos del proxy.
+                El acceso a esa base de datos está restringido al personal
+                autorizado y protegido mediante medidas técnicas y organizativas.
+                Puedes eliminar esas credenciales cerrando sesión en la app y,
+                para borrarlas también del servidor, desactivando la función o
+                escribiéndonos.
             </p>
         </section>
 
