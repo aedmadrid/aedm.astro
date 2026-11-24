@@ -28,7 +28,9 @@
     font-family: TitleFont;
     src: url("/src/fonts/Stick_No_Bills/StickNoBills-VariableFont_wght.ttf")
         format(truetype);
-    font-weight: 200;
+    /* Display SIEMPRE en Light (300). La cara se declara solo con ese peso:
+       cualquier petición de 400 cae aquí en 300, sin síntesis. */
+    font-weight: 300;
 }
 
 :root {
@@ -91,7 +93,7 @@ main {
 
 h1 {
     font-family: TitleFont, serif;
-    font-weight: 400;
+    font-weight: 300;
     font-size: 60px;
     text-align: center;
 }
@@ -104,7 +106,7 @@ h1 {
 
 h2 {
     font-family: TitleFont, serif;
-    font-weight: 400;
+    font-weight: 300;
     font-size: 40px;
     text-align: left;
     i {
