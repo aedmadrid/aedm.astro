@@ -50,6 +50,36 @@
     font-family: MainFont, Arial, Helvetica, sans-serif;
     color: var(--negro);
     box-sizing: border-box;
+    /* Android pinta un velo azul al tocar dentro del WebView de la app. */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Feedback al pulsar tipo TouchableOpacity nativo. */
+a,
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+summary,
+label[for] {
+    transition: opacity 90ms ease-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:active,
+button:active,
+[role="button"]:active,
+input[type="submit"]:active,
+input[type="button"]:active,
+summary:active,
+label[for]:active {
+    opacity: 0.55;
+    transition-duration: 0ms;
+}
+
+/* Anillo de foco solo con teclado, nunca al tocar. */
+*:focus:not(:focus-visible) {
+    outline: none;
 }
 
 html {

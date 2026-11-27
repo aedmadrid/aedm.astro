@@ -1,0 +1,203 @@
+/* ============================================================================
+   ASO / aedm — tokens canónicos
+   Fuente de verdad: aedm.astro (web pública). Ver docs/sistema-de-diseno.md
+   Consumo: <link rel="stylesheet" href="/styles/tokens.css">
+
+   Reglas: no inventar valores fuera de esta lista. Si falta un caso, se añade
+   aquí (un token nuevo) antes de usarlo en un componente.
+   ========================================================================= */
+
+/* --- Tipografía canónica: 2 familias variables, las 3 superficies --------- */
+/* Rutas relativas a docs/tokens.css. Al copiar a un repo, mover los .ttf a
+   public/fonts/ y ajustar url(). Convertir a woff2 en producción. */
+@font-face {
+    font-family: MainFont;
+    src: url("../src/fonts/Schibsted_Grotesk/SchibstedGrotesk-VariableFont_wght.ttf")
+        format("truetype");
+    font-weight: 200 900;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: MainFont;
+    src: url("../src/fonts/Schibsted_Grotesk/SchibstedGrotesk-Italic-VariableFont_wght.ttf")
+        format("truetype");
+    font-weight: 200 900;
+    font-style: italic;
+    font-display: swap;
+}
+@font-face {
+    font-family: TitleFont;
+    src: url("../src/fonts/Stick_No_Bills/StickNoBills-VariableFont_wght.ttf")
+        format("truetype");
+    /* Display SIEMPRE Light (300): la cara se declara con ese único peso, así
+       cualquier petición de 400/500 cae en Light sin síntesis. */
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    /* --- Primitivos de color (únicos valores HEX permitidos) ------------- */
+    --verde: #36e452;
+    --azul: #3cadff;
+    --lila: #bacefb;
+    --rojo: #fe3d46;
+    --negro: #040406;
+    --blanco: #fdfdfd;
+    --gris1: #f7f7f7;
+    --gris2: #e5e5e5;
+    --gris3: #afafaf;
+    --gris4: #777777;
+    --gris5: #4b4b4b;
+
+    /* Derivados (no son primitivos: existen para estados) */
+    --verde-hover: #2bc943;
+    --verde-tenue: rgb(54 228 82 / 12%);
+
+    /* --- Color semántico: los componentes usan ESTOS, no los primitivos -- */
+    --color-bg: var(--blanco);
+    --color-text: var(--negro);
+    --color-text-muted: var(--gris4);
+    --color-text-detail: var(--gris5);
+    --color-surface: var(--gris1);
+    --color-border: var(--gris2);
+    --color-border-strong: var(--negro);
+    --color-divider: var(--gris2);
+    --color-primary: var(--verde);
+    --color-primary-hover: var(--verde-hover);
+    --color-on-primary: var(--negro);
+    --color-error: var(--rojo);
+
+    /* --- Familias ------------------------------------------------------- */
+    --font-body: MainFont, Arial, Helvetica, sans-serif;
+    --font-display: TitleFont, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace; /* solo código */
+
+    /* --- Escala tipográfica (web pública = aedm; 1rem = 16px) ----------- */
+    --text-eyebrow: 10px; /* + uppercase + letter-spacing .12em, gris4 */
+    --text-xs: 12px;
+    --text-sm: 14px;
+    --text-base: 16px; /* body, botones, chips */
+    --text-xl: 1.6em; /* h3 / h4 … equivale a 25.6px */
+    --text-h2: 40px;
+    --text-h1: 60px;
+    --text-ticket: 38px;
+
+    /* Pesos (la familia es variable) */
+    --weight-light: 300; /* ÚNICO peso del display (TitleFont) */
+    --weight-regular: 400;
+    --weight-medium: 500;
+    --weight-semibold: 600;
+
+    /* --- Espaciado (múltiplos de 4) ------------------------------------- */
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-16: 64px;
+
+    /* --- Estructura ----------------------------------------------------- */
+    --page-max: 800px;
+    --nav-h: 80px;
+    --band-h: 30px;
+    --content-gap: var(--space-4); /* aedm usa 15px → se normaliza a 16 */
+
+    /* --- Forma ---------------------------------------------------------- */
+    --radius: 0; /* norma: esquinas rectas */
+    --radius-xs: 4px; /* bloques de código / Notion */
+    --radius-pill: 20px; /* hashtags */
+    --radius-screen: 22px; /* pantallas de carrusel */
+    --radius-full: 50%; /* avatar, pin */
+
+    --border-surface: 1px solid var(--color-border);
+    --border-strong: 1px solid var(--color-border-strong);
+    --border-section: 2px solid var(--color-primary);
+    --border-dashed: 1px dashed var(--color-primary);
+    --border-cut: 1px dashed var(--gris3);
+
+    /* --- Elevación (excepcional: el sistema es plano) ------------------- */
+    --shadow-pop: 0 2px 10px rgb(0 0 0 / 20%);
+    --shadow-pin: 0 2px 5px rgb(0 0 0 / 30%);
+    --shadow-screen: 0 34px 60px -18px rgb(0 0 0 / 45%);
+
+    /* --- Movimiento ----------------------------------------------------- */
+    --transition: 150ms ease; /* color, background, border */
+    --transition-opacity: 200ms ease;
+    --transition-menu: 800ms ease;
+    --ease-menu-icon: cubic-bezier(0.075, 0.82, 0.165, 1);
+
+    /* --- Capas ---------------------------------------------------------- */
+    --z-band: 90;
+    --z-nav: 100;
+    --z-float: 500;
+    --z-modal: 1000;
+    --z-toast: 1100;
+    --z-cookies: 9999;
+}
+
+/* Escala responsive: mismos valores que aedm.astro (corte 600px) */
+@media (max-width: 600px) {
+    :root {
+        --text-h1: 40px;
+        --text-h2: 28px;
+        --text-ticket: 31px;
+    }
+}
+
+/* ============================================================================
+   Base global mínima. Cada superficie puede extenderla, nunca contradecirla.
+   ========================================================================= */
+* {
+    box-sizing: border-box;
+    font-family: var(--font-body);
+    color: var(--color-text);
+}
+
+body {
+    margin: 0;
+    background: var(--color-bg);
+    font-size: var(--text-base);
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--color-primary);
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-size: var(--text-h1);
+    font-weight: var(--weight-light);
+    line-height: 1;
+    margin: 0;
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    font-weight: var(--weight-light);
+    line-height: 1.1;
+    margin: 0;
+}
+
+h3,
+h4 {
+    font-size: var(--text-xl);
+    font-weight: var(--weight-regular);
+    margin: var(--space-5) 0 var(--space-2);
+}
+
+h3 {
+    border-bottom: var(--border-section);
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--color-primary);
+    margin: var(--space-5) 0;
+}

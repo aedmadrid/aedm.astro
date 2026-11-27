@@ -21,6 +21,12 @@ export interface NotionPage {
     current_page_title: string;
     blocks: NotionBlock[];
     tags?: string[];
+    /**
+     * Host del API que sirvió la página. Se usa para construir las URLs
+     * estables de los ficheros (/media/<blockId>), que deben apuntar al
+     * mismo host que respondió en el build.
+     */
+    apiBase?: string;
 }
 
 export type FetchResult =
@@ -147,6 +153,7 @@ export async function fetchNotionPage(
         attempts.push(attempt);
 
         if (attempt.outcome === "ok" && page) {
+            page.apiBase = step.host === "primary" ? PRIMARY_API : FALLBACK_API;
             pageCache.set(pageId, page);
             return { ok: true, page, attempts };
         }

@@ -2,6 +2,7 @@
 import GranBoton from "./GranBoton.astro";
 import HClick from "./HClick.astro";
 import Boton from "./Boton.astro";
+import NotionBlocks from "./NotionBlocks.astro";
 import { link } from "../lib/paths";
 import { pageIdFromHref } from "../lib/notion";
 import "../styles/main.css";
@@ -37,20 +38,60 @@ interface NotionBlock {
         | "divider"
         | "embed"
         | "child_page"
-        | "image";
+        | "image"
+        | "video"
+        | "file"
+        | "table"
+        | "column_list"
+        | "column"
+        | "toggle"
+        | "callout";
     rich_text?: RichTextItem[];
     checked?: boolean;
     url?: string;
+    proxy_url?: string;
     title?: string;
     caption?: RichTextItem[];
     language?: string;
+    icon?: string;
+    color?: string;
+    width_ratio?: number;
+    table_width?: number;
+    has_column_header?: boolean;
+    has_row_header?: boolean;
+    rows?: TableRow[];
+    columns?: ColumnData[];
+    children?: NotionBlock[];
+}
+
+interface TableRow {
+    id: string;
+    cells: RichTextItem[][];
+}
+
+interface ColumnData {
+    id: string;
+    width_ratio?: number;
+    blocks: NotionBlock[];
 }
 
 interface Props {
     blocks: NotionBlock[];
+    /** Host del API que sirvió la página (para las URLs de ficheros). */
+    apiBase?: string;
+    depth?: number;
 }
 
-const { blocks } = Astro.props;
+const { blocks, apiBase = "", depth = 0 } = Astro.props;
+
+/**
+ * URL estable de un fichero de Notion. Las URLs directas de Notion caducan a
+ * la hora, así que se usa el proxy del API (/media/<blockId>).
+ */
+function mediaUrl(block: NotionBlock): string {
+    if (block.proxy_url) return `${apiBase}${block.proxy_url}`;
+    return block.url ?? "";
+}
 
 const COLOR_HEX: Record<string, string> = {
     gray: "#9B9A97",
@@ -173,10 +214,16 @@ while (i < blocks.length) {
                 return (
                     <ol class="notion-block numbered-list">
                         {group.blocks.map((item) => (
-                            <li
-                                class="notion-block numbered-list-item"
-                                set:html={richTextToHtml(item.rich_text)}
-                            />
+                            <li class="notion-block numbered-list-item">
+                                <span set:html={richTextToHtml(item.rich_text)} />
+                                {item.children && item.children.length > 0 && (
+                                    <NotionBlocks
+                                        blocks={item.children}
+                                        apiBase={apiBase}
+                                        depth={depth + 1}
+                                    />
+                                )}
+                            </li>
                         ))}
                     </ol>
                 );
@@ -185,10 +232,16 @@ while (i < blocks.length) {
             return (
                 <ul class="notion-block bulleted-list">
                     {group.blocks.map((item) => (
-                        <li
-                            class="notion-block bulleted-list-item"
-                            set:html={richTextToHtml(item.rich_text)}
-                        />
+                        <li class="notion-block bulleted-list-item">
+                            <span set:html={richTextToHtml(item.rich_text)} />
+                            {item.children && item.children.length > 0 && (
+                                <NotionBlocks
+                                    blocks={item.children}
+                                    apiBase={apiBase}
+                                    depth={depth + 1}
+                                />
+                            )}
+                        </li>
                     ))}
                 </ul>
             );
@@ -197,6 +250,18 @@ while (i < blocks.length) {
         const block = group.block;
 
         if (block.type === "paragraph") {
+            if (block.children && block.children.length > 0) {
+                return (
+                    <div class="notion-block paragraph">
+                        <span set:html={richTextToHtml(block.rich_text)} />
+                        <NotionBlocks
+                            blocks={block.children}
+                            apiBase={apiBase}
+                            depth={depth + 1}
+                        />
+                    </div>
+                );
+            }
             return (
                 <p
                     class="notion-block paragraph"
@@ -315,14 +380,185 @@ while (i < blocks.length) {
             return (
                 <figure class="notion-block image">
                     <img
-                        src={block.url}
+                        src={mediaUrl(block)}
                         alt={getPlainText(block.caption)}
+                        loading="lazy"
+                        decoding="async"
                         style="max-width:100%;"
                     />
                     {block.caption && block.caption.length > 0 && (
                         <figcaption set:html={richTextToHtml(block.caption)} />
                     )}
                 </figure>
+            );
+        }
+
+        if (block.type === "video") {
+            const src = mediaUrl(block);
+            const isEmbed = /youtube\.com|youtu\.be|vimeo\.com/i.test(src);
+            return (
+                <figure class="notion-block video">
+                    {isEmbed ? (
+                        <iframe
+                            src={src.replace("watch?v=", "embed/")}
+                            title={`video-${block.id}`}
+                            loading="lazy"
+                            allowfullscreen
+                            style="width:100%;aspect-ratio:16/9;border:0;"
+                        />
+                    ) : (
+                        <video
+                            src={src}
+                            controls
+                            playsinline
+                            preload="metadata"
+                            style="max-width:100%;"
+                        />
+                    )}
+                    {block.caption && block.caption.length > 0 && (
+                        <figcaption set:html={richTextToHtml(block.caption)} />
+                    )}
+                </figure>
+            );
+        }
+
+        if (block.type === "file") {
+            const name =
+                getPlainText(block.caption) ||
+                decodeURIComponent(mediaUrl(block).split("/").pop() || "Archivo");
+            const href = block.proxy_url
+                ? `${apiBase}${block.proxy_url}`
+                : block.url ?? "#";
+            return (
+                <div class="notion-block file">
+                    <a href={href} download rel="noreferrer">
+                        {name}
+                    </a>
+                </div>
+            );
+        }
+
+        if (block.type === "table") {
+            const rows = block.rows ?? [];
+            if (rows.length === 0) return null;
+
+            const hasColHeader = !!block.has_column_header;
+            const hasRowHeader = !!block.has_row_header;
+            const headRow = hasColHeader ? rows[0] : null;
+            const bodyRows = hasColHeader ? rows.slice(1) : rows;
+
+            return (
+                <div class="notion-block table-wrap">
+                    <table class="notion-table">
+                        {headRow && (
+                            <thead>
+                                <tr>
+                                    {headRow.cells.map((cell) => (
+                                        <th
+                                            scope="col"
+                                            set:html={richTextToHtml(cell)}
+                                        />
+                                    ))}
+                                </tr>
+                            </thead>
+                        )}
+                        <tbody>
+                            {bodyRows.map((row) => (
+                                <tr>
+                                    {row.cells.map((cell, index) =>
+                                        hasRowHeader && index === 0 ? (
+                                            <th
+                                                scope="row"
+                                                set:html={richTextToHtml(cell)}
+                                            />
+                                        ) : (
+                                            <td set:html={richTextToHtml(cell)} />
+                                        ),
+                                    )}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            );
+        }
+
+        if (block.type === "column_list") {
+            const columns = block.columns ?? [];
+            if (columns.length === 0) return null;
+
+            const template = columns
+                .map((col) => `${col.width_ratio || 1}fr`)
+                .join(" ");
+
+            return (
+                <div
+                    class="notion-block columns"
+                    style={`grid-template-columns:${template}`}
+                >
+                    {columns.map((col) => (
+                        <div class="notion-col">
+                            <NotionBlocks
+                                blocks={col.blocks}
+                                apiBase={apiBase}
+                                depth={depth + 1}
+                            />
+                        </div>
+                    ))}
+                </div>
+            );
+        }
+
+        if (block.type === "toggle") {
+            return (
+                <details
+                    class="notion-block toggle"
+                    style={getColorStyle(block.color)}
+                >
+                    <summary set:html={richTextToHtml(block.rich_text)} />
+                    {block.children && block.children.length > 0 && (
+                        <div class="toggle-content">
+                            <NotionBlocks
+                                blocks={block.children}
+                                apiBase={apiBase}
+                                depth={depth + 1}
+                            />
+                        </div>
+                    )}
+                </details>
+            );
+        }
+
+        if (block.type === "callout") {
+            const icon = block.icon ?? "";
+            const isIconUrl = /^https?:/i.test(icon);
+            return (
+                <div
+                    class="notion-block callout"
+                    style={getColorStyle(block.color)}
+                >
+                    {icon && (
+                        <span class="callout-icon">
+                            {isIconUrl ? (
+                                <img src={icon} alt="" loading="lazy" />
+                            ) : (
+                                icon
+                            )}
+                        </span>
+                    )}
+                    <div class="callout-body">
+                        {block.rich_text && block.rich_text.length > 0 && (
+                            <p set:html={richTextToHtml(block.rich_text)} />
+                        )}
+                        {block.children && block.children.length > 0 && (
+                            <NotionBlocks
+                                blocks={block.children}
+                                apiBase={apiBase}
+                                depth={depth + 1}
+                            />
+                        )}
+                    </div>
+                </div>
             );
         }
 
@@ -420,5 +656,104 @@ while (i < blocks.length) {
 
     :global(.notion-block.child-page) {
         margin: 0.5em 0;
+    }
+
+    :global(.notion-block.table-wrap) {
+        margin: 1em 0;
+        overflow-x: auto;
+    }
+
+    :global(.notion-block .notion-table) {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95em;
+    }
+
+    :global(.notion-block .notion-table th),
+    :global(.notion-block .notion-table td) {
+        border: 1px solid #e0e0e0;
+        padding: 8px 12px;
+        text-align: left;
+        vertical-align: top;
+    }
+
+    :global(.notion-block .notion-table thead th) {
+        background: #f7f7f5;
+        font-weight: 600;
+    }
+
+    :global(.notion-block .notion-table tbody th) {
+        font-weight: 600;
+        background: #fbfbfa;
+        white-space: nowrap;
+    }
+
+    :global(.notion-block.columns) {
+        display: grid;
+        gap: 24px;
+        margin: 1em 0;
+        align-items: start;
+    }
+
+    :global(.notion-block.columns .notion-col) {
+        min-width: 0;
+    }
+
+    @media (max-width: 720px) {
+        :global(.notion-block.columns) {
+            grid-template-columns: 1fr !important;
+            gap: 12px;
+        }
+    }
+
+    :global(.notion-block.toggle) {
+        margin: 0.4em 0;
+    }
+
+    :global(.notion-block.toggle > summary) {
+        cursor: pointer;
+        padding: 2px 0;
+    }
+
+    :global(.notion-block.toggle .toggle-content) {
+        padding-left: 1.2em;
+    }
+
+    :global(.notion-block.callout) {
+        display: flex;
+        gap: 12px;
+        padding: 12px 14px;
+        margin: 1em 0;
+        border: 1px solid #e6e6e6;
+        background: #f7f7f5;
+    }
+
+    :global(.notion-block.callout .callout-icon) {
+        flex: 0 0 auto;
+        font-size: 1.1em;
+        line-height: 1.4;
+    }
+
+    :global(.notion-block.callout .callout-icon img) {
+        width: 18px;
+        height: 18px;
+        object-fit: contain;
+    }
+
+    :global(.notion-block.callout .callout-body) {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    :global(.notion-block.callout .callout-body p) {
+        margin: 0;
+    }
+
+    :global(.notion-block.video) {
+        margin: 1em 0;
+    }
+
+    :global(.notion-block.file) {
+        margin: 0.6em 0;
     }
 </style>

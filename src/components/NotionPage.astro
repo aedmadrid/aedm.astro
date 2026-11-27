@@ -67,7 +67,10 @@ const tags: string[] =
                 )}
             </header>
             <section class="notion-content">
-                <NotionBlocks blocks={(page.blocks ?? []) as any} />
+                <NotionBlocks
+                    blocks={(page.blocks ?? []) as any}
+                    apiBase={page.apiBase}
+                />
             </section>
         </article>
     )

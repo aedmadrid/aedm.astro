@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face {
+    font-family: MainFont;
+    src: url("../src/fonts/Schibsted_Grotesk/SchibstedGrotesk-VariableFont_wght.ttf") format("truetype");
+  }
+  @font-face {
+    font-family: TitleFont;
+    src: url("../src/fonts/Stick_No_Bills/StickNoBills-VariableFont_wght.ttf") format("truetype");
+    font-weight: 300;
+  }
+  :root {
+    --verde: #36e452;
+    --azul: #3cadff;
+    --lila: #bacefb;
+    --rojo: #fe3d46;
+    --negro: #040406;
+    --blanco: #fdfdfd;
+    --gris1: #f7f7f7;
+    --gris2: #e5e5e5;
+    --gris3: #afafaf;
+    --gris4: #777777;
+    --gris5: #4b4b4b;
+    --verde-osc: #2bc943;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: MainFont, Arial, Helvetica, sans-serif;
+    color: var(--negro);
+    font-size: 16px;
+    line-height: 1.35;
+  }
+  .doc { width: 720px; max-width: 100%; }
+  .brandbar { display: flex; align-items: baseline; gap: 14px; border-bottom: 2px solid var(--verde); padding-bottom: 10px; }
+  .brandbar img { height: 34px; width: auto; }
+  .brandbar span { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gris4); font-weight: 600; }
+  h2.sec {
+    font-family: MainFont, sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--gris4); margin: 34px 0 12px; border: 0;
+  }
+  .swatches { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+  .sw { border: 1px solid var(--gris2); }
+  .sw .chip { height: 54px; }
+  .sw .meta { padding: 6px 7px; font-size: 11px; line-height: 1.25; }
+  .sw .meta b { display: block; font-size: 11px; font-weight: 600; }
+  .sw .meta code { color: var(--gris4); font-size: 10px; }
+  .sw .use { color: var(--gris4); font-size: 10px; display: block; margin-top: 2px; }
+  .typespec { display: flex; flex-direction: column; gap: 2px; }
+  .t-row { display: grid; grid-template-columns: 86px 1fr; gap: 12px; align-items: baseline; border-bottom: 1px dashed var(--gris2); padding: 8px 0; }
+  .t-row .lbl { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--gris4); font-weight: 600; }
+  .t-h1 { font-family: TitleFont, serif; font-size: 60px; font-weight: 300; line-height: .95; }
+  .t-h2 { font-family: TitleFont, serif; font-size: 40px; font-weight: 300; line-height: 1; }
+  .t-h3 { font-size: 1.6em; font-weight: 400; border-bottom: 2px solid var(--verde); padding-bottom: 2px; }
+  .t-h4 { font-size: 1.6em; font-weight: 400; text-indent: 30px; }
+  .t-body { font-size: 16px; }
+  .t-eyebrow { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gris4); }
+  .btns { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .btn { border: 0; width: 100%; cursor: pointer; font-size: 16px; padding: 10px; font-weight: 400; font-family: inherit; }
+  .btn.verde { background: var(--verde); color: var(--negro); }
+  .btn.negro { background: var(--negro); color: var(--blanco); }
+  .btn.outline { background: transparent; border: 1px solid var(--verde); color: var(--verde); }
+  .gboton { display: flex; align-items: center; padding: 18px; background: var(--verde); gap: 8px; }
+  .gboton.rev { flex-direction: row-reverse; justify-content: space-between; }
+  .gboton p { margin: 0; font-family: TitleFont, serif; font-size: 23px; font-weight: 300; }
+  .gboton .ico { font-size: 22px; line-height: 1; }
+  .gboton.negro { background: var(--negro); color: var(--blanco); }
+  .gboton.outline { background: transparent; border: 1px solid var(--verde); color: var(--verde); }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .chip { display: inline-block; padding: 6px 14px; background: var(--verde); font-size: 14px; }
+  .hashtag { display: inline-block; padding: 6px 12px; background: var(--verde); font-weight: 500; font-size: 16px; line-height: 1; border-radius: 20px; }
+  .hashtag.inv { background: var(--negro); color: var(--verde); }
+  .surface { background: var(--blanco); border: 1px solid var(--gris2); padding: 20px 22px; width: 340px; }
+  .eyebrow2 { margin: 0; font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: var(--gris4); }
+  .fecha { margin: 0; font-family: TitleFont, serif; font-size: 38px; font-weight: 300; line-height: 1; }
+  .detalle { margin: 4px 0 0; font-size: 14px; color: var(--gris5); }
+  .detalle + .detalle { margin-top: -2px; font-size: 13px; color: var(--gris4); }
+  .stub { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 16px; border-top: 1px dashed var(--gris3); background: var(--verde); font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+  .stub strong { font-family: TitleFont, serif; font-size: 20px; font-weight: 300; letter-spacing: 0; }
+  .lines { display: flex; flex-direction: column; gap: 12px; width: 340px; }
+  .dash { border-bottom: 1px dashed var(--verde); height: 1px; }
+  .solidline { border: none; border-top: 1px solid var(--verde); margin: 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  table.tok { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.tok td { border-bottom: 1px solid var(--gris2); padding: 6px 8px; vertical-align: top; }
+  table.tok td:first-child { color: var(--gris4); width: 150px; font-size: 12px; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; }
+  .note { font-size: 12px; color: var(--gris4); margin: 10px 0 0; }
+  .bad { color: var(--negro); background: #fdebec; padding: 1px 5px; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="doc">
+
+  <div class="brandbar">
+    <img src="../public/aedm.svg" alt="aedm" onerror="this.style.display='none'" />
+    <span>sistema de diseño · aedm.org.es</span>
+  </div>
+
+  <h2 class="sec">01 · Color</h2>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#36e452"></div><div class="meta"><b>--verde</b><code>#36E452</code><span class="use">acción · marca</span></div></div>
+    <div class="sw"><div class="chip" style="background:#040406"></div><div class="meta"><b>--negro</b><code>#040406</code><span class="use">texto</span></div></div>
+    <div class="sw"><div class="chip" style="background:#fdfdfd;border-bottom:1px solid #e5e5e5"></div><div class="meta"><b>--blanco</b><code>#FDFDFD</code><span class="use">fondo</span></div></div>
+    <div class="sw"><div class="chip" style="background:#777777"></div><div class="meta"><b>--gris4</b><code>#777777</code><span class="use">secundario</span></div></div>
+    <div class="sw"><div class="chip" style="background:#afafaf"></div><div class="meta"><b>--gris3</b><code>#AFAFAF</code><span class="use">separador</span></div></div>
+    <div class="sw"><div class="chip" style="background:#fe3d46"></div><div class="meta"><b>--rojo</b><code>#FE3D46</code><span class="use">error</span></div></div>
+    <div class="sw"><div class="chip" style="background:#3cadff"></div><div class="meta"><b>--azul</b><code>#3CADFF</code><span class="use">acento (3 usos)</span></div></div>
+    <div class="sw"><div class="chip" style="background:#bacefb"></div><div class="meta"><b>--lila</b><code>#BACEFB</code><span class="use">sin uso</span></div></div>
+    <div class="sw"><div class="chip" style="background:#e5e5e5"></div><div class="meta"><b>--gris2</b><code>#E5E5E5</code><span class="use">borde</span></div></div>
+    <div class="sw"><div class="chip" style="background:#4b4b4b"></div><div class="meta"><b>--gris5</b><code>#4B4B4B</code><span class="use">detalle</span></div></div>
+    <div class="sw"><div class="chip" style="background:#f7f7f7"></div><div class="meta"><b>--gris1</b><code>#F7F7F7</code><span class="use">fondo sutil</span></div></div>
+    <div class="sw"><div class="chip" style="background:#2bc943"></div><div class="meta"><b>verde osc.</b><code>#2BC943</code><span class="use">hover (hardcoded)</span></div></div>
+  </div>
+  <p class="note">Verde = se puede pulsar o es marca. Rojo = solo error. Azul y lila no son sistema.</p>
+
+  <h2 class="sec">02 · Tipografía</h2>
+  <div class="typespec">
+    <div class="t-row"><span class="lbl">h1 · 60 / TitleFont</span><span class="t-h1">¡Hola!</span></div>
+    <div class="t-row"><span class="lbl">h2 · 40 / TitleFont</span><span class="t-h2">Novedades</span></div>
+    <div class="t-row"><span class="lbl">h3 · 1.6em / Main</span><span class="t-h3">Actividades</span></div>
+    <div class="t-row"><span class="lbl">h4 · 1.6em indent</span><span class="t-h4">Subapartado</span></div>
+    <div class="t-row"><span class="lbl">body · 16</span><span class="t-body">Somos la (aso)ciación de estudiantes de la Escuela Superior de Diseño de Madrid.</span></div>
+    <div class="t-row"><span class="lbl">eyebrow · 10</span><span class="t-eyebrow">(aso) · mercadillo de invierno</span></div>
+  </div>
+  <p class="note">Solo dos familias variables: Schibsted Grotesk (MainFont) y Stick No Bills (TitleFont). Íconos: Material Symbols Outlined.</p>
+
+  <h2 class="sec">03 · Botones</h2>
+  <div class="btns">
+    <button class="btn verde">ASÓciate</button>
+    <button class="btn negro">Donar</button>
+    <button class="btn outline">Instagram</button>
+  </div>
+  <p class="note">Boton.astro — ancho completo, padding 10px, 16px, sin radio, sin hover (deuda).</p>
+
+  <div style="margin-top:12px;display:flex;flex-direction:column;gap:6px">
+    <div class="gboton"><span class="ico">↗</span><p>GranBoton · primero</p></div>
+    <div class="gboton rev"><span class="ico">↗</span><p>GranBoton · resto</p></div>
+    <div class="gboton negro rev"><span class="ico">↗</span><p>GranBoton · negro</p></div>
+  </div>
+
+  <h2 class="sec">04 · Chips y hashtags</h2>
+  <div class="row">
+    <span class="chip">todos</span>
+    <span class="chip">ilustración</span>
+    <span class="hashtag">#ilustración</span>
+    <span class="hashtag inv">#cerámica</span>
+    <span class="hashtag">#serigrafía</span>
+  </div>
+  <p class="note">Chip: recto, 6×14, verde. Hashtag: radio 20px, y es el único componente con hover + focus-visible resueltos.</p>
+
+  <h2 class="sec">05 · Superficies y líneas</h2>
+  <div class="grid2">
+    <div class="surface">
+      <p class="eyebrow2">Mercadillo de invierno</p>
+      <p class="fecha">Viernes 18 de diciembre</p>
+      <p class="detalle">11:00 – 20:00</p>
+      <p class="detalle">ESD Madrid · hall</p>
+      <div class="stub" style="margin:16px -22px -20px"># 18 dic <strong>2026</strong></div>
+    </div>
+    <div class="lines">
+      <div>
+        <span class="lbl" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#777">hr · 1px verde</span>
+        <hr class="solidline" />
+      </div>
+      <div>
+        <span class="lbl" style="font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#777">MiniLine · 1px dashed</span>
+        <div class="dash"></div>
+      </div>
+      <div style="border:1px solid #e5e5e5;padding:12px;font-size:13px;color:#777">Superficie: fondo blanco, borde 1px --gris2, radio 0</div>
+    </div>
+  </div>
+
+  <h2 class="sec">06 · Tokens de estructura</h2>
+  <table class="tok">
+    <tr><td>Contenido</td><td><code>max-width: 800px</code> centrado · <code>gap: 15px</code></td></tr>
+    <tr><td>main</td><td><code>margin: 100px auto 20px</code> · <code>padding: 0 20px</code> (80px / 16px ≤600px)</td></tr>
+    <tr><td>NavBar</td><td>fija · 80px alto · degradado blanco 1 → 0 · z 10 000 000</td></tr>
+    <tr><td>Banda</td><td>fija · top 80px · 30px alto · verde · scroll 20s</td></tr>
+    <tr><td>Footer</td><td>verde a sangre · <code>margin-top: 8rem</code> · 90px logo</td></tr>
+    <tr><td>Radios</td><td>0 por defecto · hashtag 20px · carrusel 22px · Notion 4px · avatar 50%</td></tr>
+    <tr><td>Hover</td><td><code>opacity .7–.8</code> · <code>.2s ease</code></td></tr>
+    <tr><td>Breakpoints</td><td>600 · 700 · 768 (sin token)</td></tr>
+  </table>
+
+  <p class="note"><span class="bad">deuda</span> <code>var(--black)</code> en NavBar:58 no existe · falta <code>;</code> en NavBar:86 · verde repetido como <code>rgb(54,228,82)</code> en 3 sitios · Boton sin hover/focus.</p>
+
+  <h2 class="sec">07 · Migración de tipos</h2>
+  <table class="tok">
+    <tr><td>aedm.astro</td><td>Schibsted + Stick No Bills <b>→ canónico</b> · solo sustituir valores por <code>var()</code></td></tr>
+    <tr><td>aso-portal</td><td><b>NeueMontreal + PKiko</b> → Schibsted + Stick No Bills, mismas claves <code>MainFont</code>/<code>TitleFont</code></td></tr>
+    <tr><td>aso-app</td><td><b>NeueMontreal + PKiko + PKikoItalic</b> → Schibsted + StickNoBills; cae <code>TitleFontItalic</code></td></tr>
+    <tr><td>Se queda</td><td><code>UbuntuMono</code> (app) · <code>Material Symbols</code> · <code>--font-mono</code> solo código</td></tr>
+    <tr><td>Cuidado</td><td>Stick No Bills es más condensada: revisar cortes de línea, <b>sin cambiar tamaños</b></td></tr>
+  </table>
+
+  <p class="note">La migración es de familia tipográfica y de tokens. Tamaños, textos, alineación y jerarquía no se tocan.</p>
+
+</div>
+</body>
+</html>
